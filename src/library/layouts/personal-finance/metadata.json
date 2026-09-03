@@ -1,0 +1,11 @@
+{
+  "id": "personal-finance",
+  "displayName": "Personal Finance",
+  "vertical": [
+    "FINANCIAL_SERVICES"
+  ],
+  "purpose": [
+    "LOCATION"
+  ],
+  "pageSetType": "ENTITY"
+}

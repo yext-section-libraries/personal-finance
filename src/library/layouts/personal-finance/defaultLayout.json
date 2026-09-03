@@ -1,0 +1,2621 @@
+{
+  "root": {
+    "props": {
+      "title": {
+        "field": "name",
+        "constantValue": "Yext Personal Finance Pages",
+        "constantValueEnabled": false
+      },
+      "version": 78,
+      "description": {
+        "field": "description",
+        "constantValue": "",
+        "constantValueEnabled": false
+      }
+    }
+  },
+  "zones": {},
+  "content": [
+    {
+      "type": "PersonalFinanceHeader",
+      "props": {
+        "id": "PersonalFinanceHeader-3c517624-bba3-49fd-8331-196a060c0aa8",
+        "cta": {
+          "show": true,
+          "items": [
+            {
+              "cta": {
+                "data": {
+                  "cta": {
+                    "field": "",
+                    "selectedType": "textAndLink",
+                    "constantValue": {
+                      "link": {
+                        "defaultValue": "#"
+                      },
+                      "label": {
+                        "defaultValue": "CTA Label"
+                      },
+                      "ctaType": "textAndLink",
+                      "linkType": "URL"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "customId": "",
+                  "ariaLabel": {
+                    "defaultValue": "CTA Label"
+                  },
+                  "actionType": "link",
+                  "buttonText": {
+                    "defaultValue": "Button"
+                  },
+                  "customClass": "",
+                  "openInNewTab": false,
+                  "dataAttributes": []
+                },
+                "styles": {
+                  "link": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "includeCaret": "default",
+                    "letterSpacing": "default",
+                    "textTransform": "default"
+                  },
+                  "color": {
+                    "selectedColor": "palette-primary",
+                    "contrastingColor": "palette-primary-contrast"
+                  },
+                  "button": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "borderRadius": "default",
+                    "letterSpacing": "default",
+                    "textTransform": "default"
+                  },
+                  "variant": "primary"
+                }
+              }
+            }
+          ]
+        },
+        "section": {
+          "backgroundColor": {
+            "selectedColor": "white",
+            "contrastingColor": "black"
+          },
+          "visibleOnLivePage": true
+        },
+        "variant": "utilityTopRow",
+        "logoImage": {
+          "url": {
+            "field": "",
+            "constantValue": {
+              "defaultValue": ""
+            },
+            "constantValueEnabled": true
+          },
+          "show": true,
+          "image": {
+            "field": "",
+            "constantValue": {
+              "url": "https://a.mktgcdn.com/p/OLT2KExDEKhKlCmIobyRRHN6MFUS77fVs5gIt_FTnBI/450x450.jpg",
+              "width": 450,
+              "height": 450
+            },
+            "constantValueEnabled": true
+          },
+          "styles": {
+            "borderRadius": "default"
+          },
+          "aspectRatio": 1,
+          "imageConstrain": "fixed"
+        },
+        "utilities": {
+          "show": true,
+          "items": [
+            {
+              "link": "#",
+              "label": "Item 1",
+              "linkType": "URL",
+              "iconImage": {
+                "image": {
+                  "field": "",
+                  "constantValue": {
+                    "url": "",
+                    "width": 0,
+                    "height": 0
+                  },
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "borderRadius": "default"
+                },
+                "aspectRatio": 1,
+                "imageConstrain": "fixed"
+              },
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#",
+              "label": "Item 2",
+              "linkType": "URL",
+              "iconImage": {
+                "image": {
+                  "field": "",
+                  "constantValue": {
+                    "url": "",
+                    "width": 0,
+                    "height": 0
+                  },
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "borderRadius": "default"
+                },
+                "aspectRatio": 1,
+                "imageConstrain": "fixed"
+              },
+              "openInNewTab": false,
+              "normalizeLink": false
+            }
+          ]
+        },
+        "navigation": {
+          "show": true,
+          "links": [
+            {
+              "link": "#locations",
+              "label": "Locations",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#services",
+              "label": "Services",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#advisors",
+              "label": "Advisors",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#disclosures",
+              "label": "Disclosures",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#contact",
+              "label": "Contact",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            }
+          ],
+          "styles": {
+            "fontSize": "default",
+            "fontStyle": "default",
+            "fontFamily": "default",
+            "fontWeight": "default",
+            "includeCaret": "default",
+            "letterSpacing": "default",
+            "textTransform": "default"
+          }
+        }
+      }
+    },
+    {
+      "type": "MainContent",
+      "props": {
+        "id": "MainContent-default",
+        "content": [
+          {
+            "type": "PersonalFinanceBreadcrumbs",
+            "props": {
+              "id": "PersonalFinanceBreadcrumbs-35dae033-f553-4f9d-8f29-57509e009865",
+              "content": {
+                "rootLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "All Locations",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "includeCurrentLocation": true
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceHero",
+            "props": {
+              "id": "PersonalFinanceHero-e6b57715-0c45-45b8-9012-5381def16637",
+              "content": {
+                "body": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] - [[geomodifier]] [[address.city]] provides wealth management, retirement planning, and financial advisory services for individuals, families, and business owners across the [[address.city]] metro area.</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] - [[geomodifier]] [[address.city]] provides wealth management, retirement planning, and financial advisory services for individuals, families, and business owners across the [[address.city]] metro area.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "hours": {
+                  "field": "hours",
+                  "constantValue": {},
+                  "constantValueEnabled": false
+                },
+                "headline": {
+                  "text": {
+                    "field": "name",
+                    "constantValue": {
+                      "defaultValue": ""
+                    },
+                    "constantValueEnabled": false
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "primaryCta": {
+                  "data": {
+                    "cta": {
+                      "field": "",
+                      "selectedType": "textAndLink",
+                      "constantValue": {
+                        "link": "#",
+                        "label": "Schedule Consultation",
+                        "linkType": "URL"
+                      },
+                      "constantValueEnabled": true
+                    },
+                    "actionType": "link",
+                    "openInNewTab": false
+                  },
+                  "styles": {
+                    "color": {
+                      "selectedColor": "palette-primary",
+                      "contrastingColor": "palette-primary-contrast"
+                    },
+                    "button": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "borderRadius": "default",
+                      "letterSpacing": "default",
+                      "textTransform": "default"
+                    },
+                    "variant": "primary"
+                  }
+                },
+                "hoursStyles": {
+                  "timeFormat": "12h",
+                  "showDayNames": true,
+                  "dayOfWeekFormat": "long",
+                  "showCurrentStatus": true
+                },
+                "secondaryCta": {
+                  "data": {
+                    "cta": {
+                      "field": "",
+                      "selectedType": "textAndLink",
+                      "constantValue": {
+                        "link": "#",
+                        "label": "Get Directions",
+                        "linkType": "URL"
+                      },
+                      "constantValueEnabled": true
+                    },
+                    "actionType": "link",
+                    "openInNewTab": false
+                  },
+                  "styles": {
+                    "color": {
+                      "selectedColor": "white",
+                      "contrastingColor": "black"
+                    },
+                    "button": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "borderRadius": "default",
+                      "letterSpacing": "default",
+                      "textTransform": "default"
+                    },
+                    "variant": "secondary"
+                  }
+                },
+                "statusEyebrow": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  },
+                  "backgroundColor": {
+                    "selectedColor": "white",
+                    "contrastingColor": "black"
+                  }
+                }
+              },
+              "section": {
+                "heroImage": {
+                  "image": {
+                    "field": "",
+                    "constantValue": {
+                      "url": "https://a.mktgcdn.com/p/vQqhmnexQfZueJGyh5M_j5W4EcTkTyZlW93eIoqjjvQ/1900x1267.jpg",
+                      "width": 1900,
+                      "height": 1267,
+                      "alternateText": {
+                        "defaultValue": "Hero image",
+                        "hasLocalizedValue": "true"
+                      }
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "borderRadius": "default"
+                  },
+                  "imageConstrain": "filled"
+                },
+                "visibleOnLivePage": true
+              },
+              "overlayColor": {
+                "selectedColor": "palette-primary",
+                "contrastingColor": "palette-primary-contrast"
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceDetails",
+            "props": {
+              "id": "PersonalFinanceDetails-8026b4c5-653a-43ed-8f5a-635f9a7b8631",
+              "styles": {
+                "cardBackgroundColor": {
+                  "selectedColor": "[#f2f2f4]",
+                  "contrastingColor": "black"
+                }
+              },
+              "content": {
+                "emails": {
+                  "list": {
+                    "field": "emails",
+                    "constantValue": [],
+                    "constantValueEnabled": false
+                  }
+                },
+                "phones": {
+                  "items": [
+                    {
+                      "label": "",
+                      "number": {
+                        "field": "mainPhone",
+                        "constantValue": "",
+                        "constantValueEnabled": false
+                      }
+                    }
+                  ],
+                  "phoneFormat": "domestic",
+                  "includeHyperlink": true
+                },
+                "address": {
+                  "address": {
+                    "field": "address",
+                    "constantValue": {
+                      "city": "",
+                      "line1": "",
+                      "region": "",
+                      "postalCode": "",
+                      "countryCode": ""
+                    },
+                    "constantValueEnabled": false
+                  },
+                  "showRegion": true,
+                  "showCountry": false
+                },
+                "hoursData": {
+                  "hours": {
+                    "field": "hours",
+                    "constantValue": {},
+                    "constantValueEnabled": false
+                  },
+                  "hoursStyles": {
+                    "alignment": "items-start",
+                    "startOfWeek": "monday",
+                    "collapseDays": false,
+                    "showAdditionalHoursText": false
+                  }
+                },
+                "hoursTitle": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Lobby Hours",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "emailsLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Email",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "addressLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Address",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "serviceItems": {
+                  "text": {
+                    "field": "",
+                    "constantValue": [
+                      "Private consultations",
+                      "Accessible entrance",
+                      "Notary on-site",
+                      "Drive-thru ATM"
+                    ],
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "infoCardTitle": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Location Information",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "primaryAction": {
+                  "data": {
+                    "cta": {
+                      "field": "",
+                      "selectedType": "textAndLink",
+                      "constantValue": {
+                        "link": "#",
+                        "label": "Visit Website",
+                        "linkType": "URL"
+                      },
+                      "constantValueEnabled": true
+                    },
+                    "actionType": "link",
+                    "openInNewTab": false
+                  },
+                  "styles": {
+                    "color": {
+                      "selectedColor": "palette-primary",
+                      "contrastingColor": "palette-primary-contrast"
+                    },
+                    "button": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "borderRadius": "default",
+                      "letterSpacing": "default",
+                      "textTransform": "default"
+                    },
+                    "variant": "primary"
+                  }
+                },
+                "servicesLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Services",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "languagesLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Languages",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "languagesValue": {
+                  "text": {
+                    "field": "",
+                    "constantValue": [
+                      "English",
+                      "Spanish",
+                      "Chinese",
+                      "French"
+                    ],
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Location Details",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "hoursFooterText": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "ATM Deposit Cut-Off Hours",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "secondaryAction": {
+                  "data": {
+                    "cta": {
+                      "field": "",
+                      "selectedType": "textAndLink",
+                      "constantValue": {
+                        "link": "#",
+                        "label": "Book Appointment",
+                        "linkType": "URL"
+                      },
+                      "constantValueEnabled": true
+                    },
+                    "actionType": "link",
+                    "openInNewTab": false
+                  },
+                  "styles": {
+                    "color": {
+                      "selectedColor": "default",
+                      "contrastingColor": "black"
+                    },
+                    "button": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "borderRadius": "default",
+                      "letterSpacing": "default",
+                      "textTransform": "default"
+                    },
+                    "variant": "link"
+                  }
+                },
+                "accessibilityLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Accessibility",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "accessibilityValue": {
+                  "text": {
+                    "field": "",
+                    "constantValue": [
+                      "ADA compliant entrance",
+                      "Elevator access",
+                      "Private consultation rooms"
+                    ],
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "secondaryHoursData": {
+                  "hours": {
+                    "field": "driveThroughHours",
+                    "constantValue": {},
+                    "constantValueEnabled": false
+                  },
+                  "hoursStyles": {
+                    "alignment": "items-start",
+                    "startOfWeek": "monday",
+                    "collapseDays": false,
+                    "showAdditionalHoursText": false
+                  }
+                },
+                "clientServicesTitle": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Client Services",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#ececef]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceFeaturedServices",
+            "props": {
+              "id": "PersonalFinanceFeaturedServices-5d1600a2-5b95-4b47-ba9e-b624ca2d52cc",
+              "styles": {
+                "image": {
+                  "styles": {
+                    "borderRadius": "default"
+                  },
+                  "aspectRatio": 1.3333333333333333,
+                  "imageConstrain": "filled"
+                },
+                "title": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Service Title",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "description": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Service description.</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Service description.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "content": {
+                "cards": {
+                  "field": "",
+                  "mappings": {
+                    "image": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "title": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "description": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "cta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "Schedule a Wealth Review",
+                              "ctaType": "textAndLink",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "customId": "",
+                          "ariaLabel": {
+                            "defaultValue": "Button"
+                          },
+                          "actionType": "link",
+                          "buttonText": {
+                            "defaultValue": "Button"
+                          },
+                          "customClass": "",
+                          "openInNewTab": false,
+                          "dataAttributes": []
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "palette-primary",
+                            "contrastingColor": "palette-primary-contrast"
+                          },
+                          "button": {
+                            "fontSize": "14px",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "500",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "link"
+                        }
+                      },
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Service image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Wealth Management",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Portfolio oversight and account review support for clients seeking ongoing guidance.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Portfolio oversight and account review support for clients seeking ongoing guidance.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "cta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "Book a Retirement Consultation",
+                              "ctaType": "textAndLink",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "customId": "",
+                          "ariaLabel": {
+                            "defaultValue": "Button"
+                          },
+                          "actionType": "link",
+                          "buttonText": {
+                            "defaultValue": "Button"
+                          },
+                          "customClass": "",
+                          "openInNewTab": false,
+                          "dataAttributes": []
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "palette-primary",
+                            "contrastingColor": "palette-primary-contrast"
+                          },
+                          "button": {
+                            "fontSize": "14px",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "500",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "link"
+                        }
+                      },
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Service image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Retirement Planning",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Planning conversations for retirement timelines, income needs, and account coordination.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Planning conversations for retirement timelines, income needs, and account coordination.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "cta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "Request an Investment Review",
+                              "ctaType": "textAndLink",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "customId": "",
+                          "ariaLabel": {
+                            "defaultValue": "Button"
+                          },
+                          "actionType": "link",
+                          "buttonText": {
+                            "defaultValue": "Button"
+                          },
+                          "customClass": "",
+                          "openInNewTab": false,
+                          "dataAttributes": []
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "palette-primary",
+                            "contrastingColor": "palette-primary-contrast"
+                          },
+                          "button": {
+                            "fontSize": "14px",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "500",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "link"
+                        }
+                      },
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Service image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Investment Management",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Ongoing investment strategy support based on client objectives and risk considerations.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Ongoing investment strategy support based on client objectives and risk considerations.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "cta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "Speak With an Advisor",
+                              "ctaType": "textAndLink",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "customId": "",
+                          "ariaLabel": {
+                            "defaultValue": "Button"
+                          },
+                          "actionType": "link",
+                          "buttonText": {
+                            "defaultValue": "Button"
+                          },
+                          "customClass": "",
+                          "openInNewTab": false,
+                          "dataAttributes": []
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "palette-primary",
+                            "contrastingColor": "palette-primary-contrast"
+                          },
+                          "button": {
+                            "fontSize": "14px",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "500",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "link"
+                        }
+                      },
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Service image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Financial Planning",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Goal-based planning conversations covering cash flow, savings, and long-term priorities.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Goal-based planning conversations covering cash flow, savings, and long-term priorities.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Featured Services",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "sectionDescription": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Explore the advisory services available at [[name]] - [[geomodifier]] [[address.city]].</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Explore the advisory services available at [[name]] - [[geomodifier]] [[address.city]].\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#f8f8f8]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceStory",
+            "props": {
+              "id": "PersonalFinanceStory-c055ddae-6edd-4e80-ad7f-2a053021e970",
+              "content": {
+                "paragraphs": [
+                  {
+                    "text": {
+                      "field": "",
+                      "constantValue": {
+                        "defaultValue": {
+                          "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] - [[geomodifier]] [[address.city]] is located in the South Tryon district near [[geomodifier]] [[address.city]] and supports clients across Mecklenburg County and surrounding communities. The office provides in-person and virtual financial planning conversations for individuals, families, retirees, and business owners looking for guidance around long-term financial goals.</span></p>",
+                          "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] - [[geomodifier]] [[address.city]] is located in the South Tryon district near [[geomodifier]] [[address.city]] and supports clients across Mecklenburg County and surrounding communities. The office provides in-person and virtual financial planning conversations for individuals, families, retirees, and business owners looking for guidance around long-term financial goals.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                        },
+                        "hasLocalizedValue": "true"
+                      },
+                      "constantValueEnabled": true
+                    }
+                  },
+                  {
+                    "text": {
+                      "field": "",
+                      "constantValue": {
+                        "defaultValue": {
+                          "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Clients commonly visit this location for retirement planning, portfolio reviews, investment guidance, and broader financial planning conversations. Advisors at this branch support both ongoing wealth management relationships and one-time planning discussions depending on client needs.</span></p>",
+                          "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Clients commonly visit this location for retirement planning, portfolio reviews, investment guidance, and broader financial planning conversations. Advisors at this branch support both ongoing wealth management relationships and one-time planning discussions depending on client needs.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                        },
+                        "hasLocalizedValue": "true"
+                      },
+                      "constantValueEnabled": true
+                    }
+                  },
+                  {
+                    "text": {
+                      "field": "",
+                      "constantValue": {
+                        "defaultValue": {
+                          "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>The office includes private consultation rooms, multilingual support, and online scheduling for added flexibility. Saturday hours are available for select appointment types.</span></p>",
+                          "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"The office includes private consultation rooms, multilingual support, and online scheduling for added flexibility. Saturday hours are available for select appointment types.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                        },
+                        "hasLocalizedValue": "true"
+                      },
+                      "constantValueEnabled": true
+                    }
+                  }
+                ],
+                "primaryCta": {
+                  "data": {
+                    "cta": {
+                      "field": "",
+                      "selectedType": "textAndLink",
+                      "constantValue": {
+                        "link": "#",
+                        "label": "Book Appointment",
+                        "linkType": "URL"
+                      },
+                      "constantValueEnabled": true
+                    },
+                    "actionType": "link",
+                    "openInNewTab": false
+                  },
+                  "styles": {
+                    "color": {
+                      "selectedColor": "palette-primary",
+                      "contrastingColor": "palette-primary-contrast"
+                    },
+                    "button": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "borderRadius": "default",
+                      "letterSpacing": "default",
+                      "textTransform": "default"
+                    },
+                    "variant": "primary"
+                  }
+                },
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "About [[name]] - [[geomodifier]] [[address.city]]",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#f8f8f8]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              },
+              "paragraphStyles": {
+                "paragraphs": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Paragraph text</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Paragraph text\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceTestimonials",
+            "props": {
+              "id": "PersonalFinanceTestimonials-06b43a04-e69b-4277-ab49-0eb7c8445577",
+              "content": {
+                "testimonials": {
+                  "field": "",
+                  "mappings": {
+                    "name": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "role": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "quote": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "name": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Denise Carter",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "role": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Client",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "quote": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>The [[geomodifier]] [[address.city]] team helped us understand our retirement timeline and organize the next steps with clarity.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"The [[geomodifier]] [[address.city]] team helped us understand our retirement timeline and organize the next steps with clarity.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "name": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Marco Johnson",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "role": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Client",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "quote": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>We appreciated how personalized the advice felt from the first meeting through our follow-up planning sessions.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"We appreciated how personalized the advice felt from the first meeting through our follow-up planning sessions.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "name": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Sonia Patel",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "role": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Client",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "quote": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>They made long-term financial planning feel approachable and gave us a path forward we could act on immediately.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"They made long-term financial planning feel approachable and gave us a path forward we could act on immediately.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Testimonials",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#f8f8f8]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              },
+              "testimonialStyles": {
+                "name": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Name",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "role": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Role",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "quote": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Quote</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Quote\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceAdvisors",
+            "props": {
+              "id": "PersonalFinanceAdvisors-9f8c6044-9a7e-47ef-af9e-72cd8c356a4c",
+              "styles": {
+                "name": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "role": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "image": {
+                  "styles": {
+                    "borderRadius": "default"
+                  },
+                  "imageConstrain": "filled"
+                },
+                "licenses": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "factValue": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "credentials": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "specialties": {
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "content": {
+                "advisors": {
+                  "field": "",
+                  "mappings": {
+                    "name": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "role": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "image": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "licenses": {
+                      "label": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      },
+                      "value": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      }
+                    },
+                    "credentials": {
+                      "label": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      },
+                      "value": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      }
+                    },
+                    "specialties": {
+                      "label": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      },
+                      "value": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      }
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "cta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "Advisor Page",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "actionType": "link",
+                          "openInNewTab": false
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "palette-primary",
+                            "contrastingColor": "palette-primary-contrast"
+                          },
+                          "button": {
+                            "fontSize": "14px",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "500",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "link"
+                        }
+                      },
+                      "name": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Morgan Lee",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "role": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Senior Wealth Advisor",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Advisor portrait"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "licenses": {
+                        "label": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Licenses",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "value": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Series 7, Series 66",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "credentials": {
+                        "label": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Credentials",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "value": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "CFP",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "specialties": {
+                        "label": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Specialties",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "value": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Supports retirement planning and portfolio review conversations.",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      }
+                    },
+                    {
+                      "cta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "Advisor Page",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "actionType": "link",
+                          "openInNewTab": false
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "palette-primary",
+                            "contrastingColor": "palette-primary-contrast"
+                          },
+                          "button": {
+                            "fontSize": "14px",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "500",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "link"
+                        }
+                      },
+                      "name": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Avery Chen",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "role": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Financial Planner",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Advisor portrait"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "licenses": {
+                        "label": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Licenses",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "value": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Series 65",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "credentials": {
+                        "label": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Credentials",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "value": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "ChFC",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "specialties": {
+                        "label": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Specialties",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "value": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": "Supports financial planning and goal-based discussions.",
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Meet the Team",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#f8f8f8]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true,
+                "cardBackgroundColor": {
+                  "selectedColor": "[#f2f2f4]",
+                  "contrastingColor": "black"
+                }
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceFaqs",
+            "props": {
+              "id": "PersonalFinanceFaqs-dec549f9-2bd1-4448-9eb7-6b6cd0368a0e",
+              "content": {
+                "items": {
+                  "field": "",
+                  "mappings": {
+                    "answer": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "question": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Appointments are recommended for financial planning and advisory meetings, but clients can still stop by during lobby hours for basic banking support or questions.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Appointments are recommended for financial planning and advisory meetings, but clients can still stop by during lobby hours for basic banking support or questions.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "question": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Do I need an appointment to visit this office?",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. Nearby public and garage parking options are available throughout the South Tryon and [[geomodifier]] [[address.city]] area.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. Nearby public and garage parking options are available throughout the South Tryon and [[geomodifier]] [[address.city]] area.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "question": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Is parking available nearby?",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. Virtual planning sessions are available for clients who prefer remote consultations or follow-up meetings.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. Virtual planning sessions are available for clients who prefer remote consultations or follow-up meetings.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "question": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Can I meet with an advisor virtually?",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>English, Spanish, Chinese, and French support are available for select appointments and follow-up conversations.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"English, Spanish, Chinese, and French support are available for select appointments and follow-up conversations.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "question": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "What languages are supported at this office?",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. The office is located close to multiple [[geomodifier]] [[address.city]] transit stops and offers elevator access from the building lobby.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. The office is located close to multiple [[geomodifier]] [[address.city]] transit stops and offers elevator access from the building lobby.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "question": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Is this office accessible by public transit?",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Frequently Asked Questions",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#f8f8f8]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              },
+              "faqStyles": {
+                "answer": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Answer</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Answer\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "question": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Question",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  },
+                  "fontColor": {
+                    "selectedColor": "default",
+                    "contrastingColor": "black"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceResources",
+            "props": {
+              "id": "PersonalFinanceResources-a228ff3a-384a-4959-b644-3f7e8a2a244f",
+              "styles": {
+                "image": {
+                  "styles": {
+                    "borderRadius": "default"
+                  },
+                  "aspectRatio": 1.5,
+                  "imageConstrain": "filled"
+                },
+                "title": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Title",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "description": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Description</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Description\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "content": {
+                "cards": {
+                  "field": "",
+                  "mappings": {
+                    "image": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "title": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "description": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Before You Meet With Us",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "primaryCta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "actionType": "link",
+                          "openInNewTab": false
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "white",
+                            "contrastingColor": "black"
+                          },
+                          "button": {
+                            "fontSize": "default",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "default",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "primary"
+                        }
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Prospective clients can review advisor credentials, disclosures, and service information before scheduling a consultation. Additional regulatory and advisory disclosures are available through the links below.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Prospective clients can review advisor credentials, disclosures, and service information before scheduling a consultation. Additional regulatory and advisory disclosures are available through the links below.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": "Community & Client Resources",
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "primaryCta": {
+                        "data": {
+                          "cta": {
+                            "field": "",
+                            "selectedType": "textAndLink",
+                            "constantValue": {
+                              "link": "#",
+                              "label": "View Event Calendar",
+                              "linkType": "URL"
+                            },
+                            "constantValueEnabled": true
+                          },
+                          "actionType": "link",
+                          "openInNewTab": false
+                        },
+                        "styles": {
+                          "color": {
+                            "selectedColor": "white",
+                            "contrastingColor": "black"
+                          },
+                          "button": {
+                            "fontSize": "default",
+                            "fontStyle": "default",
+                            "fontFamily": "default",
+                            "fontWeight": "default",
+                            "borderRadius": "default",
+                            "letterSpacing": "default",
+                            "textTransform": "default"
+                          },
+                          "variant": "primary"
+                        }
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] regularly hosts educational workshops and retirement planning events for [[address.city]]-area residents. Clients can also schedule appointments, review meeting details, and securely manage communications through the [[name]] client portal and mobile app.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] regularly hosts educational workshops and retirement planning events for [[address.city]]-area residents. Clients can also schedule appointments, review meeting details, and securely manage communications through the [[name]] client portal and mobile app.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "cardSurface": {
+                  "backgroundColor": {
+                    "selectedColor": "palette-primary",
+                    "contrastingColor": "palette-primary-contrast"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#ececef]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "PersonalFinanceNearbyLocations",
+            "props": {
+              "id": "PersonalFinanceNearbyLocations-6e0baaf6-9355-49e5-a1e2-20d94c6b329c",
+              "map": {
+                "zoom": 12,
+                "mapStyle": "streets-v12",
+                "coordinate": {
+                  "field": "yextDisplayCoordinate",
+                  "constantValue": {
+                    "latitude": 0,
+                    "longitude": 0
+                  },
+                  "constantValueEnabled": false
+                }
+              },
+              "styles": {
+                "phone": {
+                  "phoneFormat": "domestic",
+                  "includeHyperlink": true
+                },
+                "address": {
+                  "showRegion": true,
+                  "showCountry": false
+                },
+                "showHours": true,
+                "showPhone": true,
+                "hoursStyles": {
+                  "timeFormat": "12h",
+                  "showDayNames": true,
+                  "dayOfWeekFormat": "long",
+                  "showCurrentStatus": true
+                },
+                "showAddress": true,
+                "cardBackgroundColor": {
+                  "selectedColor": "[#f2f2f4]",
+                  "contrastingColor": "black"
+                }
+              },
+              "content": {
+                "sectionHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": "Nearby Locations",
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "sectionDescription": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Explore nearby [[address.city]]-area offices for wealth management, retirement planning, and advisory conversations.</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Explore nearby [[address.city]]-area offices for wealth management, retirement planning, and advisory conversations.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "[#f8f8f8]",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "PersonalFinanceFooter",
+      "props": {
+        "id": "PersonalFinanceFooter-78134ae2-fc6c-422b-90f5-07e50fe7f924",
+        "section": {
+          "backgroundColor": {
+            "selectedColor": "palette-secondary",
+            "contrastingColor": "palette-secondary-contrast"
+          },
+          "visibleOnLivePage": true
+        },
+        "brandName": {
+          "text": {
+            "field": "",
+            "constantValue": {
+              "defaultValue": "[[name]]",
+              "hasLocalizedValue": "true"
+            },
+            "constantValueEnabled": true
+          },
+          "styles": {
+            "fontSize": "default",
+            "fontStyle": "default",
+            "fontFamily": "default",
+            "fontWeight": "default",
+            "textTransform": "default"
+          },
+          "fontColor": {
+            "selectedColor": "default",
+            "contrastingColor": "black"
+          }
+        },
+        "copyrightText": {
+          "text": {
+            "field": "",
+            "constantValue": {
+              "defaultValue": "Copyright © 2026, [[name]]",
+              "hasLocalizedValue": "true"
+            },
+            "constantValueEnabled": true
+          },
+          "styles": {
+            "fontSize": "default",
+            "fontStyle": "default",
+            "fontFamily": "default",
+            "fontWeight": "default",
+            "textTransform": "default"
+          },
+          "fontColor": {
+            "selectedColor": "default",
+            "contrastingColor": "black"
+          }
+        },
+        "navigationLinks": [
+          {
+            "cta": {
+              "data": {
+                "cta": {
+                  "field": "",
+                  "selectedType": "textAndLink",
+                  "constantValue": {
+                    "link": "#locations",
+                    "label": "Locations",
+                    "linkType": "URL"
+                  },
+                  "constantValueEnabled": true
+                },
+                "actionType": "link",
+                "openInNewTab": false
+              },
+              "styles": {
+                "color": {
+                  "selectedColor": "default",
+                  "contrastingColor": "black"
+                },
+                "button": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "borderRadius": "default",
+                  "letterSpacing": "default",
+                  "textTransform": "default"
+                },
+                "variant": "primary"
+              }
+            }
+          },
+          {
+            "cta": {
+              "data": {
+                "cta": {
+                  "field": "",
+                  "selectedType": "textAndLink",
+                  "constantValue": {
+                    "link": "#services",
+                    "label": "Services",
+                    "linkType": "URL"
+                  },
+                  "constantValueEnabled": true
+                },
+                "actionType": "link",
+                "openInNewTab": false
+              },
+              "styles": {
+                "color": {
+                  "selectedColor": "default",
+                  "contrastingColor": "black"
+                },
+                "button": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "borderRadius": "default",
+                  "letterSpacing": "default",
+                  "textTransform": "default"
+                },
+                "variant": "primary"
+              }
+            }
+          },
+          {
+            "cta": {
+              "data": {
+                "cta": {
+                  "field": "",
+                  "selectedType": "textAndLink",
+                  "constantValue": {
+                    "link": "#advisors",
+                    "label": "Advisors",
+                    "linkType": "URL"
+                  },
+                  "constantValueEnabled": true
+                },
+                "actionType": "link",
+                "openInNewTab": false
+              },
+              "styles": {
+                "color": {
+                  "selectedColor": "default",
+                  "contrastingColor": "black"
+                },
+                "button": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "borderRadius": "default",
+                  "letterSpacing": "default",
+                  "textTransform": "default"
+                },
+                "variant": "primary"
+              }
+            }
+          },
+          {
+            "cta": {
+              "data": {
+                "cta": {
+                  "field": "",
+                  "selectedType": "textAndLink",
+                  "constantValue": {
+                    "link": "#disclosures",
+                    "label": "Disclosures",
+                    "linkType": "URL"
+                  },
+                  "constantValueEnabled": true
+                },
+                "actionType": "link",
+                "openInNewTab": false
+              },
+              "styles": {
+                "color": {
+                  "selectedColor": "default",
+                  "contrastingColor": "black"
+                },
+                "button": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "borderRadius": "default",
+                  "letterSpacing": "default",
+                  "textTransform": "default"
+                },
+                "variant": "primary"
+              }
+            }
+          },
+          {
+            "cta": {
+              "data": {
+                "cta": {
+                  "field": "",
+                  "selectedType": "textAndLink",
+                  "constantValue": {
+                    "link": "#contact",
+                    "label": "Contact",
+                    "linkType": "URL"
+                  },
+                  "constantValueEnabled": true
+                },
+                "actionType": "link",
+                "openInNewTab": false
+              },
+              "styles": {
+                "color": {
+                  "selectedColor": "default",
+                  "contrastingColor": "black"
+                },
+                "button": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "borderRadius": "default",
+                  "letterSpacing": "default",
+                  "textTransform": "default"
+                },
+                "variant": "primary"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
