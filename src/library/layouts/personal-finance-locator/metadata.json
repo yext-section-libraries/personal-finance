@@ -1,5 +1,5 @@
 {
   "id": "personal-finance-locator",
   "displayName": "Locator",
-  "pageSetType": "LOCATOR"
+  "pageGroupType": "LOCATOR"
 }
