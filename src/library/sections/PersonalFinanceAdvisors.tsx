@@ -1,14 +1,26 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  createEntityText,
+  createTextField,
+  defaultTextStyle,
+  getScopedTypographyCss,
+  hasImageSource,
+  resolvePlainText,
+  resolveThemeColor,
+  textStyleToCss,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  Background,
   ComprehensiveCTA,
   EntityField,
   Image,
   createItemSource,
   getAnalyticsScopeHash,
-  resolveComponentData,
+  getSurfaceColorStyle,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
   YextComponentConfig,
@@ -25,76 +37,12 @@ import {
   type TranslatableString,
   type YextCTAField,
   type YextEntityField,
-  BackgroundProvider,
-  isDarkColor,
 } from "@yext/visual-editor";
 import {
   AnalyticsScopeProvider,
   type ComplexImageType,
   type ImageType,
 } from "@yext/pages-components";
-import type { CSSProperties } from "react";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (color?: ThemeColorInput, fallback = "#ffffff") => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
-
-const hasImageSource = (
-  image: ImageType | ComplexImageType | TranslatableAssetImage | undefined,
-): image is ImageType | ComplexImageType | TranslatableAssetImage => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  if ("url" in image && typeof image.url === "string" && image.url.trim()) {
-    return true;
-  }
-
-  if (
-    "image" in image &&
-    image.image &&
-    typeof image.image === "object" &&
-    "url" in image.image &&
-    typeof image.image.url === "string" &&
-    image.image.url.trim()
-  ) {
-    return true;
-  }
-
-  return false;
-};
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -155,88 +103,8 @@ type PersonalFinanceAdvisorsProps = {
   styles: AdvisorsStyles;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass = "yextPersonalFinanceAdvisorsTypographyScope";
-const typographyScopeCss = `
-.yextPersonalFinanceAdvisorsTypographyScope p,
-.yextPersonalFinanceAdvisorsTypographyScope li,
-.yextPersonalFinanceAdvisorsTypographyScope dd {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.yextPersonalFinanceAdvisorsTypographyScope a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.yextPersonalFinanceAdvisorsTypographyScope a:hover {
-  text-decoration: underline;
-}
-`;
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -265,31 +133,6 @@ const advisorImages = [
   createCapturedAssetUrl("advisor1.jpg"),
   createCapturedAssetUrl("advisor2.jpg"),
 ];
-
-const createEntityText = (
-  constantValue: string,
-): YextEntityField<TranslatableString> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: constantValue,
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
 
 const createStyledTextField = (label: string) => {
   return {
@@ -505,59 +348,6 @@ const advisorSource = createItemSource<AdvisorCard>({
   ],
 });
 
-const isDefaultToken = (value?: string) => {
-  return !value || value === "default";
-};
-
-const resolvePlainText = (
-  value: TranslatableString | YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(
-    value as never,
-    locale,
-    streamDocument,
-    {
-      output: "plainText",
-    },
-  );
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as Record<string, unknown>).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
-
-const textStyleToCss = (styles?: Partial<StyledTextValue>): CSSProperties => {
-  return {
-    fontFamily: isDefaultToken(styles?.fontFamily)
-      ? undefined
-      : styles?.fontFamily,
-    fontSize: isDefaultToken(styles?.fontSize) ? undefined : styles?.fontSize,
-    fontWeight: isDefaultToken(styles?.fontWeight)
-      ? undefined
-      : styles?.fontWeight,
-    fontStyle: isDefaultToken(styles?.fontStyle)
-      ? undefined
-      : styles?.fontStyle,
-    textTransform: isDefaultToken(styles?.textTransform)
-      ? undefined
-      : styles?.textTransform,
-  };
-};
-
 const AdvisorsFields: YextFields<PersonalFinanceAdvisorsProps> = {
   section: {
     label: "Section",
@@ -615,19 +405,17 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
     props.content.advisors,
     streamDocument,
   );
-  const sectionForeground = props.section.backgroundColor.contrastingColor;
-  const sectionForegroundColor = resolveThemeColor(
-    sectionForeground,
-    "#1a1a1a",
+  const sectionStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
   );
-  const cardBackgroundColor = resolveThemeColor(
+  const sectionForeground = sectionStyle?.color ?? "currentColor";
+  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const cardStyle = getSurfaceColorStyle(
     props.section.cardBackgroundColor,
-    "#f2f2f4",
+    streamDocument,
   );
-  const cardForegroundColor = resolveThemeColor(
-    props.section.cardBackgroundColor?.contrastingColor,
-    sectionForegroundColor,
-  );
+  const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
 
   return (
     <VisibilityWrapper
@@ -637,15 +425,12 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceAdvisors${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           id="advisors"
           className={`${typographyScopeClass} overflow-x-clip py-11`}
-          style={{
-            backgroundColor: resolveThemeColor(
-              props.section.backgroundColor,
-              "#ffffff",
-            ),
-          }}
+          style={sectionStyle}
         >
           <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
@@ -742,10 +527,12 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                   ];
 
                   return (
-                    <article
+                    <Background
+                      as="div"
+                      background={props.section.cardBackgroundColor}
                       key={`${name}-${index}`}
                       className="min-w-0 w-full rounded-[14px] border border-black/5 p-6"
-                      style={{ backgroundColor: cardBackgroundColor }}
+                      style={cardStyle}
                     >
                       <div className="mb-[18px] flex min-w-0 items-center gap-4">
                         {hasImageSource(image) ? (
@@ -834,47 +621,38 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                         ))}
                       </dl>
                       {advisorCta ? (
-                        <BackgroundProvider
-                          value={{
-                            ...props.section.cardBackgroundColor,
-                            isDarkColor: isDarkColor(
-                              props.section.cardBackgroundColor,
-                            ),
-                          }}
-                        >
-                          <div className="mt-4">
-                            {(() => {
-                              const ctaVariant = advisorCta.styles?.variant;
+                        <div className="mt-4">
+                          {(() => {
+                            const ctaVariant = advisorCta.styles?.variant;
 
-                              return (
-                                <EntityField
-                                  displayName={`Advisor ${index + 1} CTA`}
-                                  fieldId={advisorCtaField?.field}
-                                  constantValueEnabled={
-                                    advisorCtaField?.constantValueEnabled
+                            return (
+                              <EntityField
+                                displayName={`Advisor ${index + 1} CTA`}
+                                fieldId={advisorCtaField?.field}
+                                constantValueEnabled={
+                                  advisorCtaField?.constantValueEnabled
+                                }
+                              >
+                                <ComprehensiveCTA
+                                  value={advisorCta}
+                                  className={
+                                    ctaVariant === "link"
+                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-medium shadow-none"
+                                      : "inline-flex min-h-[44px] items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium"
                                   }
-                                >
-                                  <ComprehensiveCTA
-                                    value={advisorCta}
-                                    className={
-                                      ctaVariant === "link"
-                                        ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-medium shadow-none"
-                                        : "inline-flex min-h-[44px] items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium"
-                                    }
-                                  />
-                                </EntityField>
-                              );
-                            })()}
-                          </div>
-                        </BackgroundProvider>
+                                />
+                              </EntityField>
+                            );
+                          })()}
+                        </div>
                       ) : null}
-                    </article>
+                    </Background>
                   );
                 })}
               </div>
             </EntityField>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

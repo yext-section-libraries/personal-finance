@@ -1,15 +1,26 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  createStyledRtfDefault,
+  createStyledRtfField,
+  createStyledTextDefault,
+  createStyledTextField,
+  getScopedTypographyCss,
+  normalizeResolvedRichText,
+  resolvePlainText,
+  resolveThemeColor,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  Background,
   EntityField,
   MapboxStaticMapComponent,
   MaybeRTF,
   getAnalyticsScopeHash,
-  getDefaultRTF,
   getPreferredDistanceUnit,
+  getSurfaceColorStyle,
   mergeMeta,
   resolveComponentData,
   resolveUrlTemplate,
@@ -21,7 +32,6 @@ import {
   YextComponentConfig,
   YextFields,
   mapboxStaticMapStyleOptions,
-  type EntityFieldSelectorField,
   type StreamDocument,
   type StyledTextValue,
   type ThemeColor,
@@ -29,6 +39,7 @@ import {
   type TranslatableString,
   type YextEntityField,
 } from "@yext/visual-editor";
+import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -37,42 +48,6 @@ import {
   type HoursType,
   type StatusParams,
 } from "@yext/pages-components";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (color?: ThemeColorInput, fallback = "#ffffff") => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -136,246 +111,12 @@ type PersonalFinanceNearbyLocationsProps = {
   styles: NearbyLocationsStyles;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass =
   "yextPersonalFinanceNearbyLocationsTypographyScope";
-const typographyScopeCss = `
-.yextPersonalFinanceNearbyLocationsTypographyScope p,
-.yextPersonalFinanceNearbyLocationsTypographyScope li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.yextPersonalFinanceNearbyLocationsTypographyScope a:hover {
-  text-decoration: underline;
-}
-`;
-
-const createEntityText = (
-  constantValue: string,
-): YextEntityField<TranslatableString> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: constantValue,
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createEntityRichText = (
-  constantValue: string,
-): YextEntityField<TranslatableRichText> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(constantValue),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createRichTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.rich_text_v2"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createStyledTextField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
-  };
-};
-
-const createStyledRtfField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createRichTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
-  };
-};
-
-const createStyledTextDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledTextProps => {
-  return {
-    text: createEntityText(value),
-    styles: defaultTextStyle,
-    fontColor,
-  };
-};
-
-const createStyledRtfDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledRtfProps => {
-  return {
-    text: createEntityRichText(value),
-    styles: defaultTextStyle,
-    fontColor,
-  };
-};
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const isDefaultToken = (value?: string) => {
   return !value || value === "default";
-};
-
-const resolvePlainText = (
-  value: TranslatableString | YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(
-    value as never,
-    locale,
-    streamDocument,
-    {
-      output: "plainText",
-    },
-  );
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as { defaultValue?: unknown }).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
-
-const normalizeResolvedRichText = (
-  value: string | React.ReactElement | TranslatableRichText | undefined,
-): string | ReturnType<typeof getDefaultRTF> | undefined => {
-  if (!value || typeof value === "string" || React.isValidElement(value)) {
-    return typeof value === "string" ? value : undefined;
-  }
-
-  if ("defaultValue" in value) {
-    return value.defaultValue;
-  }
-
-  return value as ReturnType<typeof getDefaultRTF>;
 };
 
 const textStyleToCss = (
@@ -399,25 +140,6 @@ const textStyleToCss = (
       : styles?.textTransform,
     color: resolveThemeColor(fontColor, fallbackColor),
   };
-};
-
-const formatPhoneNumber = (
-  phoneNumberString: string,
-  format: "international" | "domestic" = "domestic",
-): string => {
-  const cleanedPhoneNumberString = phoneNumberString.replace(
-    /(?!^\+)\+|[^\d+]/g,
-    "",
-  );
-
-  const parsedPhoneNumber = parsePhoneNumber(cleanedPhoneNumberString);
-  if (!parsedPhoneNumber.valid || parsedPhoneNumber.number === undefined) {
-    return phoneNumberString;
-  }
-
-  return format === "international"
-    ? parsedPhoneNumber.number.international
-    : parsedPhoneNumber.number.national;
 };
 
 const calculateDistanceMiles = (
@@ -682,11 +404,11 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
     },
     constantValueEnabled: false,
   };
-  const sectionForeground = props.section.backgroundColor.contrastingColor;
-  const sectionForegroundColor = resolveThemeColor(
-    sectionForeground,
-    "#1a1a1a",
+  const sectionStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
   );
+  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
   let mapboxApiKey = streamDocument?._env?.YEXT_MAPBOX_API_KEY;
   if (
     typeof document !== "undefined" &&
@@ -696,34 +418,19 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
   ) {
     mapboxApiKey = streamDocument._env.YEXT_EDIT_LAYOUT_MODE_MAPBOX_API_KEY;
   }
-  const cardBackgroundColor = resolveThemeColor(
+  const cardStyle = getSurfaceColorStyle(
     props.styles.cardBackgroundColor,
-    "#f2f2f4",
+    streamDocument,
   );
   const cardTitleColor = resolveThemeColor(
     props.styles.cardTitleColor,
-    resolveThemeColor(
-      props.styles.cardBackgroundColor?.contrastingColor,
-      sectionForegroundColor,
-    ),
+    cardStyle?.color ?? sectionForegroundColor,
   );
-  const cardForegroundColor = resolveThemeColor(
-    props.styles.cardBackgroundColor?.contrastingColor,
-    sectionForegroundColor,
-  );
+  const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
   const resolvedDescription = resolveComponentData(
     props.content.sectionDescription.text as never,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: {
-        ...props.content.sectionDescription.styles,
-        color: resolveThemeColor(
-          props.content.sectionDescription.fontColor,
-          sectionForegroundColor,
-        ),
-      },
-    },
   );
   const mapClassName = `nearby-map-${props.id}`;
 
@@ -767,10 +474,12 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
       );
 
       return (
-        <article
+        <Background
+          as="div"
+          background={props.styles.cardBackgroundColor}
           key={locationData.id ?? locationData.name}
           className="flex min-w-0 flex-col gap-3 rounded-[14px] border border-black/5 p-6"
-          style={{ backgroundColor: cardBackgroundColor }}
+          style={cardStyle}
         >
           <a
             href={resolvedUrl}
@@ -887,7 +596,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           >
             View location
           </a>
-        </article>
+        </Background>
       );
     });
   };
@@ -909,15 +618,12 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceNearbyLocations${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           id="nearby-locations"
           className={`${typographyScopeClass} overflow-x-clip py-11`}
-          style={{
-            backgroundColor: resolveThemeColor(
-              props.section.backgroundColor,
-              "#ffffff",
-            ),
-          }}
+          style={sectionStyle}
         >
           <style>{typographyScopeCss}</style>
           <style>
@@ -1013,7 +719,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
               <div className="grid gap-5">{renderCardsContent()}</div>
             </div>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

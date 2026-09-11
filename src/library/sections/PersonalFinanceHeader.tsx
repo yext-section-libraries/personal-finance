@@ -1,5 +1,10 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  aspectRatioOptions,
+  hasImageSource,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
@@ -11,6 +16,7 @@ import {
   useAnalytics,
 } from "@yext/pages-components";
 import {
+  Background,
   ComprehensiveCTA,
   type ComprehensiveCTAValue,
   EntityField,
@@ -27,6 +33,7 @@ import {
   type YextEntityField,
   type YextFields,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   i18nComponentsInstance,
   isDarkColor,
   normalizeLink,
@@ -289,31 +296,6 @@ const normalizeResolvedLink = ({
   return normalizeLink(link, linkType);
 };
 
-const hasImageSource = (
-  image: ImageType | ComplexImageType | TranslatableAssetImage | undefined,
-): image is ImageType | ComplexImageType | TranslatableAssetImage => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  if ("url" in image && typeof image.url === "string" && image.url.trim()) {
-    return true;
-  }
-
-  if (
-    "image" in image &&
-    image.image &&
-    typeof image.image === "object" &&
-    "url" in image.image &&
-    typeof image.image.url === "string" &&
-    image.image.url.trim()
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
 const SharedHeaderDefaultUtilityIcon = () => (
   <svg
     fill="none"
@@ -464,7 +446,7 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
                 aspectRatio: {
                   type: "basicSelector" as const,
                   label: "Aspect Ratio",
-                  options: "ASPECT_RATIO" as const,
+                  options: aspectRatioOptions,
                 },
                 imageConstrain: {
                   label: "Image Constrain",
@@ -614,7 +596,7 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
         aspectRatio: {
           type: "basicSelector" as const,
           label: "Aspect Ratio",
-          options: "ASPECT_RATIO" as const,
+          options: aspectRatioOptions,
         },
         imageConstrain: {
           label: "Image Constrain",
@@ -658,6 +640,10 @@ const PersonalFinanceHeaderComponent: PuckComponent<
   const showUtilities = props.utilities.show;
   const showCta = props.cta.show;
   const showLogo = props.logoImage.show;
+  const headerSurfaceStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
+  );
 
   const navigationColor: ThemeColor =
     (hasExplicitThemeColor(props.navigation.fontColor)
@@ -1013,12 +999,12 @@ const PersonalFinanceHeaderComponent: PuckComponent<
       liveVisibility={props.section.visibleOnLivePage}
       isEditing={props.puck.isEditing}
     >
-      <header
+      <Background
+        as="header"
+        background={props.section.backgroundColor}
         className="relative"
         style={{
-          backgroundColor: resolveThemeColorCssValue(
-            props.section.backgroundColor,
-          ),
+          ...headerSurfaceStyle,
           color: resolveThemeColorCssValue(navigationColor),
         }}
       >
@@ -1084,11 +1070,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
         {menuOpen ? (
           <div
             className="absolute inset-x-0 top-full z-20 max-h-[calc(100vh-82px)] overflow-y-auto px-6 py-6 md:px-8 lg:hidden"
-            style={{
-              backgroundColor: resolveThemeColorCssValue(
-                props.section.backgroundColor,
-              ),
-            }}
+            style={headerSurfaceStyle}
           >
             <div className="space-y-6">
               {navigationLinks.length > 0
@@ -1185,7 +1167,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
             </div>
           </div>
         ) : null}
-      </header>
+      </Background>
     </VisibilityWrapper>
   );
 };

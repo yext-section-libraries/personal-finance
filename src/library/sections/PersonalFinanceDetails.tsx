@@ -1,12 +1,22 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  createStyledTextDefault,
+  createStyledTextField,
+  defaultTextStyle,
+  getScopedTypographyCss,
+  resolvePlainText,
+  resolveThemeColor,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  Background,
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -21,6 +31,7 @@ import {
   type YextCTAField,
   type YextEntityField,
 } from "@yext/visual-editor";
+import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -29,44 +40,6 @@ import {
   type AddressType,
   type HoursType,
 } from "@yext/pages-components";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (
-  color?: ThemeColorInput,
-  fallback = "#ffffff",
-) => {
-  const selectedColor = typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -159,105 +132,13 @@ type PersonalFinanceDetailsProps = {
   styles: DetailsStyles;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass = "yextPersonalFinanceDetailsTypographyScope";
-const typographyScopeCss = `
-.${typographyScopeClass} p,
-.${typographyScopeClass} li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.${typographyScopeClass} h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.${typographyScopeClass} h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.${typographyScopeClass} h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.${typographyScopeClass} h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.${typographyScopeClass} h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.${typographyScopeClass} h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.${typographyScopeClass} a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.${typographyScopeClass} a:hover {
-  text-decoration: underline;
-}
-`;
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
   borderRadius: "default",
   letterSpacing: "default",
-};
-
-const createEntityText = (
-  constantValue: string,
-): YextEntityField<TranslatableString> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: constantValue,
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
 };
 
 const createTextListFieldValue = (
@@ -267,37 +148,6 @@ const createTextListFieldValue = (
     field: "",
     constantValue: values,
     constantValueEnabled: true,
-  };
-};
-
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createStyledTextField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
   };
 };
 
@@ -326,17 +176,6 @@ const createStyledTextListField = (label: string) => {
         options: "SITE_COLOR" as const,
       },
     },
-  };
-};
-
-const createStyledTextDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledTextProps => {
-  return {
-    text: createEntityText(value),
-    styles: defaultTextStyle,
-    fontColor,
   };
 };
 
@@ -386,32 +225,6 @@ const isDefaultToken = (value?: string) => {
   return !value || value === "default";
 };
 
-const resolvePlainText = (
-  value: TranslatableString | YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(value as never, locale, streamDocument, {
-    output: "plainText",
-  });
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as { defaultValue?: unknown }).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
-
 const textStyleToCss = (
   styles?: Partial<StyledTextValue>,
   fontColor?: string | ThemeColor,
@@ -433,25 +246,6 @@ const textStyleToCss = (
       : styles?.textTransform,
     color: resolveThemeColor(fontColor, fallbackColor),
   };
-};
-
-const formatPhoneNumber = (
-  phoneNumberString: string,
-  format: "international" | "domestic" = "domestic",
-): string => {
-  const cleanedPhoneNumberString = phoneNumberString.replace(
-    /(?!^\+)\+|[^\d+]/g,
-    "",
-  );
-
-  const parsedPhoneNumber = parsePhoneNumber(cleanedPhoneNumberString);
-  if (!parsedPhoneNumber.valid || parsedPhoneNumber.number === undefined) {
-    return phoneNumberString;
-  }
-
-  return format === "international"
-    ? parsedPhoneNumber.number.international
-    : parsedPhoneNumber.number.national;
 };
 
 const renderTextListInline = (
@@ -807,16 +601,16 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionForeground = props.section.backgroundColor.contrastingColor;
-  const sectionForegroundColor = resolveThemeColor(sectionForeground, "#1a1a1a");
-  const cardBackgroundColor = resolveThemeColor(
+  const sectionStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
+  );
+  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const cardStyle = getSurfaceColorStyle(
     props.styles.cardBackgroundColor,
-    "#f7f7fa",
+    streamDocument,
   );
-  const cardForeground = resolveThemeColor(
-    props.styles.cardBackgroundColor?.contrastingColor,
-    sectionForegroundColor,
-  );
+  const cardForeground = cardStyle?.color ?? sectionForegroundColor;
   const bodyForeground = cardForeground;
   const resolvedAddress = resolveComponentData(
     props.content.address.address,
@@ -896,15 +690,12 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
         name={`PersonalFinanceDetails${getAnalyticsScopeHash(props.id)}`}
       >
         <style>{typographyScopeCss}</style>
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           id="locations"
           className={`${typographyScopeClass} overflow-x-clip py-11`}
-          style={{
-            backgroundColor: resolveThemeColor(
-              props.section.backgroundColor,
-              "#ececef",
-            ),
-          }}
+          style={sectionStyle}
         >
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
@@ -933,9 +724,11 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               </EntityField>
             </div>
             <div className="grid justify-center gap-5 lg:[grid-template-columns:repeat(3,minmax(280px,430px))]">
-              <article
+              <Background
+                as="div"
+                background={props.styles.cardBackgroundColor}
                 className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
-                style={{ backgroundColor: cardBackgroundColor }}
+                style={cardStyle}
               >
                 <EntityField
                   displayName="Primary Card Heading"
@@ -1128,11 +921,13 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     />
                   </EntityField>
                 </div>
-              </article>
+              </Background>
 
-              <article
+              <Background
+                as="div"
+                background={props.styles.cardBackgroundColor}
                 className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
-                style={{ backgroundColor: cardBackgroundColor }}
+                style={cardStyle}
               >
                 <EntityField
                   displayName="Hours Heading"
@@ -1227,11 +1022,13 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     ) : null}
                   </div>
                 ) : null}
-              </article>
+              </Background>
 
-              <article
+              <Background
+                as="div"
+                background={props.styles.cardBackgroundColor}
                 className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
-                style={{ backgroundColor: cardBackgroundColor }}
+                style={cardStyle}
               >
                 <EntityField
                   displayName="Secondary Card Heading"
@@ -1387,10 +1184,10 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     </EntityField>
                   </div>
                 </div>
-              </article>
+              </Background>
             </div>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

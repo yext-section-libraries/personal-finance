@@ -148,8 +148,7 @@ export const EmptyImageState: React.FC<EmptyImageStateProps> = ({
             style={containerStyle}
           >
             <Button
-              variant="ghost"
-              size="icon"
+              variant="secondary"
               className="text-gray-400 hover:text-gray-600 hover:bg-transparent"
               onClick={(e) => {
                 e.stopPropagation();

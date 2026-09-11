@@ -1,8 +1,28 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  aspectRatioOptions,
+  createEntityRichText,
+  createEntityText,
+  createRichTextField,
+  createStyledRtfDefault,
+  createStyledRtfField,
+  createStyledTextDefault,
+  createStyledTextField,
+  createTextField,
+  defaultTextStyle,
+  getScopedTypographyCss,
+  hasImageSource,
+  normalizeResolvedRichText,
+  resolvePlainText,
+  resolveThemeColor,
+  textStyleToCss,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  Background,
   ComprehensiveCTA,
   EntityField,
   Image,
@@ -10,6 +30,7 @@ import {
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
+  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -35,67 +56,6 @@ import {
   type ComplexImageType,
   type ImageType,
 } from "@yext/pages-components";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (color?: ThemeColorInput, fallback = "#ffffff") => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
-
-const hasImageSource = (
-  image: ImageType | ComplexImageType | TranslatableAssetImage | undefined,
-): boolean => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  if ("url" in image && typeof image.url === "string" && image.url.trim()) {
-    return true;
-  }
-
-  if (
-    "image" in image &&
-    image.image &&
-    typeof image.image === "object" &&
-    "url" in image.image &&
-    typeof image.image.url === "string" &&
-    image.image.url.trim()
-  ) {
-    return true;
-  }
-
-  return false;
-};
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -147,87 +107,8 @@ type PersonalFinanceResourcesProps = {
   styles: ResourcesStyles;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass = "yextPersonalFinanceResourcesTypographyScope";
-const typographyScopeCss = `
-.yextPersonalFinanceResourcesTypographyScope p,
-.yextPersonalFinanceResourcesTypographyScope li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.yextPersonalFinanceResourcesTypographyScope a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.yextPersonalFinanceResourcesTypographyScope a:hover {
-  text-decoration: underline;
-}
-`;
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -262,56 +143,6 @@ const createCapturedAssetUrl = (filename: string) => {
 const promoImageOne = createCapturedAssetUrl("promo1.jpg");
 const promoImageTwo = createCapturedAssetUrl("promo2.jpg");
 
-const createEntityText = (
-  constantValue: string,
-): YextEntityField<TranslatableString> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: constantValue,
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createEntityRichText = (
-  constantValue: string,
-): YextEntityField<TranslatableRichText> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(constantValue),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createRichTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.rich_text_v2"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
 const createImageField = (label: string) => {
   const filter: EntityFieldSelectorField["filter"] = {
     types: ["type.image"],
@@ -324,44 +155,6 @@ const createImageField = (label: string) => {
   };
 };
 
-const createStyledTextField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
-  };
-};
-
-const createStyledRtfField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createRichTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
-  };
-};
-
 const createImageStyleField = (label: string) => {
   return {
     label,
@@ -370,7 +163,7 @@ const createImageStyleField = (label: string) => {
       aspectRatio: {
         type: "basicSelector" as const,
         label: "Aspect Ratio",
-        options: "ASPECT_RATIO" as const,
+        options: aspectRatioOptions,
       },
       imageConstrain: {
         label: "Image Constrain",
@@ -400,28 +193,6 @@ const createDefaultImageValue = (
       height: isHero ? 1267 : 1900,
     },
     constantValueEnabled: true,
-  };
-};
-
-const createStyledTextDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledTextProps => {
-  return {
-    text: createEntityText(value),
-    styles: defaultTextStyle,
-    fontColor,
-  };
-};
-
-const createStyledRtfDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledRtfProps => {
-  return {
-    text: createEntityRichText(value),
-    styles: defaultTextStyle,
-    fontColor,
   };
 };
 
@@ -506,68 +277,6 @@ const withAlpha = (color: string, alpha: number) => {
   }
 
   return `color-mix(in srgb, ${color} ${Math.round(alpha * 100)}%, transparent)`;
-};
-
-const isDefaultToken = (value?: string) => {
-  return !value || value === "default";
-};
-
-const resolvePlainText = (
-  value: TranslatableString | YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(value, locale, streamDocument, {
-    output: "plainText",
-  });
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as Record<string, unknown>).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
-
-const normalizeResolvedRichText = (
-  value: string | React.ReactElement | TranslatableRichText | undefined,
-): string | ReturnType<typeof getDefaultRTF> | undefined => {
-  if (!value || typeof value === "string" || React.isValidElement(value)) {
-    return typeof value === "string" ? value : undefined;
-  }
-
-  if ("defaultValue" in value) {
-    return value.defaultValue;
-  }
-
-  return value as ReturnType<typeof getDefaultRTF>;
-};
-
-const textStyleToCss = (styles?: Partial<StyledTextValue>) => {
-  return {
-    fontFamily: isDefaultToken(styles?.fontFamily)
-      ? undefined
-      : styles?.fontFamily,
-    fontSize: isDefaultToken(styles?.fontSize) ? undefined : styles?.fontSize,
-    fontWeight: isDefaultToken(styles?.fontWeight)
-      ? undefined
-      : styles?.fontWeight,
-    fontStyle: isDefaultToken(styles?.fontStyle)
-      ? undefined
-      : styles?.fontStyle,
-    textTransform: isDefaultToken(styles?.textTransform)
-      ? undefined
-      : styles?.textTransform,
-  };
 };
 
 const resolveCardImage = (
@@ -661,10 +370,17 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
     props.content.cards,
     streamDocument,
   );
-  const cardSurfaceBackgroundColor = resolveThemeColor(
-    props.content.cardSurface.backgroundColor,
-    "#080e16",
+  const sectionStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
   );
+  const cardSurfaceStyle = getSurfaceColorStyle(
+    props.content.cardSurface.backgroundColor,
+    streamDocument,
+  );
+  const cardSurfaceBackgroundColor =
+    cardSurfaceStyle?.backgroundColor ?? "#080e16";
+  const cardSurfaceForegroundColor = cardSurfaceStyle?.color ?? "#ffffff";
   const cardSurfaceOverlay = withAlpha(cardSurfaceBackgroundColor, 0.92);
   type ResolvedResourceCard = (typeof cards)[number];
   const rehydrateCta = (
@@ -711,15 +427,12 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceResources${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           id="disclosures"
           className={`${typographyScopeClass} overflow-x-clip py-11`}
-          style={{
-            backgroundColor: resolveThemeColor(
-              props.section.backgroundColor,
-              "#f8f8f8",
-            ),
-          }}
+          style={sectionStyle}
         >
           <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
@@ -783,11 +496,10 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                     card.description ?? getDefaultRTF("Description"),
                     locale,
                     streamDocument,
-                    { richTextStyleOverrides: descriptionStyles },
                   );
                   const titleColor = resolveThemeColor(
                     props.styles.title.fontColor,
-                    "#ffffff",
+                    cardSurfaceForegroundColor,
                   );
                   const imageWrapperClassName =
                     props.styles.image.aspectRatio > 0
@@ -799,10 +511,12 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                       : "h-full w-full object-cover md:object-contain";
 
                   return (
-                    <article
+                    <Background
+                      as="div"
+                      background={props.content.cardSurface.backgroundColor}
                       key={`${title}-${index}`}
                       className="relative grid w-full self-start overflow-hidden rounded-[16px] shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
-                      style={{ backgroundColor: cardSurfaceBackgroundColor }}
+                      style={cardSurfaceStyle}
                     >
                       {hasImageSource(image) && image ? (
                         <div
@@ -862,13 +576,13 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                           </div>
                         ) : null}
                       </div>
-                    </article>
+                    </Background>
                   );
                 })}
               </div>
             </EntityField>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

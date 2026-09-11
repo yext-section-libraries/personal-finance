@@ -1,11 +1,26 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  aspectRatioOptions,
+  createRichTextField,
+  createTextField,
+  defaultTextStyle,
+  getScopedTypographyCss,
+  hasImageSource,
+  normalizeResolvedRichText,
+  resolvePlainText,
+  resolveThemeColor,
+  textStyleToCss,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  Background,
   EntityField,
   getAnalyticsScopeHash,
   getDefaultRTF,
+  getSurfaceColorStyle,
   Image,
   MaybeRTF,
   resolveComponentData,
@@ -29,67 +44,6 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import type { CSSProperties } from "react";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (color?: ThemeColorInput, fallback = "#ffffff") => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
-
-const hasImageSource = (
-  image: ImageType | ComplexImageType | TranslatableAssetImage | undefined,
-): boolean => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  if ("url" in image && typeof image.url === "string" && image.url.trim()) {
-    return true;
-  }
-
-  if (
-    "image" in image &&
-    image.image &&
-    typeof image.image === "object" &&
-    "url" in image.image &&
-    typeof image.image.url === "string" &&
-    image.image.url.trim()
-  ) {
-    return true;
-  }
-
-  return false;
-};
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -131,87 +85,8 @@ type PersonalFinanceVideoProps = {
   content: VideoContent;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass = "yextPersonalFinanceVideoTypographyScope";
-const typographyScopeCss = `
-.yextPersonalFinanceVideoTypographyScope p,
-.yextPersonalFinanceVideoTypographyScope li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.yextPersonalFinanceVideoTypographyScope a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.yextPersonalFinanceVideoTypographyScope a:hover {
-  text-decoration: underline;
-}
-`;
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultImageStyle: StyledImageValue = {
   borderRadius: "default",
@@ -247,30 +122,6 @@ const createEditableRichText = (
   };
 };
 
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createRichTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.rich_text_v2"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
 const createImageField = (label: string) => {
   const filter: EntityFieldSelectorField["filter"] = {
     types: ["type.image"],
@@ -287,32 +138,6 @@ const isDefaultToken = (value?: string) => {
   return !value || value === "default";
 };
 
-const resolvePlainText = (
-  value: YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(value, locale, streamDocument, {
-    output: "plainText",
-  });
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as Record<string, unknown>).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
-
 const resolvePosterImage = (
   value: PosterImageProps | undefined,
   locale: string,
@@ -325,38 +150,6 @@ const resolvePosterImage = (
   const resolved = resolveComponentData(value.image, locale, streamDocument);
   const image = resolveLocalizedAssetImage(resolved, locale);
   return hasImageSource(image) ? image : undefined;
-};
-
-const normalizeResolvedRichText = (
-  value: string | React.ReactElement | TranslatableRichText | undefined,
-): string | ReturnType<typeof getDefaultRTF> | undefined => {
-  if (!value || typeof value === "string" || React.isValidElement(value)) {
-    return typeof value === "string" ? value : undefined;
-  }
-
-  if ("defaultValue" in value) {
-    return value.defaultValue;
-  }
-
-  return value as ReturnType<typeof getDefaultRTF>;
-};
-
-const textStyleToCss = (styles?: Partial<StyledTextValue>): CSSProperties => {
-  return {
-    fontFamily: isDefaultToken(styles?.fontFamily)
-      ? undefined
-      : styles?.fontFamily,
-    fontSize: isDefaultToken(styles?.fontSize) ? undefined : styles?.fontSize,
-    fontWeight: isDefaultToken(styles?.fontWeight)
-      ? undefined
-      : styles?.fontWeight,
-    fontStyle: isDefaultToken(styles?.fontStyle)
-      ? undefined
-      : styles?.fontStyle,
-    textTransform: isDefaultToken(styles?.textTransform)
-      ? undefined
-      : styles?.textTransform,
-  };
 };
 
 const imageStyleToCss = (styles?: Partial<StyledImageValue>): CSSProperties => {
@@ -435,7 +228,7 @@ const VideoFields: YextFields<PersonalFinanceVideoProps> = {
           aspectRatio: {
             type: "basicSelector" as const,
             label: "Aspect Ratio",
-            options: "ASPECT_RATIO" as const,
+            options: aspectRatioOptions,
           },
           imageConstrain: {
             label: "Image Constrain",
@@ -488,7 +281,11 @@ export const PersonalFinanceVideoComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionForeground = props.section.backgroundColor.contrastingColor;
+  const sectionStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
+  );
+  const sectionForeground = sectionStyle?.color ?? "currentColor";
   const headingColor = resolveThemeColor(
     props.content.sectionHeading.fontColor,
     sectionForeground,
@@ -499,27 +296,25 @@ export const PersonalFinanceVideoComponent: PuckComponent<
       ? resolveThemeColor(props.content.sectionDescription.fontColor)
       : sectionForeground,
   };
+  const videoFrameStyle = getSurfaceColorStyle(
+    props.content.videoFrame.backgroundColor,
+    streamDocument,
+  );
   const captionOverrides = {
     ...props.content.posterCaption.styles,
     color: props.content.posterCaption.fontColor
       ? resolveThemeColor(props.content.posterCaption.fontColor)
-      : sectionForeground,
+      : (videoFrameStyle?.color ?? sectionForeground),
   };
   const resolvedDescription = resolveComponentData(
     props.content.sectionDescription.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: descriptionOverrides,
-    },
   );
   const resolvedCaption = resolveComponentData(
     props.content.posterCaption.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: captionOverrides,
-    },
   );
   const posterImage = resolvePosterImage(
     props.content.posterImage,
@@ -579,14 +374,11 @@ export const PersonalFinanceVideoComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceVideo${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           className={`${typographyScopeClass} overflow-x-clip py-11`}
-          style={{
-            backgroundColor: resolveThemeColor(
-              props.section.backgroundColor,
-              "#ffffff",
-            ),
-          }}
+          style={sectionStyle}
         >
           <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
@@ -623,14 +415,11 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                 {descriptionContent}
               </EntityField>
             </div>
-            <div
+            <Background
+              as="div"
+              background={props.content.videoFrame.backgroundColor}
               className="mx-auto max-w-[1160px] overflow-hidden rounded-[20px] border border-black/5 shadow-[0_8px_26px_rgba(9,30,66,0.08)]"
-              style={{
-                backgroundColor: resolveThemeColor(
-                  props.content.videoFrame.backgroundColor,
-                  "#ffffff",
-                ),
-              }}
+              style={videoFrameStyle}
             >
               {videoUrl ? (
                 <div className="aspect-video w-full">
@@ -675,9 +464,9 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                   </EntityField>
                 </figure>
               ) : null}
-            </div>
+            </Background>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

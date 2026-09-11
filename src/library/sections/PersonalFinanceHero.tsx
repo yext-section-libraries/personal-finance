@@ -1,5 +1,17 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  createStyledRtfDefault,
+  createStyledRtfField,
+  createStyledTextField,
+  defaultTextStyle,
+  getScopedTypographyCss,
+  hasImageSource,
+  normalizeResolvedRichText,
+  resolvePlainText,
+  resolveThemeColor,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
@@ -8,7 +20,6 @@ import {
   Image,
   MaybeRTF,
   getAnalyticsScopeHash,
-  getDefaultRTF,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -34,65 +45,6 @@ import {
 } from "@yext/pages-components";
 import { useTranslation } from "react-i18next";
 import type { CSSProperties } from "react";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (color?: ThemeColorInput, fallback = "#ffffff") => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
-
-const hasImageSource = (image: TranslatableAssetImage | undefined): boolean => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  if ("url" in image && typeof image.url === "string" && image.url.trim()) {
-    return true;
-  }
-
-  if (
-    "image" in image &&
-    image.image &&
-    typeof image.image === "object" &&
-    "url" in image.image &&
-    typeof image.image.url === "string" &&
-    image.image.url.trim()
-  ) {
-    return true;
-  }
-
-  return false;
-};
 
 type StyledImageProps = {
   image: YextEntityField<TranslatableAssetImage>;
@@ -146,87 +98,8 @@ type PersonalFinanceHeroProps = {
   content: HeroContent;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass = "yextPersonalFinanceHeroTypographyScope";
-const typographyScopeCss = `
-.yextPersonalFinanceHeroTypographyScope p,
-.yextPersonalFinanceHeroTypographyScope li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.yextPersonalFinanceHeroTypographyScope a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.yextPersonalFinanceHeroTypographyScope a:hover {
-  text-decoration: underline;
-}
-`;
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -241,43 +114,6 @@ const defaultImageStyle: StyledImageValue = {
 const HERO_IMAGE_URL =
   "https://a.mktgcdn.com/p/vQqhmnexQfZueJGyh5M_j5W4EcTkTyZlW93eIoqjjvQ/1900x1267.jpg";
 
-const createEntityRichText = (
-  constantValue: string,
-): YextEntityField<TranslatableRichText> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(constantValue),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createRichTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.rich_text_v2"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
 const createImageField = (label: string) => {
   const filter: EntityFieldSelectorField["filter"] = {
     types: ["type.image"],
@@ -287,25 +123,6 @@ const createImageField = (label: string) => {
     type: "entityField" as const,
     label,
     filter,
-  };
-};
-
-const createStyledTextField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
   };
 };
 
@@ -332,25 +149,6 @@ const createEyebrowField = (label: string) => {
   };
 };
 
-const createStyledRtfField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createRichTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
-  };
-};
-
 const createHeadlineDefault = (): StyledTextProps => {
   return {
     text: {
@@ -372,17 +170,6 @@ const createEyebrowDefault = (
     styles: defaultTextStyle,
     fontColor,
     backgroundColor,
-  };
-};
-
-const createStyledRtfDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledRtfProps => {
-  return {
-    text: createEntityRichText(value),
-    styles: defaultTextStyle,
-    fontColor,
   };
 };
 
@@ -441,51 +228,6 @@ const isDefaultToken = (value?: string) => {
   return !value || value === "default";
 };
 
-const resolvePlainText = (
-  value: TranslatableString | YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(
-    value as never,
-    locale,
-    streamDocument,
-    {
-      output: "plainText",
-    },
-  );
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as { defaultValue?: unknown }).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
-
-const normalizeResolvedRichText = (
-  value: string | React.ReactElement | TranslatableRichText | undefined,
-): string | ReturnType<typeof getDefaultRTF> | undefined => {
-  if (!value || typeof value === "string" || React.isValidElement(value)) {
-    return typeof value === "string" ? value : undefined;
-  }
-
-  if ("defaultValue" in value) {
-    return value.defaultValue;
-  }
-
-  return value as ReturnType<typeof getDefaultRTF>;
-};
-
 const textStyleToCss = (
   styles?: Partial<StyledTextValue>,
   fontColor?: string | ThemeColor,
@@ -509,9 +251,8 @@ const textStyleToCss = (
   };
 };
 
-const createOverlayGradient = (color: string): string => {
-  return `linear-gradient(90deg, color-mix(in srgb, ${color} 88%, transparent) 0%, color-mix(in srgb, ${color} 74%, transparent) 38%, color-mix(in srgb, ${color} 26%, transparent) 68%, color-mix(in srgb, ${color} 8%, transparent) 100%)`;
-};
+const overlayMask =
+  "linear-gradient(90deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.74) 38%, rgba(0, 0, 0, 0.26) 68%, rgba(0, 0, 0, 0.08) 100%)";
 
 const SectionFields: YextFields<PersonalFinanceHeroProps> = {
   overlayColor: {
@@ -656,9 +397,6 @@ export const PersonalFinanceHeroComponent: PuckComponent<
     props.content.body.text as never,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides,
-    },
   );
   const resolvedHeroImage = resolveComponentData(
     props.section.heroImage.image,
@@ -705,7 +443,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
               >
                 <div
                   className="absolute inset-0 overflow-hidden"
-                  style={heroImageWrapperStyle}
+                  style={{ ...heroImageWrapperStyle, zIndex: 0 }}
                 >
                   <Image
                     image={resolvedHeroImage}
@@ -724,10 +462,18 @@ export const PersonalFinanceHeroComponent: PuckComponent<
               </EntityField>
             ) : null}
             <div
-              className="absolute inset-0"
-              style={{ backgroundImage: createOverlayGradient(overlayColor) }}
+              className="pointer-events-none absolute inset-0"
+              style={{
+                backgroundColor: overlayColor,
+                maskImage: overlayMask,
+                WebkitMaskImage: overlayMask,
+                zIndex: 1,
+              }}
             />
-            <div className="relative mx-auto flex min-h-[540px] max-w-[1410px] items-center px-6 py-12 md:min-h-[640px] md:py-16 lg:min-h-[680px] lg:py-20">
+            <div
+              className="relative mx-auto flex min-h-[540px] max-w-[1410px] items-center px-6 py-12 md:min-h-[640px] md:py-16 lg:min-h-[680px] lg:py-20"
+              style={{ zIndex: 2 }}
+            >
               <div className="relative z-[1] flex min-w-0 max-w-[980px] flex-col gap-6 py-2">
                 {heroHours && timezone ? (
                   <EntityField

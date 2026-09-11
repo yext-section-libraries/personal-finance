@@ -1,13 +1,11 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
-import { isValidElement } from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { CircleSlash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Body,
   EntityField,
-  MaybeRTF,
   PageSection,
   type StyledTextValue,
   type ThemeColor,
@@ -18,11 +16,16 @@ import {
   type YextFields,
   backgroundColors,
   getDefaultRTF,
+  getSurfaceColorStyle,
+  getThemeColorCssValue,
   resolveComponentData,
   resolveYextEntityField,
-  toPuckFields,
   useDocument,
 } from "@yext/visual-editor";
+import {
+  isRichTextEmpty,
+  renderRichText,
+} from "../shared/sectionHelpers";
 
 type PersonalFinanceBannerProps = {
   data: {
@@ -37,23 +40,6 @@ type PersonalFinanceBannerProps = {
     backgroundColor: ThemeColor;
     visibleOnLivePage: boolean;
   };
-};
-
-const isRichTextEmpty = (value: unknown): boolean => {
-  if (!value) {
-    return true;
-  }
-
-  if (typeof value === "string") {
-    return value.trim() === "";
-  }
-
-  if (typeof value === "object" && "html" in value) {
-    const html = (value as { html?: unknown }).html;
-    return typeof html !== "string" || html.trim() === "";
-  }
-
-  return false;
 };
 
 const PersonalFinanceBannerFields: YextFields<PersonalFinanceBannerProps> = {
@@ -123,6 +109,10 @@ const PersonalFinanceBannerComponent: PuckComponent<PersonalFinanceBannerProps> 
 }) => {
   const { i18n } = useTranslation();
   const streamDocument = useDocument();
+  const sectionStyle = getSurfaceColorStyle(
+    section.backgroundColor,
+    streamDocument,
+  );
   const isMappedField =
     !data.text.constantValueEnabled && Boolean(data.text.field);
 
@@ -140,6 +130,7 @@ const PersonalFinanceBannerComponent: PuckComponent<PersonalFinanceBannerProps> 
       <PageSection
         background={section.backgroundColor}
         className="flex items-center justify-center"
+        outerStyle={sectionStyle}
         verticalPadding="sm"
       >
         <div className="relative flex h-20 w-full flex-row items-center justify-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-4">
@@ -159,13 +150,12 @@ const PersonalFinanceBannerComponent: PuckComponent<PersonalFinanceBannerProps> 
 
   const richTextStyleOverrides = {
     ...data.styles,
-    color: data.fontColor ?? section.backgroundColor.contrastingColor,
+    color: getThemeColorCssValue(data.fontColor) ?? sectionStyle?.color,
   };
   const resolvedText = resolveComponentData(
     data.text,
     i18n.language,
     streamDocument,
-    { richTextStyleOverrides },
   );
 
   if (!resolvedText) {
@@ -182,6 +172,7 @@ const PersonalFinanceBannerComponent: PuckComponent<PersonalFinanceBannerProps> 
           right: "justify-end text-right",
         }[styles.textAlignment]
       }`}
+      outerStyle={sectionStyle}
       verticalPadding="sm"
     >
       <EntityField
@@ -189,14 +180,7 @@ const PersonalFinanceBannerComponent: PuckComponent<PersonalFinanceBannerProps> 
         displayName="Banner Text"
         fieldId={data.text.field}
       >
-        {isValidElement(resolvedText) ? (
-          resolvedText
-        ) : typeof resolvedText === "string" ? (
-          <MaybeRTF
-            data={resolvedText}
-            richTextStyleOverrides={richTextStyleOverrides}
-          />
-        ) : null}
+        {renderRichText(resolvedText, richTextStyleOverrides)}
       </EntityField>
     </PageSection>
   );
@@ -207,7 +191,7 @@ const PersonalFinanceBannerComponent: PuckComponent<PersonalFinanceBannerProps> 
  */
 export const PersonalFinanceBanner: YextComponentConfig<PersonalFinanceBannerProps> = {
   label: "Banner",
-  fields: toPuckFields(PersonalFinanceBannerFields),
+  fields: PersonalFinanceBannerFields,
   defaultProps: {
     data: {
       text: {

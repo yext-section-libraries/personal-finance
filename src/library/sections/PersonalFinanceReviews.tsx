@@ -1,61 +1,32 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
+import {
+  createStyledTextDefault,
+  createStyledTextField,
+  getScopedTypographyCss,
+  resolvePlainText,
+  resolveThemeColor,
+  textStyleToCss,
+} from "../shared/sectionHelpers";
+
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  Background,
   EntityField,
   getAggregateRating,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   VisibilityWrapper,
   YextComponentConfig,
   YextFields,
-  resolveComponentData,
   useDocument,
-  type EntityFieldSelectorField,
   type StyledTextValue,
   type ThemeColor,
   type TranslatableString,
   type YextEntityField,
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
-
-type ThemeColorInput = string | ThemeColor | undefined;
-
-const resolveThemeColor = (
-  color?: ThemeColorInput,
-  fallback = "#ffffff",
-) => {
-  const selectedColor = typeof color === "string" ? color : color?.selectedColor;
-
-  if (!selectedColor) {
-    return fallback;
-  }
-
-  if (selectedColor.startsWith("#")) {
-    return selectedColor;
-  }
-
-  if (selectedColor.startsWith("[") && selectedColor.endsWith("]")) {
-    return selectedColor.slice(1, -1);
-  }
-
-  if (selectedColor === "white" || selectedColor === "black") {
-    return selectedColor;
-  }
-
-  const paletteTintMatch = selectedColor.match(
-    /^palette-(primary|secondary|tertiary|quaternary)-(light|dark)$/,
-  );
-
-  if (paletteTintMatch) {
-    const [, paletteName, tint] = paletteTintMatch;
-    return `hsl(from var(--colors-palette-${paletteName}) h s ${
-      tint === "light" ? "98" : "20"
-    })`;
-  }
-
-  return `var(--colors-${selectedColor})`;
-};
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -106,190 +77,8 @@ type PersonalFinanceReviewsProps = {
   content: ReviewsContent;
 };
 
-const defaultTextStyle: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const typographyScopeClass = "yextPersonalFinanceReviewsTypographyScope";
-const typographyScopeCss = `
-.yextPersonalFinanceReviewsTypographyScope p,
-.yextPersonalFinanceReviewsTypographyScope li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h2-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.yextPersonalFinanceReviewsTypographyScope a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.yextPersonalFinanceReviewsTypographyScope a:hover {
-  text-decoration: underline;
-}
-`;
-
-const createEntityText = (
-  constantValue: string,
-): YextEntityField<TranslatableString> => {
-  return {
-    field: "",
-    constantValue: {
-      defaultValue: constantValue,
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  };
-};
-
-const createTextField = (label: string) => {
-  const filter: EntityFieldSelectorField["filter"] = {
-    types: ["type.string"],
-  };
-
-  return {
-    type: "entityField" as const,
-    label,
-    filter,
-  };
-};
-
-const createStyledTextField = (label: string) => {
-  return {
-    label,
-    type: "object" as const,
-    objectFields: {
-      text: createTextField("Text"),
-      styles: {
-        label: "Text Styles",
-        type: "styledText" as const,
-      },
-      fontColor: {
-        label: "Font Color",
-        type: "basicSelector" as const,
-        options: "SITE_COLOR" as const,
-      },
-    },
-  };
-};
-
-const createStyledTextDefault = (
-  value: string,
-  fontColor?: ThemeColor,
-): StyledTextProps => {
-  return {
-    text: createEntityText(value),
-    styles: defaultTextStyle,
-    fontColor,
-  };
-};
-
-const isDefaultToken = (value?: string) => {
-  return !value || value === "default";
-};
-
-const textStyleToCss = (styles?: Partial<StyledTextValue>) => {
-  return {
-    fontFamily: isDefaultToken(styles?.fontFamily)
-      ? undefined
-      : styles?.fontFamily,
-    fontSize: isDefaultToken(styles?.fontSize) ? undefined : styles?.fontSize,
-    fontWeight: isDefaultToken(styles?.fontWeight)
-      ? undefined
-      : styles?.fontWeight,
-    fontStyle: isDefaultToken(styles?.fontStyle)
-      ? undefined
-      : styles?.fontStyle,
-    textTransform: isDefaultToken(styles?.textTransform)
-      ? undefined
-      : styles?.textTransform,
-  };
-};
-
-const resolvePlainText = (
-  value: TranslatableString | YextEntityField<TranslatableString> | undefined,
-  locale: string,
-  streamDocument: Record<string, unknown> | undefined,
-  fallback = "",
-): string => {
-  if (!value) {
-    return fallback;
-  }
-
-  const resolved = resolveComponentData(value as never, locale, streamDocument, {
-    output: "plainText",
-  });
-
-  if (typeof resolved === "string") {
-    return resolved;
-  }
-
-  if (resolved && typeof resolved === "object" && "defaultValue" in resolved) {
-    const defaultValue = (resolved as Record<string, unknown>).defaultValue;
-    return typeof defaultValue === "string" ? defaultValue : fallback;
-  }
-
-  return fallback;
-};
+const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const formatDate = (value?: string) => {
   if (!value) return "";
@@ -371,22 +160,29 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
     "string"
       ? ((streamDocument as Record<string, unknown>).locale as string)
       : "en";
-  const sectionForeground = props.section.backgroundColor.contrastingColor;
-  const sectionForegroundColor = resolveThemeColor(sectionForeground, "#1a1a1a");
+  const sectionStyle = getSurfaceColorStyle(
+    props.section.backgroundColor,
+    streamDocument,
+  );
+  const sectionForeground = sectionStyle?.color ?? "currentColor";
+  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
   const headingColor = resolveThemeColor(
     props.content.sectionHeading.fontColor,
     sectionForegroundColor,
   );
   const bodyColor = sectionForegroundColor;
   const accentColor = sectionForegroundColor;
-  const cardBackgroundColor = resolveThemeColor(
+  const cardStyle = getSurfaceColorStyle(
     props.content.reviewCard.backgroundColor,
-    "#ffffff",
+    streamDocument,
   );
-  const businessResponseBackgroundColor = resolveThemeColor(
+  const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
+  const businessResponseStyle = getSurfaceColorStyle(
     props.content.businessResponse.backgroundColor,
-    "rgba(0,0,0,0.03)",
+    streamDocument,
   );
+  const businessResponseForegroundColor =
+    businessResponseStyle?.color ?? cardForegroundColor;
   const aggregate = getAggregateRating(streamDocument as never) as {
     averageRating?: number;
     reviewCount?: number;
@@ -421,14 +217,11 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceReviews${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           className={`${typographyScopeClass} overflow-x-clip py-11`}
-          style={{
-            backgroundColor: resolveThemeColor(
-              props.section.backgroundColor,
-              "#f8f8f8",
-            ),
-          }}
+          style={sectionStyle}
         >
         <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
@@ -503,29 +296,36 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
             {reviews.length ? (
               <div className="grid justify-center gap-5 lg:grid-cols-3">
                 {reviews.map((review, index) => (
-                  <article
+                  <Background
+                    as="div"
+                    background={props.content.reviewCard.backgroundColor}
                     key={`${review.authorName || "review"}-${index}`}
                     className="rounded-[16px] border border-black/5 p-6 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
-                    style={{ backgroundColor: cardBackgroundColor }}
+                    style={cardStyle}
                   >
                     <div className="flex items-center justify-between gap-4">
                       <h3
                         className="text-base font-semibold"
-                        style={{ color: headingColor }}
+                        style={{
+                          color: resolveThemeColor(
+                            props.content.sectionHeading.fontColor,
+                            cardForegroundColor,
+                          ),
+                        }}
                       >
                         {review.authorName || "Anonymous"}
                       </h3>
                       <div className="text-sm">
                         {renderStars(
                           Math.round(review.rating ?? 0),
-                          accentColor,
+                          cardForegroundColor,
                         )}
                       </div>
                     </div>
                     {review.reviewDate ? (
                       <p
                         className="mt-2 text-xs uppercase tracking-[0.16em]"
-                        style={{ color: bodyColor }}
+                        style={{ color: cardForegroundColor }}
                       >
                         {formatDate(review.reviewDate)}
                       </p>
@@ -533,36 +333,43 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                     {review.content ? (
                       <p
                         className="mt-4 text-sm leading-7"
-                        style={{ color: bodyColor }}
+                        style={{ color: cardForegroundColor }}
                       >
                         {review.content}
                       </p>
                     ) : null}
                     {review.comments?.[0]?.content ? (
-                      <div
+                      <Background
+                        as="div"
+                        background={props.content.businessResponse.backgroundColor}
                         className="mt-5 rounded-[12px] border border-black/5 p-4"
-                        style={{ backgroundColor: businessResponseBackgroundColor }}
+                        style={businessResponseStyle}
                       >
                         <p
                           className="text-xs font-semibold uppercase tracking-[0.16em]"
-                          style={{ color: headingColor }}
+                          style={{
+                            color: resolveThemeColor(
+                              props.content.sectionHeading.fontColor,
+                              businessResponseForegroundColor,
+                            ),
+                          }}
                         >
                           Business Response
                         </p>
                         <p
                           className="mt-2 text-sm leading-7"
-                          style={{ color: bodyColor }}
+                          style={{ color: businessResponseForegroundColor }}
                         >
                           {review.comments[0].content}
                         </p>
-                      </div>
+                      </Background>
                     ) : null}
-                  </article>
+                  </Background>
                 ))}
               </div>
             ) : null}
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );
