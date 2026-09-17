@@ -7,6 +7,7 @@ import {
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import {
   AnalyticsScopeProvider,
   Link,
@@ -16,6 +17,7 @@ import {
   useAnalytics,
 } from "@yext/pages-components";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   type ComprehensiveCTAValue,
@@ -34,7 +36,7 @@ import {
   type YextFields,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
-  i18nComponentsInstance,
+  i18nPageInstance,
   isDarkColor,
   normalizeLink,
   resolveComponentData,
@@ -102,9 +104,9 @@ type PersonalFinanceHeaderProps = {
 };
 
 const linkTypeOptions: Array<{ label: string; value: LinkType }> = [
-  { label: "URL", value: "URL" },
-  { label: "Phone", value: "PHONE" },
-  { label: "Email", value: "EMAIL" },
+  { label: msg("fields.options.url", "URL"), value: "URL" },
+  { label: msg("fields.options.phone", "Phone"), value: "PHONE" },
+  { label: msg("fields.options.email", "Email"), value: "EMAIL" },
 ];
 const defaultSurfaceColor: ThemeColor = {
   selectedColor: "white",
@@ -262,7 +264,7 @@ const getTranslatableSummary = (
   }
 
   return (
-    resolveComponentData(value, i18nComponentsInstance.language, undefined) ||
+    resolveComponentData(value, i18nPageInstance.language, undefined) ||
     value.defaultValue ||
     fallback
   );
@@ -315,87 +317,89 @@ const SharedHeaderDefaultUtilityIcon = () => (
 const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
   {
     variant: {
-      label: "Variant",
+      label: msg("fields.variant", "Variant"),
       type: "select",
       options: [
-        { label: "Centered Logo Split Nav", value: "centerLogoSplitNav" },
-        { label: "Logo Left Inline Nav", value: "logoLeftInlineNav" },
-        { label: "Stacked Nav Below", value: "stackedNavBelow" },
-        { label: "Utility Top Row", value: "utilityTopRow" },
+        { label: msg("fields.options.centeredLogoSplitNav", "Centered Logo Split Nav"), value: "centerLogoSplitNav" },
+        { label: msg("fields.options.logoLeftInlineNav", "Logo Left Inline Nav"), value: "logoLeftInlineNav" },
+        { label: msg("fields.options.stackedNavBelow", "Stacked Nav Below"), value: "stackedNavBelow" },
+        { label: msg("fields.options.utilityTopRow", "Utility Top Row"), value: "utilityTopRow" },
       ],
     },
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
         dividerColor: {
-          label: "Divider Color",
+          label: msg("fields.dividerColor", "Divider Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
       },
     },
     navigation: {
-      label: "Navigation",
+      label: msg("fields.navigation", "Navigation"),
       type: "object",
       objectFields: {
         show: {
-          label: "Show on Live Page",
+          label: msg("fields.showOnLivePage", "Show on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         links: {
-          label: "Links",
+          label: msg("fields.links", "Links"),
           type: "array",
           arrayFields: {
             label: {
-              label: "Label",
+              label: msg("fields.label", "Label"),
               type: "translatableString",
             },
             link: {
-              label: "Link",
+              label: msg("fields.link", "Link"),
               type: "translatableString",
             },
             linkType: {
-              label: "Link Type",
+              label: msg("fields.linkType", "Link Type"),
               type: "select",
               options: linkTypeOptions,
             },
             normalizeLink: {
-              label: "Normalize Link",
+              label: msg("fields.normalizeLink", "Normalize Link"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
             openInNewTab: {
-              label: "Open in New Tab",
+              label: msg("fields.openInNewTab", "Open in New Tab"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
           defaultItemProps: (index: number) => ({
-            label: `Link ${index + 1}`,
+            label: msg("fields.linkIndex", "Link {{index}}", {
+              index: index + 1,
+            }),
             link: "#",
             linkType: "URL",
             normalizeLink: false,
@@ -405,96 +409,98 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
             getTranslatableSummary(item.label, `Link ${index ?? 0}`),
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
         styles: {
-          label: "Link Styles",
+          label: msg("fields.linkStyles", "Link Styles"),
           type: "styledLink",
           showIncludeCaretField: false,
         },
       },
     },
     utilities: {
-      label: "Utility Icons",
+      label: msg("fields.utilityIcons", "Utility Icons"),
       type: "object",
       objectFields: {
         show: {
-          label: "Show on Live Page",
+          label: msg("fields.showOnLivePage", "Show on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         items: {
-          label: "Items",
+          label: msg("fields.items", "Items"),
           type: "array",
           arrayFields: {
             iconImage: {
-              label: "Icon Image",
+              label: msg("fields.iconImage", "Icon Image"),
               type: "object",
               objectFields: {
                 image: {
                   type: "entityField",
-                  label: "Image",
+                  label: msg("fields.image", "Image"),
                   filter: {
                     types: ["type.image"],
                   },
                 },
                 aspectRatio: {
                   type: "basicSelector" as const,
-                  label: "Aspect Ratio",
+                  label: msg("fields.aspectRatio", "Aspect Ratio"),
                   options: aspectRatioOptions,
                 },
                 imageConstrain: {
-                  label: "Image Constrain",
+                  label: msg("fields.imageConstrain", "Image Constrain"),
                   type: "select",
                   options: [
-                    { label: "Fixed", value: "fixed" },
-                    { label: "Filled", value: "filled" },
+                    { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+                    { label: msg("fields.options.filled", "Filled"), value: "filled" },
                   ],
                 },
                 styles: {
-                  label: "Image Styles",
+                  label: msg("fields.imageStyles", "Image Styles"),
                   type: "styledImage",
                 },
               },
             },
             label: {
-              label: "Label",
+              label: msg("fields.label", "Label"),
               type: "translatableString",
             },
             link: {
-              label: "Link",
+              label: msg("fields.link", "Link"),
               type: "translatableString",
             },
             linkType: {
-              label: "Link Type",
+              label: msg("fields.linkType", "Link Type"),
               type: "select",
               options: linkTypeOptions,
             },
             normalizeLink: {
-              label: "Normalize Link",
+              label: msg("fields.normalizeLink", "Normalize Link"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
             openInNewTab: {
-              label: "Open in New Tab",
+              label: msg("fields.openInNewTab", "Open in New Tab"),
               type: "radio",
               options: [
-                { label: "Yes", value: true },
-                { label: "No", value: false },
+                { label: msg("fields.options.yes", "Yes"), value: true },
+                { label: msg("fields.options.no", "No"), value: false },
               ],
             },
           },
           defaultItemProps: (index: number) => ({
             iconImage: defaultUtilityIconImage,
-            label: `Item ${index + 1}`,
+            label: msg("fields.itemIndex", "Item {{index}}", {
+              index: index + 1,
+            }),
             link: "#",
             linkType: "URL",
             normalizeLink: false,
@@ -506,23 +512,23 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
       },
     },
     cta: {
-      label: "Call to Actions",
+      label: msg("fields.callToActions", "Call to Actions"),
       type: "object",
       objectFields: {
         show: {
-          label: "Show on Live Page",
+          label: msg("fields.showOnLivePage", "Show on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         items: {
-          label: "Items",
+          label: msg("fields.items", "Items"),
           type: "array",
           arrayFields: {
             cta: {
-              label: "CTA",
+              label: msg("fields.cta", "CTA"),
               type: "comprehensiveCTA",
             },
           },
@@ -568,26 +574,26 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
       },
     },
     logoImage: {
-      label: "Logo Image",
+      label: msg("fields.logoImage", "Logo Image"),
       type: "object",
       objectFields: {
         show: {
-          label: "Show on Live Page",
+          label: msg("fields.showOnLivePage", "Show on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         image: {
           type: "entityField",
-          label: "Image",
+          label: msg("fields.image", "Image"),
           filter: {
             types: ["type.image"],
           },
         },
         url: {
-          label: "URL",
+          label: msg("fields.url", "URL"),
           type: "entityField",
           filter: {
             types: ["type.string"],
@@ -595,19 +601,19 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
         },
         aspectRatio: {
           type: "basicSelector" as const,
-          label: "Aspect Ratio",
+          label: msg("fields.aspectRatio", "Aspect Ratio"),
           options: aspectRatioOptions,
         },
         imageConstrain: {
-          label: "Image Constrain",
+          label: msg("fields.imageConstrain", "Image Constrain"),
           type: "select",
           options: [
-            { label: "Fixed", value: "fixed" },
-            { label: "Filled", value: "filled" },
+            { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+            { label: msg("fields.options.filled", "Filled"), value: "filled" },
           ],
         },
         styles: {
-          label: "Image Styles",
+          label: msg("fields.imageStyles", "Image Styles"),
           type: "styledImage",
         },
       },
@@ -617,6 +623,7 @@ const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
 const PersonalFinanceHeaderComponent: PuckComponent<
   PersonalFinanceHeaderProps
 > = (props) => {
+  const { t } = useTranslation();
   const analytics = useAnalytics();
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
@@ -859,7 +866,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
   );
 
   const renderNavigationLinks = (orientation: "row" | "column") => (
-    <nav aria-label="Primary navigation">
+    <nav aria-label={t("primaryNavigation", "Primary navigation")}>
       <ul
         className={
           orientation === "row"
@@ -924,7 +931,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
           }}
           eventName="headerLogo"
           className="inline-flex transition-opacity hover:opacity-80"
-          aria-label="Logo"
+          aria-label={t("logo", "Logo")}
         >
           {logoContent}
         </Link>
@@ -1040,7 +1047,9 @@ const PersonalFinanceHeaderComponent: PuckComponent<
             }}
             aria-expanded={menuOpen}
             aria-label={
-              menuOpen ? "Close navigation menu" : "Open navigation menu"
+              menuOpen
+                ? t("closeNavigationMenu", "Close navigation menu")
+                : t("openNavigationMenu", "Open navigation menu")
             }
             className="inline-flex h-10 w-10 items-center justify-center rounded-full"
             style={{

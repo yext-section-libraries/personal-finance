@@ -19,6 +19,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   EntityField,
   Image,
@@ -129,19 +130,19 @@ const createImageStyleField = (label: string) => {
     objectFields: {
       aspectRatio: {
         type: "basicSelector" as const,
-        label: "Aspect Ratio",
+        label: msg("fields.aspectRatio", "Aspect Ratio"),
         options: aspectRatioOptions,
       },
       imageConstrain: {
-        label: "Image Constrain",
+        label: msg("fields.imageConstrain", "Image Constrain"),
         type: "select" as const,
         options: [
-          { label: "Fixed", value: "fixed" },
-          { label: "Filled", value: "filled" },
+          { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+          { label: msg("fields.options.filled", "Filled"), value: "filled" },
         ],
       },
       styles: {
-        label: "Image Styles",
+        label: msg("fields.imageStyles", "Image Styles"),
         type: "styledImage" as const,
       },
     },
@@ -159,10 +160,10 @@ const createDefaultImageValue = (
 });
 
 const galleryPhotoSource = createItemSource<GalleryPhoto>({
-  label: "Photos",
+  label: msg("fields.photos", "Photos"),
   mappingFields: {
-    image: createImageField("Image"),
-    caption: createTextField("Caption"),
+    image: createImageField(msg("fields.image", "Image")),
+    caption: createTextField(msg("fields.caption", "Caption")),
   },
   defaultValues: [
     {
@@ -218,44 +219,44 @@ const resolveGalleryImage = (
 
 const GalleryFields: YextFields<PersonalFinancePhotoGalleryProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Section Heading"),
-      sectionDescription: createStyledRtfField("Section Description"),
+      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
+      sectionDescription: createStyledRtfField(msg("fields.sectionDescription", "Section Description")),
       photos: galleryPhotoSource.field,
     },
   },
   gallerySurfaceBackgroundColor: {
-    label: "Gallery Surface Background Color",
+    label: msg("fields.gallerySurfaceBackgroundColor", "Gallery Surface Background Color"),
     type: "basicSelector",
     options: "BACKGROUND_COLOR",
   },
   galleryStyles: {
-    label: "Gallery Styles",
+    label: msg("fields.galleryStyles", "Gallery Styles"),
     type: "object",
     objectFields: {
-      image: createImageStyleField("Image"),
-      caption: createStyledTextField("Caption"),
+      image: createImageStyleField(msg("fields.image", "Image")),
+      caption: createStyledTextField(msg("fields.caption", "Caption")),
     },
   },
 };

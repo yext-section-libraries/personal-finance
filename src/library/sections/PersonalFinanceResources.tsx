@@ -22,6 +22,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -162,19 +163,19 @@ const createImageStyleField = (label: string) => {
     objectFields: {
       aspectRatio: {
         type: "basicSelector" as const,
-        label: "Aspect Ratio",
+        label: msg("fields.aspectRatio", "Aspect Ratio"),
         options: aspectRatioOptions,
       },
       imageConstrain: {
-        label: "Image Constrain",
+        label: msg("fields.imageConstrain", "Image Constrain"),
         type: "select" as const,
         options: [
-          { label: "Fixed", value: "fixed" },
-          { label: "Filled", value: "filled" },
+          { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+          { label: msg("fields.options.filled", "Filled"), value: "filled" },
         ],
       },
       styles: {
-        label: "Image Styles",
+        label: msg("fields.imageStyles", "Image Styles"),
         type: "styledImage" as const,
       },
     },
@@ -226,13 +227,13 @@ const createPrimaryCta = (label: string, link = "#"): ComprehensiveCTAValue => {
 };
 
 const resourceCardSource = createItemSource<ResourceCard>({
-  label: "Resource Cards",
+  label: msg("fields.resourceCards", "Resource Cards"),
   mappingFields: {
-    image: createImageField("Image"),
-    title: createTextField("Title"),
-    description: createRichTextField("Description"),
+    image: createImageField(msg("fields.image", "Image")),
+    title: createTextField(msg("fields.title", "Title")),
+    description: createRichTextField(msg("fields.description", "Description")),
     primaryCta: {
-      label: "Primary CTA",
+      label: msg("fields.primaryCta", "Primary CTA"),
       type: "comprehensiveCTA",
     },
   },
@@ -314,34 +315,34 @@ const resolveCardImage = (
 
 const ResourcesFields: YextFields<PersonalFinanceResourcesProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
       cardSurface: {
-        label: "Card Surface",
+        label: msg("fields.cardSurface", "Card Surface"),
         type: "object",
         objectFields: {
           backgroundColor: {
-            label: "Background Color",
+            label: msg("fields.backgroundColor", "Background Color"),
             type: "basicSelector",
             options: "BACKGROUND_COLOR",
           },
@@ -351,12 +352,12 @@ const ResourcesFields: YextFields<PersonalFinanceResourcesProps> = {
     },
   },
   styles: {
-    label: "Styles",
+    label: msg("fields.styles", "Styles"),
     type: "object",
     objectFields: {
-      image: createImageStyleField("Image"),
-      title: createStyledTextField("Title"),
-      description: createStyledRtfField("Description"),
+      image: createImageStyleField(msg("fields.image", "Image")),
+      title: createStyledTextField(msg("fields.title", "Title")),
+      description: createStyledRtfField(msg("fields.description", "Description")),
     },
   },
 };

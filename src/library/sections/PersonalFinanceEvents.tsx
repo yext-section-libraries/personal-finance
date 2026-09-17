@@ -22,6 +22,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -155,19 +156,19 @@ const createImageStyleField = (label: string) => {
     objectFields: {
       aspectRatio: {
         type: "basicSelector" as const,
-        label: "Aspect Ratio",
+        label: msg("fields.aspectRatio", "Aspect Ratio"),
         options: aspectRatioOptions,
       },
       imageConstrain: {
-        label: "Image Constrain",
+        label: msg("fields.imageConstrain", "Image Constrain"),
         type: "select" as const,
         options: [
-          { label: "Fixed", value: "fixed" },
-          { label: "Filled", value: "filled" },
+          { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+          { label: msg("fields.options.filled", "Filled"), value: "filled" },
         ],
       },
       styles: {
-        label: "Image Styles",
+        label: msg("fields.imageStyles", "Image Styles"),
         type: "styledImage" as const,
       },
     },
@@ -185,12 +186,12 @@ const createTimestampDataField = (label: string) => {
     objectFields: {
       date: {
         type: "entityField" as const,
-        label: "Date",
+        label: msg("fields.date", "Date"),
         filter,
       },
       endDate: {
         type: "entityField" as const,
-        label: "End Date",
+        label: msg("fields.endDate", "End Date"),
         filter,
       },
     },
@@ -263,14 +264,14 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
 };
 
 const eventSource = createItemSource<EventCard>({
-  label: "Events",
+  label: msg("fields.events", "Events"),
   mappingFields: {
-    image: createImageField("Image"),
-    name: createTextField("Event Name"),
-    eventTime: createTimestampDataField("Event Time"),
-    description: createRichTextField("Description"),
+    image: createImageField(msg("fields.image", "Image")),
+    name: createTextField(msg("fields.eventName", "Event Name")),
+    eventTime: createTimestampDataField(msg("fields.eventTime", "Event Time")),
+    description: createRichTextField(msg("fields.description", "Description")),
     cta: {
-      label: "CTA",
+      label: msg("fields.cta", "CTA"),
       type: "comprehensiveCTA",
     },
   },
@@ -307,67 +308,67 @@ const eventSource = createItemSource<EventCard>({
 
 const EventsFields: YextFields<PersonalFinanceEventsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Heading"),
-      sectionDescription: createStyledRtfField("Description"),
+      sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
+      sectionDescription: createStyledRtfField(msg("fields.description", "Description")),
       events: eventSource.field,
     },
   },
   styles: {
-    label: "Style",
+    label: msg("fields.style", "Style"),
     type: "object",
     objectFields: {
       cardBackgroundColor: {
-        label: "Card Background Color",
+        label: msg("fields.cardBackgroundColor", "Card Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
-      image: createImageStyleField("Image"),
-      name: createStyledTextField("Event Name"),
+      image: createImageStyleField(msg("fields.image", "Image")),
+      name: createStyledTextField(msg("fields.eventName", "Event Name")),
       eventTime: {
-        label: "Event Time",
+        label: msg("fields.eventTime", "Event Time"),
         type: "object",
         objectFields: {
           includeTime: {
-            label: "Include Time",
+            label: msg("fields.includeTime", "Include Time"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
           includeRange: {
-            label: "Include Range",
+            label: msg("fields.includeRange", "Include Range"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
         },
       },
-      description: createStyledRtfField("Description"),
+      description: createStyledRtfField(msg("fields.description", "Description")),
     },
   },
 };

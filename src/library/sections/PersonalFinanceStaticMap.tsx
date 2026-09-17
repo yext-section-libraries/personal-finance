@@ -14,7 +14,9 @@ import {
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import {
+  msg,
   Background,
   EntityField,
   MapboxStaticMapComponent,
@@ -81,52 +83,52 @@ const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const StaticMapFields: YextFields<PersonalFinanceStaticMapProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Section Heading"),
-      sectionDescription: createStyledRtfField("Section Description"),
+      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
+      sectionDescription: createStyledRtfField(msg("fields.sectionDescription", "Section Description")),
     },
   },
   map: {
-    label: "Map",
+    label: msg("fields.map", "Map"),
     type: "object",
     objectFields: {
       apiKey: {
         type: "text",
-        label: "Mapbox API Key",
+        label: msg("fields.mapboxAPIKey", "Mapbox API Key"),
       },
       coordinate: {
         type: "entityField",
-        label: "Coordinates",
+        label: msg("fields.coordinates", "Coordinates"),
         filter: { types: ["type.coordinate"] },
       },
       mapStyle: {
-        label: "Mapbox Map Style",
+        label: msg("fields.mapboxMapStyle", "Mapbox Map Style"),
         type: "select",
         options: mapboxStaticMapStyleOptions,
       },
       zoom: {
-        label: "Zoom",
+        label: msg("fields.zoom", "Zoom"),
         type: "number",
         min: 0,
         max: 22,
@@ -138,6 +140,7 @@ const StaticMapFields: YextFields<PersonalFinanceStaticMapProps> = {
 export const PersonalFinanceStaticMapComponent: PuckComponent<
   PersonalFinanceStaticMapProps
 > = (props) => {
+  const { t } = useTranslation();
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
@@ -261,7 +264,10 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
                     className="flex h-full items-center justify-center px-6 text-center text-sm"
                     style={{ color: "#676767" }}
                   >
-                    Add a Mapbox API key to render the static map preview.
+                    {t(
+                      "mapboxApiKeyRequiredStaticMap",
+                      "Add a Mapbox API key to render the static map preview.",
+                    )}
                   </div>
                 )}
               </div>

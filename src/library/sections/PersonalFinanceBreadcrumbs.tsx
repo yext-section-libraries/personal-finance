@@ -14,6 +14,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   EntityField,
   getAnalyticsScopeHash,
@@ -28,6 +29,7 @@ import {
   type ThemeColor,
   type TranslatableString,
   type YextEntityField,
+  pt,
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider, Link } from "@yext/pages-components";
 
@@ -78,37 +80,37 @@ const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const BreadcrumbFields: YextFields<PersonalFinanceBreadcrumbsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
       includeCurrentLocation: {
-        label: "Include Current Location",
+        label: msg("fields.includeCurrentLocation", "Include Current Location"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
-      rootLabel: createStyledTextField("Root Label"),
+      rootLabel: createStyledTextField(msg("fields.rootLabel", "Root Label")),
     },
   },
 };
@@ -191,7 +193,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
           className={`${typographyScopeClass} overflow-x-clip py-4`}
           style={sectionStyle}
         >
-        <style>{typographyScopeCss}</style>
+          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             {renderedItems.length ? (
               <ol className="flex flex-wrap items-center gap-y-2 text-[0.95rem]">
@@ -257,8 +259,10 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
                   padding: "18px 24px",
                 }}
               >
-                No breadcrumbs available (section will be hidden on live page).
-                Create a directory to enable breadcrumbs.
+                {pt(
+                  "breadcrumbsUnavailableEditor",
+                  "No breadcrumbs available (section will be hidden on live page). Create a directory to enable breadcrumbs.",
+                )}
               </p>
             )}
           </div>

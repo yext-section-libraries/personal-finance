@@ -20,6 +20,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -145,11 +146,11 @@ const createStyledTextField = (label: string) => {
     type: "object" as const,
     objectFields: {
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -162,13 +163,13 @@ const createStyledTextFieldWithData = (label: string) => {
     label,
     type: "object" as const,
     objectFields: {
-      text: createTextField("Text"),
+      text: createTextField(msg("fields.text", "Text")),
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -182,11 +183,11 @@ const createStyledRtfField = (label: string) => {
     type: "object" as const,
     objectFields: {
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -199,13 +200,13 @@ const createStyledRtfFieldWithData = (label: string) => {
     label,
     type: "object" as const,
     objectFields: {
-      text: createRichTextField("Text"),
+      text: createRichTextField(msg("fields.text", "Text")),
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -232,19 +233,19 @@ const createImageStyleField = (label: string) => {
     objectFields: {
       aspectRatio: {
         type: "basicSelector" as const,
-        label: "Aspect Ratio",
+        label: msg("fields.aspectRatio", "Aspect Ratio"),
         options: aspectRatioOptions,
       },
       imageConstrain: {
-        label: "Image Constrain",
+        label: msg("fields.imageConstrain", "Image Constrain"),
         type: "select" as const,
         options: [
-          { label: "Fixed", value: "fixed" },
-          { label: "Filled", value: "filled" },
+          { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+          { label: msg("fields.options.filled", "Filled"), value: "filled" },
         ],
       },
       styles: {
-        label: "Image Styles",
+        label: msg("fields.imageStyles", "Image Styles"),
         type: "styledImage" as const,
       },
     },
@@ -309,13 +310,13 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
 };
 
 const servicesSource = createItemSource<ServiceCard>({
-  label: "Service Cards",
+  label: msg("fields.serviceCards", "Service Cards"),
   mappingFields: {
-    image: createImageField("Image"),
-    title: createTextField("Title"),
-    description: createRichTextField("Description"),
+    image: createImageField(msg("fields.image", "Image")),
+    title: createTextField(msg("fields.title", "Title")),
+    description: createRichTextField(msg("fields.description", "Description")),
     cta: {
-      label: "CTA",
+      label: msg("fields.cta", "CTA"),
       type: "comprehensiveCTA" as const,
     },
   },
@@ -370,26 +371,26 @@ const servicesSource = createItemSource<ServiceCard>({
 const FeaturedServicesFields: YextFields<PersonalFinanceFeaturedServicesProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
       },
     },
     content: {
-      label: "Content",
+      label: msg("fields.content", "Content"),
       type: "object",
       objectFields: {
         sectionHeading: createStyledTextFieldWithData("Heading"),
@@ -398,12 +399,12 @@ const FeaturedServicesFields: YextFields<PersonalFinanceFeaturedServicesProps> =
       },
     },
     styles: {
-      label: "Styles",
+      label: msg("fields.styles", "Styles"),
       type: "object",
       objectFields: {
-        image: createImageStyleField("Image"),
-        title: createStyledTextField("Title"),
-        description: createStyledRtfField("Description"),
+        image: createImageStyleField(msg("fields.image", "Image")),
+        title: createStyledTextField(msg("fields.title", "Title")),
+        description: createStyledRtfField(msg("fields.description", "Description")),
       },
     },
   };
