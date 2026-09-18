@@ -1,9 +1,6 @@
 import type { SectionConfig } from "@yext/visual-editor";
 
-import {
-  aspectRatioOptions,
-  hasImageSource,
-} from "../shared/sectionHelpers";
+import { aspectRatioOptions, hasImageSource } from "../shared/sectionHelpers";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
@@ -314,311 +311,331 @@ const SharedHeaderDefaultUtilityIcon = () => (
   </svg>
 );
 
-const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> =
-  {
-    variant: {
-      label: msg("fields.variant", "Variant"),
-      type: "select",
-      options: [
-        { label: msg("fields.options.centeredLogoSplitNav", "Centered Logo Split Nav"), value: "centerLogoSplitNav" },
-        { label: msg("fields.options.logoLeftInlineNav", "Logo Left Inline Nav"), value: "logoLeftInlineNav" },
-        { label: msg("fields.options.stackedNavBelow", "Stacked Nav Below"), value: "stackedNavBelow" },
-        { label: msg("fields.options.utilityTopRow", "Utility Top Row"), value: "utilityTopRow" },
-      ],
-    },
-    section: {
-      label: msg("fields.section", "Section"),
-      type: "object",
-      objectFields: {
-        backgroundColor: {
-          label: msg("fields.backgroundColor", "Background Color"),
-          type: "basicSelector",
-          options: "BACKGROUND_COLOR",
-        },
-        dividerColor: {
-          label: msg("fields.dividerColor", "Divider Color"),
-          type: "basicSelector",
-          options: "SITE_COLOR",
-        },
-        visibleOnLivePage: {
-          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
-          type: "radio",
-          options: [
-            { label: msg("fields.options.yes", "Yes"), value: true },
-            { label: msg("fields.options.no", "No"), value: false },
-          ],
-        },
+const PersonalFinanceHeaderFields: YextFields<PersonalFinanceHeaderProps> = {
+  variant: {
+    label: msg("fields.variant", "Variant"),
+    type: "select",
+    options: [
+      {
+        label: msg(
+          "fields.options.centeredLogoSplitNav",
+          "Centered Logo Split Nav",
+        ),
+        value: "centerLogoSplitNav",
+      },
+      {
+        label: msg("fields.options.logoLeftInlineNav", "Logo Left Inline Nav"),
+        value: "logoLeftInlineNav",
+      },
+      {
+        label: msg("fields.options.stackedNavBelow", "Stacked Nav Below"),
+        value: "stackedNavBelow",
+      },
+      {
+        label: msg("fields.options.utilityTopRow", "Utility Top Row"),
+        value: "utilityTopRow",
+      },
+    ],
+  },
+  section: {
+    label: msg("fields.section", "Section"),
+    type: "object",
+    objectFields: {
+      backgroundColor: {
+        label: msg("fields.backgroundColor", "Background Color"),
+        type: "basicSelector",
+        options: "BACKGROUND_COLOR",
+      },
+      dividerColor: {
+        label: msg("fields.dividerColor", "Divider Color"),
+        type: "basicSelector",
+        options: "SITE_COLOR",
+      },
+      visibleOnLivePage: {
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
+        type: "radio",
+        options: [
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
+        ],
       },
     },
-    navigation: {
-      label: msg("fields.navigation", "Navigation"),
-      type: "object",
-      objectFields: {
-        show: {
-          label: msg("fields.showOnLivePage", "Show on Live Page"),
-          type: "radio",
-          options: [
-            { label: msg("fields.options.yes", "Yes"), value: true },
-            { label: msg("fields.options.no", "No"), value: false },
-          ],
-        },
-        links: {
-          label: msg("fields.links", "Links"),
-          type: "array",
-          arrayFields: {
-            label: {
-              label: msg("fields.label", "Label"),
-              type: "translatableString",
-            },
-            link: {
-              label: msg("fields.link", "Link"),
-              type: "translatableString",
-            },
-            linkType: {
-              label: msg("fields.linkType", "Link Type"),
-              type: "select",
-              options: linkTypeOptions,
-            },
-            normalizeLink: {
-              label: msg("fields.normalizeLink", "Normalize Link"),
-              type: "radio",
-              options: [
-                { label: msg("fields.options.yes", "Yes"), value: true },
-                { label: msg("fields.options.no", "No"), value: false },
-              ],
-            },
-            openInNewTab: {
-              label: msg("fields.openInNewTab", "Open in New Tab"),
-              type: "radio",
-              options: [
-                { label: msg("fields.options.yes", "Yes"), value: true },
-                { label: msg("fields.options.no", "No"), value: false },
-              ],
-            },
+  },
+  navigation: {
+    label: msg("fields.navigation", "Navigation"),
+    type: "object",
+    objectFields: {
+      show: {
+        label: msg("fields.showOnLivePage", "Show on Live Page"),
+        type: "radio",
+        options: [
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
+        ],
+      },
+      links: {
+        label: msg("fields.links", "Links"),
+        type: "array",
+        arrayFields: {
+          label: {
+            label: msg("fields.label", "Label"),
+            type: "translatableString",
           },
-          defaultItemProps: (index: number) => ({
-            label: msg("fields.linkIndex", "Link {{index}}", {
-              index: index + 1,
-            }),
-            link: "#",
-            linkType: "URL",
-            normalizeLink: false,
-            openInNewTab: false,
+          link: {
+            label: msg("fields.link", "Link"),
+            type: "translatableString",
+          },
+          linkType: {
+            label: msg("fields.linkType", "Link Type"),
+            type: "select",
+            options: linkTypeOptions,
+          },
+          normalizeLink: {
+            label: msg("fields.normalizeLink", "Normalize Link"),
+            type: "radio",
+            options: [
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
+            ],
+          },
+          openInNewTab: {
+            label: msg("fields.openInNewTab", "Open in New Tab"),
+            type: "radio",
+            options: [
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
+            ],
+          },
+        },
+        defaultItemProps: (index: number) => ({
+          label: msg("fields.linkIndex", "Link {{index}}", {
+            index: index + 1,
           }),
-          getItemSummary: (item: SharedHeaderLink, index?: number) =>
-            getTranslatableSummary(item.label, `Link ${index ?? 0}`),
-        },
-        fontColor: {
-          label: msg("fields.fontColor", "Font Color"),
-          type: "basicSelector",
-          options: "SITE_COLOR",
-        },
-        styles: {
-          label: msg("fields.linkStyles", "Link Styles"),
-          type: "styledLink",
-          showIncludeCaretField: false,
-        },
+          link: "#",
+          linkType: "URL",
+          normalizeLink: false,
+          openInNewTab: false,
+        }),
+        getItemSummary: (item: SharedHeaderLink, index?: number) =>
+          getTranslatableSummary(item.label, `Link ${index ?? 0}`),
+      },
+      fontColor: {
+        label: msg("fields.fontColor", "Font Color"),
+        type: "basicSelector",
+        options: "SITE_COLOR",
+      },
+      styles: {
+        label: msg("fields.linkStyles", "Link Styles"),
+        type: "styledLink",
+        showIncludeCaretField: false,
       },
     },
-    utilities: {
-      label: msg("fields.utilityIcons", "Utility Icons"),
-      type: "object",
-      objectFields: {
-        show: {
-          label: msg("fields.showOnLivePage", "Show on Live Page"),
-          type: "radio",
-          options: [
-            { label: msg("fields.options.yes", "Yes"), value: true },
-            { label: msg("fields.options.no", "No"), value: false },
-          ],
-        },
-        items: {
-          label: msg("fields.items", "Items"),
-          type: "array",
-          arrayFields: {
-            iconImage: {
-              label: msg("fields.iconImage", "Icon Image"),
-              type: "object",
-              objectFields: {
-                image: {
-                  type: "entityField",
-                  label: msg("fields.image", "Image"),
-                  filter: {
-                    types: ["type.image"],
-                  },
-                },
-                aspectRatio: {
-                  type: "basicSelector" as const,
-                  label: msg("fields.aspectRatio", "Aspect Ratio"),
-                  options: aspectRatioOptions,
-                },
-                imageConstrain: {
-                  label: msg("fields.imageConstrain", "Image Constrain"),
-                  type: "select",
-                  options: [
-                    { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
-                    { label: msg("fields.options.filled", "Filled"), value: "filled" },
-                  ],
-                },
-                styles: {
-                  label: msg("fields.imageStyles", "Image Styles"),
-                  type: "styledImage",
+  },
+  utilities: {
+    label: msg("fields.utilityIcons", "Utility Icons"),
+    type: "object",
+    objectFields: {
+      show: {
+        label: msg("fields.showOnLivePage", "Show on Live Page"),
+        type: "radio",
+        options: [
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
+        ],
+      },
+      items: {
+        label: msg("fields.items", "Items"),
+        type: "array",
+        arrayFields: {
+          iconImage: {
+            label: msg("fields.iconImage", "Icon Image"),
+            type: "object",
+            objectFields: {
+              image: {
+                type: "entityField",
+                label: msg("fields.image", "Image"),
+                filter: {
+                  types: ["type.image"],
                 },
               },
-            },
-            label: {
-              label: msg("fields.label", "Label"),
-              type: "translatableString",
-            },
-            link: {
-              label: msg("fields.link", "Link"),
-              type: "translatableString",
-            },
-            linkType: {
-              label: msg("fields.linkType", "Link Type"),
-              type: "select",
-              options: linkTypeOptions,
-            },
-            normalizeLink: {
-              label: msg("fields.normalizeLink", "Normalize Link"),
-              type: "radio",
-              options: [
-                { label: msg("fields.options.yes", "Yes"), value: true },
-                { label: msg("fields.options.no", "No"), value: false },
-              ],
-            },
-            openInNewTab: {
-              label: msg("fields.openInNewTab", "Open in New Tab"),
-              type: "radio",
-              options: [
-                { label: msg("fields.options.yes", "Yes"), value: true },
-                { label: msg("fields.options.no", "No"), value: false },
-              ],
-            },
-          },
-          defaultItemProps: (index: number) => ({
-            iconImage: defaultUtilityIconImage,
-            label: msg("fields.itemIndex", "Item {{index}}", {
-              index: index + 1,
-            }),
-            link: "#",
-            linkType: "URL",
-            normalizeLink: false,
-            openInNewTab: false,
-          }),
-          getItemSummary: (item: SharedHeaderAction, index?: number) =>
-            getTranslatableSummary(item.label, `Action ${index ?? 0}`),
-        },
-      },
-    },
-    cta: {
-      label: msg("fields.callToActions", "Call to Actions"),
-      type: "object",
-      objectFields: {
-        show: {
-          label: msg("fields.showOnLivePage", "Show on Live Page"),
-          type: "radio",
-          options: [
-            { label: msg("fields.options.yes", "Yes"), value: true },
-            { label: msg("fields.options.no", "No"), value: false },
-          ],
-        },
-        items: {
-          label: msg("fields.items", "Items"),
-          type: "array",
-          arrayFields: {
-            cta: {
-              label: msg("fields.cta", "CTA"),
-              type: "comprehensiveCTA",
-            },
-          },
-          defaultItemProps: {
-            cta: {
-              data: {
-                actionType: "link",
-                cta: {
-                  field: "",
-                  constantValueEnabled: true,
-                  constantValue: {
-                    ctaType: "textAndLink",
-                    label: { defaultValue: "CTA Label" },
-                    link: { defaultValue: "#" },
-                    linkType: "URL",
+              aspectRatio: {
+                type: "basicSelector" as const,
+                label: msg("fields.aspectRatio", "Aspect Ratio"),
+                options: aspectRatioOptions,
+              },
+              imageConstrain: {
+                label: msg("fields.imageConstrain", "Image Constrain"),
+                type: "select",
+                options: [
+                  {
+                    label: msg("fields.options.fixed", "Fixed"),
+                    value: "fixed",
                   },
-                  selectedType: "textAndLink",
-                },
-                openInNewTab: false,
-                buttonText: { defaultValue: "Button" },
-                customId: "",
-                customClass: "",
-                dataAttributes: [],
-                ariaLabel: { defaultValue: "CTA Label" },
+                  {
+                    label: msg("fields.options.filled", "Filled"),
+                    value: "filled",
+                  },
+                ],
               },
               styles: {
-                variant: "primary",
-                color: defaultPrimaryCtaColor,
-                button: defaultButtonStyles,
-                link: defaultLinkStyles,
+                label: msg("fields.imageStyles", "Image Styles"),
+                type: "styledImage",
               },
             },
           },
-          getItemSummary: (
-            item: { cta?: ComprehensiveCTAValue },
-            index?: number,
-          ) =>
-            getTranslatableSummary(
-              item.cta?.data?.cta?.constantValue?.label,
-              `CTA ${index ?? 0}`,
-            ),
-        },
-      },
-    },
-    logoImage: {
-      label: msg("fields.logoImage", "Logo Image"),
-      type: "object",
-      objectFields: {
-        show: {
-          label: msg("fields.showOnLivePage", "Show on Live Page"),
-          type: "radio",
-          options: [
-            { label: msg("fields.options.yes", "Yes"), value: true },
-            { label: msg("fields.options.no", "No"), value: false },
-          ],
-        },
-        image: {
-          type: "entityField",
-          label: msg("fields.image", "Image"),
-          filter: {
-            types: ["type.image"],
+          label: {
+            label: msg("fields.label", "Label"),
+            type: "translatableString",
+          },
+          link: {
+            label: msg("fields.link", "Link"),
+            type: "translatableString",
+          },
+          linkType: {
+            label: msg("fields.linkType", "Link Type"),
+            type: "select",
+            options: linkTypeOptions,
+          },
+          normalizeLink: {
+            label: msg("fields.normalizeLink", "Normalize Link"),
+            type: "radio",
+            options: [
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
+            ],
+          },
+          openInNewTab: {
+            label: msg("fields.openInNewTab", "Open in New Tab"),
+            type: "radio",
+            options: [
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
+            ],
           },
         },
-        url: {
-          label: msg("fields.url", "URL"),
-          type: "entityField",
-          filter: {
-            types: ["type.string"],
-          },
-        },
-        aspectRatio: {
-          type: "basicSelector" as const,
-          label: msg("fields.aspectRatio", "Aspect Ratio"),
-          options: aspectRatioOptions,
-        },
-        imageConstrain: {
-          label: msg("fields.imageConstrain", "Image Constrain"),
-          type: "select",
-          options: [
-            { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
-            { label: msg("fields.options.filled", "Filled"), value: "filled" },
-          ],
-        },
-        styles: {
-          label: msg("fields.imageStyles", "Image Styles"),
-          type: "styledImage",
-        },
+        defaultItemProps: (index: number) => ({
+          iconImage: defaultUtilityIconImage,
+          label: msg("fields.itemIndex", "Item {{index}}", {
+            index: index + 1,
+          }),
+          link: "#",
+          linkType: "URL",
+          normalizeLink: false,
+          openInNewTab: false,
+        }),
+        getItemSummary: (item: SharedHeaderAction, index?: number) =>
+          getTranslatableSummary(item.label, `Action ${index ?? 0}`),
       },
     },
-  };
+  },
+  cta: {
+    label: msg("fields.callToActions", "Call to Actions"),
+    type: "object",
+    objectFields: {
+      show: {
+        label: msg("fields.showOnLivePage", "Show on Live Page"),
+        type: "radio",
+        options: [
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
+        ],
+      },
+      items: {
+        label: msg("fields.items", "Items"),
+        type: "array",
+        arrayFields: {
+          cta: {
+            label: msg("fields.cta", "CTA"),
+            type: "comprehensiveCTA",
+          },
+        },
+        defaultItemProps: {
+          cta: {
+            data: {
+              actionType: "link",
+              cta: {
+                field: "",
+                constantValueEnabled: true,
+                constantValue: {
+                  ctaType: "textAndLink",
+                  label: { defaultValue: "CTA Label" },
+                  link: { defaultValue: "#" },
+                  linkType: "URL",
+                },
+                selectedType: "textAndLink",
+              },
+              openInNewTab: false,
+              buttonText: { defaultValue: "Button" },
+              customId: "",
+              customClass: "",
+              dataAttributes: [],
+              ariaLabel: { defaultValue: "CTA Label" },
+            },
+            styles: {
+              variant: "primary",
+              color: defaultPrimaryCtaColor,
+              button: defaultButtonStyles,
+              link: defaultLinkStyles,
+            },
+          },
+        },
+        getItemSummary: (
+          item: { cta?: ComprehensiveCTAValue },
+          index?: number,
+        ) =>
+          getTranslatableSummary(
+            item.cta?.data?.cta?.constantValue?.label,
+            `CTA ${index ?? 0}`,
+          ),
+      },
+    },
+  },
+  logoImage: {
+    label: msg("fields.logoImage", "Logo Image"),
+    type: "object",
+    objectFields: {
+      show: {
+        label: msg("fields.showOnLivePage", "Show on Live Page"),
+        type: "radio",
+        options: [
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
+        ],
+      },
+      image: {
+        type: "entityField",
+        label: msg("fields.image", "Image"),
+        filter: {
+          types: ["type.image"],
+        },
+      },
+      url: {
+        label: msg("fields.url", "URL"),
+        type: "entityField",
+        filter: {
+          types: ["type.string"],
+        },
+      },
+      aspectRatio: {
+        type: "basicSelector" as const,
+        label: msg("fields.aspectRatio", "Aspect Ratio"),
+        options: aspectRatioOptions,
+      },
+      imageConstrain: {
+        label: msg("fields.imageConstrain", "Image Constrain"),
+        type: "select",
+        options: [
+          { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+          { label: msg("fields.options.filled", "Filled"), value: "filled" },
+        ],
+      },
+      styles: {
+        label: msg("fields.imageStyles", "Image Styles"),
+        type: "styledImage",
+      },
+    },
+  },
+};
 
 const PersonalFinanceHeaderComponent: PuckComponent<
   PersonalFinanceHeaderProps
@@ -758,7 +775,9 @@ const PersonalFinanceHeaderComponent: PuckComponent<
     }
 
     const resolvedIconImage = iconImage as
-      ImageType | ComplexImageType | TranslatableAssetImage;
+      | ImageType
+      | ComplexImageType
+      | TranslatableAssetImage;
     const iconHeight = 32;
     const iconAspectRatio =
       iconImageProps.aspectRatio > 0 ? iconImageProps.aspectRatio : 1;
@@ -1183,7 +1202,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
 export const PersonalFinanceHeader: YextComponentConfig<PersonalFinanceHeaderProps> =
   {
-    label: "Shared Header",
+    label: "Header",
     fields: PersonalFinanceHeaderFields,
     defaultProps: {
       variant: "utilityTopRow",
@@ -1323,7 +1342,7 @@ export const PersonalFinanceHeader: YextComponentConfig<PersonalFinanceHeaderPro
 
 export const config: SectionConfig = {
   id: "PersonalFinanceHeader",
-  displayName: "Shared Header",
-  description: "Shared Header",
+  displayName: "Header",
+  description: "Header",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };
