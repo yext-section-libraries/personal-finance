@@ -18,7 +18,9 @@ import {
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import {
+  msg,
   Background,
   EntityField,
   createItemSource,
@@ -84,11 +86,11 @@ const typographyScopeClass = "yextPersonalFinanceTestimonialsTypographyScope";
 const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const testimonialSource = createItemSource<TestimonialItem>({
-  label: "Testimonials",
+  label: msg("fields.testimonials", "Testimonials"),
   mappingFields: {
-    quote: createRichTextField("Quote"),
-    name: createTextField("Name"),
-    role: createTextField("Role"),
+    quote: createRichTextField(msg("fields.quote", "Quote")),
+    name: createTextField(msg("fields.name", "Name")),
+    role: createTextField(msg("fields.role", "Role")),
   },
   defaultValues: [
     {
@@ -117,39 +119,39 @@ const testimonialSource = createItemSource<TestimonialItem>({
 
 const TestimonialsFields: YextFields<PersonalFinanceTestimonialsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Section Heading"),
+      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
       testimonials: testimonialSource.field,
     },
   },
   testimonialStyles: {
-    label: "Testimonial Styles",
+    label: msg("fields.testimonialStyles", "Testimonial Styles"),
     type: "object",
     objectFields: {
-      quote: createStyledRtfField("Quote"),
-      name: createStyledTextField("Name"),
-      role: createStyledTextField("Role"),
+      quote: createStyledRtfField(msg("fields.quote", "Quote")),
+      name: createStyledTextField(msg("fields.name", "Name")),
+      role: createStyledTextField(msg("fields.role", "Role")),
     },
   },
 };
@@ -157,6 +159,7 @@ const TestimonialsFields: YextFields<PersonalFinanceTestimonialsProps> = {
 export const PersonalFinanceTestimonialsComponent: PuckComponent<
   PersonalFinanceTestimonialsProps
 > = (props) => {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = React.useState(0);
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
@@ -243,7 +246,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
             <div className="relative mx-auto mt-8 max-w-[980px] text-center">
               <div className="mb-6 flex justify-center gap-3 md:hidden">
                 <button
-                  aria-label="Previous testimonial"
+                  aria-label={t("previousTestimonial", "Previous testimonial")}
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-xl"
                   style={{ color: "#555555" }}
                   onClick={() =>
@@ -256,7 +259,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                   ←
                 </button>
                 <button
-                  aria-label="Next testimonial"
+                  aria-label={t("nextTestimonial", "Next testimonial")}
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-xl"
                   style={{ color: "#555555" }}
                   onClick={() =>
@@ -270,7 +273,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 </button>
               </div>
               <button
-                aria-label="Previous testimonial"
+                aria-label={t("previousTestimonial", "Previous testimonial")}
                 className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-xl md:flex"
                 style={{ color: "#555555" }}
                 onClick={() =>
@@ -283,7 +286,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 ←
               </button>
               <button
-                aria-label="Next testimonial"
+                aria-label={t("nextTestimonial", "Next testimonial")}
                 className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-xl md:flex"
                 style={{ color: "#555555" }}
                 onClick={() =>

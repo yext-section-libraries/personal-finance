@@ -18,6 +18,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -115,50 +116,50 @@ const createDefaultCta = (label: string, link: string) => {
 
 const StoryFields: YextFields<PersonalFinanceStoryProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Section Heading"),
+      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
       paragraphs: {
         type: "array",
-        label: "Paragraphs",
+        label: msg("fields.paragraphs", "Paragraphs"),
         defaultItemProps: {
           text: createEntityRichText("Paragraph text"),
         },
         arrayFields: {
-          text: createRichTextField("Text"),
+          text: createRichTextField(msg("fields.text", "Text")),
         },
       },
       primaryCta: {
-        label: "Primary CTA",
+        label: msg("fields.primaryCta", "Primary CTA"),
         type: "comprehensiveCTA",
       },
     },
   },
   paragraphStyles: {
-    label: "Paragraph Styles",
+    label: msg("fields.paragraphStyles", "Paragraph Styles"),
     type: "object",
     objectFields: {
-      paragraphs: createStyledRtfField("Paragraphs"),
+      paragraphs: createStyledRtfField(msg("fields.paragraphs", "Paragraphs")),
     },
   },
 };

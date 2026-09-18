@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { ComplexImageType, ImageType } from "@yext/pages-components";
 import {
+  msg,
   MaybeRTF,
   getDefaultRTF,
   getThemeColorCssValue,
@@ -88,13 +89,13 @@ export const createStyledTextField = (label: string) => ({
   label,
   type: "object" as const,
   objectFields: {
-    text: createTextField("Text"),
+    text: createTextField(msg("fields.text", "Text")),
     styles: {
-      label: "Text Styles",
+      label: msg("fields.textStyles", "Text Styles"),
       type: "styledText" as const,
     },
     fontColor: {
-      label: "Font Color",
+      label: msg("fields.fontColor", "Font Color"),
       type: "basicSelector" as const,
       options: "SITE_COLOR" as const,
     },
@@ -105,13 +106,13 @@ export const createStyledRtfField = (label: string) => ({
   label,
   type: "object" as const,
   objectFields: {
-    text: createRichTextField("Text"),
+    text: createRichTextField(msg("fields.text", "Text")),
     styles: {
-      label: "Text Styles",
+      label: msg("fields.textStyles", "Text Styles"),
       type: "styledText" as const,
     },
     fontColor: {
-      label: "Font Color",
+      label: msg("fields.fontColor", "Font Color"),
       type: "basicSelector" as const,
       options: "SITE_COLOR" as const,
     },

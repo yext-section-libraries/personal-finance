@@ -12,6 +12,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   EntityField,
   getAggregateRating,
@@ -25,8 +26,10 @@ import {
   type ThemeColor,
   type TranslatableString,
   type YextEntityField,
+  pt,
 } from "@yext/visual-editor";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
+import { useTranslation } from "react-i18next";
 
 type SectionTheme = {
   backgroundColor: ThemeColor;
@@ -80,11 +83,11 @@ type PersonalFinanceReviewsProps = {
 const typographyScopeClass = "yextPersonalFinanceReviewsTypographyScope";
 const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
-const formatDate = (value?: string) => {
+const formatDate = (value: string | undefined, locale: string) => {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -101,47 +104,51 @@ const renderStars = (rating: number, color: string) => {
 
 const ReviewsFields: YextFields<PersonalFinanceReviewsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Section Heading"),
-      summaryLabel: createStyledTextField("Summary Label"),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
+      summaryLabel: createStyledTextField(
+        msg("fields.summaryLabel", "Summary Label"),
+      ),
       reviewCard: {
-        label: "Review Card",
+        label: msg("fields.reviewCard", "Review Card"),
         type: "object",
         objectFields: {
           backgroundColor: {
-            label: "Background Color",
+            label: msg("fields.backgroundColor", "Background Color"),
             type: "basicSelector",
             options: "BACKGROUND_COLOR",
           },
         },
       },
       businessResponse: {
-        label: "Business Response",
+        label: msg("fields.businessResponse", "Business Response"),
         type: "object",
         objectFields: {
           backgroundColor: {
-            label: "Background Color",
+            label: msg("fields.backgroundColor", "Background Color"),
             type: "basicSelector",
             options: "BACKGROUND_COLOR",
           },
@@ -154,12 +161,13 @@ const ReviewsFields: YextFields<PersonalFinanceReviewsProps> = {
 export const PersonalFinanceReviewsComponent: PuckComponent<
   PersonalFinanceReviewsProps
 > = (props) => {
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument<ReviewStreamDocument>();
   const locale =
     typeof (streamDocument as Record<string, unknown> | undefined)?.locale ===
     "string"
       ? ((streamDocument as Record<string, unknown>).locale as string)
-      : "en";
+      : i18n.language;
   const sectionStyle = getSurfaceColorStyle(
     props.section.backgroundColor,
     streamDocument,
@@ -223,7 +231,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
           className={`${typographyScopeClass} overflow-x-clip py-11`}
           style={sectionStyle}
         >
-        <style>{typographyScopeCss}</style>
+          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
@@ -277,19 +285,24 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                     >
                       {(aggregate.averageRating ?? 0).toFixed(1)}
                     </span>{" "}
-                    from{" "}
+                    {t("from", "from")}{" "}
                     <span
                       className="font-semibold"
                       style={{ color: headingColor }}
                     >
-                      {aggregate.reviewCount ?? reviews.length}
-                    </span>{" "}
-                    reviews
+                      {aggregate.reviewCount ?? reviews.length}{" "}
+                      {(aggregate.reviewCount ?? reviews.length) === 1
+                        ? t("review", "review")
+                        : t("reviews", "reviews")}
+                    </span>
                   </p>
                 </div>
               ) : (
                 <p className="mt-4 text-sm" style={{ color: bodyColor }}>
-                  No first-party reviews available for this location.
+                  {pt(
+                    "noFirstPartyReviews",
+                    "No first-party reviews available for this location.",
+                  )}
                 </p>
               )}
             </div>
@@ -313,7 +326,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                           ),
                         }}
                       >
-                        {review.authorName || "Anonymous"}
+                        {review.authorName || t("anonymous", "Anonymous")}
                       </h3>
                       <div className="text-sm">
                         {renderStars(
@@ -327,7 +340,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                         className="mt-2 text-xs uppercase tracking-[0.16em]"
                         style={{ color: cardForegroundColor }}
                       >
-                        {formatDate(review.reviewDate)}
+                        {formatDate(review.reviewDate, locale)}
                       </p>
                     ) : null}
                     {review.content ? (
@@ -341,7 +354,9 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                     {review.comments?.[0]?.content ? (
                       <Background
                         as="div"
-                        background={props.content.businessResponse.backgroundColor}
+                        background={
+                          props.content.businessResponse.backgroundColor
+                        }
                         className="mt-5 rounded-[12px] border border-black/5 p-4"
                         style={businessResponseStyle}
                       >
@@ -354,7 +369,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                             ),
                           }}
                         >
-                          Business Response
+                          {t("businessResponse", "Business Response")}
                         </p>
                         <p
                           className="mt-2 text-sm leading-7"

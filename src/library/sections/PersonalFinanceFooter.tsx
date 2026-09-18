@@ -10,6 +10,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   EntityField,
   getAnalyticsScopeHash,
@@ -198,15 +199,15 @@ const createStyledTextField = (label: string) => {
     objectFields: {
       text: {
         type: "entityField" as const,
-        label: "Text",
+        label: msg("fields.text", "Text"),
         filter,
       },
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -261,16 +262,16 @@ const createNavigationCta = (
 const createSectionThemeFields = () => {
   return {
     backgroundColor: {
-      label: "Background Color",
+      label: msg("fields.backgroundColor", "Background Color"),
       type: "basicSelector" as const,
       options: "BACKGROUND_COLOR" as const,
     },
     visibleOnLivePage: {
-      label: "Visible on Live Page",
+      label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
       type: "radio" as const,
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
   };
@@ -570,31 +571,31 @@ type PersonalFinanceFooterProps = {
 
 const SectionFields: YextFields<PersonalFinanceFooterProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: createSectionThemeFields(),
   },
-  brandName: createStyledTextField("Brand Text"),
+  brandName: createStyledTextField(msg("fields.brandText", "Brand Text")),
   navigationLinks: {
     type: "array",
-    label: "Links",
+    label: msg("fields.links", "Links"),
     defaultItemProps: {
       cta: createNavigationCta("Link", "#"),
     },
     arrayFields: {
       cta: {
         type: "comprehensiveCTA",
-        label: "Link",
+        label: msg("fields.link", "Link"),
       },
     },
   },
-  copyrightText: createStyledTextField("Copyright Text"),
+  copyrightText: createStyledTextField(msg("fields.copyrightText", "Copyright Text")),
 };
 
 export const PersonalFinanceFooterComponent: PuckComponent<
   PersonalFinanceFooterProps
 > = (props) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale = i18n.language;
   const sectionStyles = resolveSectionStyles(
@@ -674,7 +675,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
                 </p>
               </EntityField>
               <nav
-                aria-label="Footer navigation"
+                aria-label={t("footerNavigation", "Footer navigation")}
                 className="flex flex-wrap gap-x-6 gap-y-3"
               >
                 {props.navigationLinks.map((item, index) => {

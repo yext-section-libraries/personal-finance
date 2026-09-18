@@ -15,6 +15,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   ComprehensiveCTA,
   EntityField,
   Image,
@@ -132,16 +133,16 @@ const createEyebrowField = (label: string) => {
     type: "object" as const,
     objectFields: {
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector" as const,
         options: "BACKGROUND_COLOR" as const,
       },
@@ -256,102 +257,102 @@ const overlayMask =
 
 const SectionFields: YextFields<PersonalFinanceHeroProps> = {
   overlayColor: {
-    label: "Overlay Color",
+    label: msg("fields.overlayColor", "Overlay Color"),
     type: "basicSelector",
     options: "BACKGROUND_COLOR",
   },
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       heroImage: {
-        label: "Hero Image",
+        label: msg("fields.heroImage", "Hero Image"),
         type: "object",
         objectFields: {
-          image: createImageField("Image"),
+          image: createImageField(msg("fields.image", "Image")),
           imageConstrain: {
-            label: "Image Constrain",
+            label: msg("fields.imageConstrain", "Image Constrain"),
             type: "select",
             options: [
-              { label: "Fixed", value: "fixed" },
-              { label: "Filled", value: "filled" },
+              { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+              { label: msg("fields.options.filled", "Filled"), value: "filled" },
             ],
           },
           styles: {
-            label: "Image Styles",
+            label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
           },
         },
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      statusEyebrow: createEyebrowField("Status Eyebrow"),
+      statusEyebrow: createEyebrowField(msg("fields.statusEyebrow", "Status Eyebrow")),
       hours: {
         type: "entityField",
-        label: "Hours",
+        label: msg("fields.hours", "Hours"),
         filter: {
           types: ["type.hours"],
         },
         disableConstantValueToggle: true,
       },
       hoursStyles: {
-        label: "Hours Styles",
+        label: msg("fields.hoursStyles", "Hours Styles"),
         type: "object",
         objectFields: {
           showCurrentStatus: {
-            label: "Show Current Status",
+            label: msg("fields.showCurrentStatus", "Show Current Status"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
           timeFormat: {
-            label: "Time Format",
+            label: msg("fields.timeFormat", "Time Format"),
             type: "select",
             options: [
-              { label: "12 Hour", value: "12h" },
-              { label: "24 Hour", value: "24h" },
+              { label: msg("fields.options.12Hour", "12 Hour"), value: "12h" },
+              { label: msg("fields.options.24Hour", "24 Hour"), value: "24h" },
             ],
           },
           dayOfWeekFormat: {
-            label: "Day Of Week Format",
+            label: msg("fields.dayOfWeekFormat", "Day Of Week Format"),
             type: "select",
             options: [
-              { label: "Short", value: "short" },
-              { label: "Long", value: "long" },
+              { label: msg("fields.options.short", "Short"), value: "short" },
+              { label: msg("fields.options.long", "Long"), value: "long" },
             ],
           },
           showDayNames: {
-            label: "Show Day Names",
+            label: msg("fields.showDayNames", "Show Day Names"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
         },
       },
-      headline: createStyledTextField("Headline"),
-      body: createStyledRtfField("Body"),
+      headline: createStyledTextField(msg("fields.headline", "Headline")),
+      body: createStyledRtfField(msg("fields.body", "Body")),
       primaryCta: {
-        label: "Primary CTA",
+        label: msg("fields.primaryCta", "Primary CTA"),
         type: "comprehensiveCTA",
       },
       secondaryCta: {
-        label: "Secondary CTA",
+        label: msg("fields.secondaryCta", "Secondary CTA"),
         type: "comprehensiveCTA",
       },
     },
@@ -361,7 +362,7 @@ const SectionFields: YextFields<PersonalFinanceHeroProps> = {
 export const PersonalFinanceHeroComponent: PuckComponent<
   PersonalFinanceHeroProps
 > = (props) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     (streamDocument?.locale as string | undefined) ?? i18n.language ?? "en";
@@ -509,6 +510,11 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                             props.content.hoursStyles.timeFormat === "12h",
                         }}
                         statusTemplate={(params: StatusParams) => {
+                          const isComingSoon = Boolean(params.comingSoon);
+                          const isOpen24Hours = Boolean(
+                            params.currentInterval?.is24h?.(),
+                          );
+                          const isIndefinitelyClosed = !params.futureInterval;
                           const interval = params.isOpen
                             ? params.currentInterval
                             : params.futureInterval;
@@ -534,24 +540,47 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                                   ?.setLocale(locale)
                                   .toLocaleString(params.dayOptions) ?? "")
                             : "";
-                          const futureText = !time
+                          const isFuture =
+                            !isOpen24Hours && !isIndefinitelyClosed;
+                          const futureText = !isFuture || !time
                             ? ""
                             : params.isOpen
                               ? dayOfWeek
-                                ? `Closes at ${time} ${dayOfWeek}`
-                                : `Closes at ${time}`
+                                ? t(
+                                    "closesAtTimeWeek",
+                                    "Closes at {{time}} {{dayOfWeek}}",
+                                    { time, dayOfWeek },
+                                  )
+                                : t("closesAtTime", "Closes at {{time}}", {
+                                    time,
+                                  })
                               : dayOfWeek
-                                ? `Opens at ${time} ${dayOfWeek}`
-                                : `Opens at ${time}`;
+                                ? t(
+                                    "opensAtTimeWeek",
+                                    "Opens at {{time}} {{dayOfWeek}}",
+                                    { time, dayOfWeek },
+                                  )
+                                : t("opensAtTime", "Opens at {{time}}", {
+                                    time,
+                                  });
+                          const currentStatus = isComingSoon
+                            ? t("comingSoon", "Coming Soon")
+                            : isOpen24Hours
+                              ? t("open24Hours", "Open 24 Hours")
+                              : isIndefinitelyClosed
+                                ? t("temporarilyClosed", "Temporarily Closed")
+                                : params.isOpen
+                                  ? t("openNow", "Open Now")
+                                  : t("closed", "Closed");
 
                           return (
                             <div>
-                              {props.content.hoursStyles.showCurrentStatus ? (
-                                <span>
-                                  {params.isOpen ? "Open Now" : "Closed"}
-                                </span>
+                              {props.content.hoursStyles.showCurrentStatus ||
+                              isComingSoon ? (
+                                <span>{currentStatus}</span>
                               ) : null}
-                              {props.content.hoursStyles.showCurrentStatus &&
+                              {!isComingSoon &&
+                              props.content.hoursStyles.showCurrentStatus &&
                               futureText ? (
                                 <span aria-hidden="true"> • </span>
                               ) : null}

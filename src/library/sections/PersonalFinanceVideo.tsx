@@ -16,6 +16,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   EntityField,
   getAnalyticsScopeHash,
@@ -162,110 +163,110 @@ const imageStyleToCss = (styles?: Partial<StyledImageValue>): CSSProperties => {
 
 const VideoFields: YextFields<PersonalFinanceVideoProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
       sectionHeading: {
-        label: "Section Heading",
+        label: msg("fields.sectionHeading", "Section Heading"),
         type: "object",
         objectFields: {
-          text: createTextField("Text"),
+          text: createTextField(msg("fields.text", "Text")),
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       sectionDescription: {
-        label: "Section Description",
+        label: msg("fields.sectionDescription", "Section Description"),
         type: "object",
         objectFields: {
-          text: createRichTextField("Text"),
+          text: createRichTextField(msg("fields.text", "Text")),
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       videoUrl: {
-        label: "Video URL",
+        label: msg("fields.videoURL", "Video URL"),
         type: "text",
       },
       posterImage: {
-        label: "Poster Image",
+        label: msg("fields.posterImage", "Poster Image"),
         type: "object",
         objectFields: {
-          image: createImageField("Image"),
+          image: createImageField(msg("fields.image", "Image")),
           aspectRatio: {
             type: "basicSelector" as const,
-            label: "Aspect Ratio",
+            label: msg("fields.aspectRatio", "Aspect Ratio"),
             options: aspectRatioOptions,
           },
           imageConstrain: {
-            label: "Image Constrain",
+            label: msg("fields.imageConstrain", "Image Constrain"),
             type: "select",
             options: [
-              { label: "Fixed", value: "fixed" },
-              { label: "Filled", value: "filled" },
+              { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+              { label: msg("fields.options.filled", "Filled"), value: "filled" },
             ],
           },
           styles: {
-            label: "Image Styles",
+            label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
           },
         },
       },
       posterCaption: {
-        label: "Poster Caption",
+        label: msg("fields.posterCaption", "Poster Caption"),
         type: "object",
         objectFields: {
-          text: createRichTextField("Text"),
+          text: createRichTextField(msg("fields.text", "Text")),
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       videoFrame: {
-        label: "Video Frame",
+        label: msg("fields.videoFrame", "Video Frame"),
         type: "object",
         objectFields: {
           backgroundColor: {
-            label: "Background Color",
+            label: msg("fields.backgroundColor", "Background Color"),
             type: "basicSelector",
             options: "BACKGROUND_COLOR",
           },

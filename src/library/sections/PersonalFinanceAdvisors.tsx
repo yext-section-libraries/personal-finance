@@ -14,6 +14,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -140,11 +141,11 @@ const createStyledTextField = (label: string) => {
     type: "object" as const,
     objectFields: {
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -157,13 +158,13 @@ const createStyledTextFieldWithData = (label: string) => {
     label,
     type: "object" as const,
     objectFields: {
-      text: createTextField("Text"),
+      text: createTextField(msg("fields.text", "Text")),
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText" as const,
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector" as const,
         options: "SITE_COLOR" as const,
       },
@@ -189,15 +190,15 @@ const createImageStyleField = (label: string) => {
     type: "object" as const,
     objectFields: {
       imageConstrain: {
-        label: "Image Constrain",
+        label: msg("fields.imageConstrain", "Image Constrain"),
         type: "select" as const,
         options: [
-          { label: "Fixed", value: "fixed" },
-          { label: "Filled", value: "filled" },
+          { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+          { label: msg("fields.options.filled", "Filled"), value: "filled" },
         ],
       },
       styles: {
-        label: "Image Styles",
+        label: msg("fields.imageStyles", "Image Styles"),
         type: "styledImage" as const,
       },
     } satisfies YextFields<CardImageStyles>,
@@ -270,37 +271,37 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
 };
 
 const advisorSource = createItemSource<AdvisorCard>({
-  label: "Advisors",
+  label: msg("fields.advisors", "Advisors"),
   mappingFields: {
-    image: createImageField("Image"),
-    name: createTextField("Name"),
-    role: createTextField("Role"),
+    image: createImageField(msg("fields.image", "Image")),
+    name: createTextField(msg("fields.name", "Name")),
+    role: createTextField(msg("fields.role", "Role")),
     credentials: {
-      label: "Credentials",
+      label: msg("fields.credentials", "Credentials"),
       type: "object" as const,
       objectFields: {
-        label: createTextField("Label"),
-        value: createTextField("Value"),
+        label: createTextField(msg("fields.label", "Label")),
+        value: createTextField(msg("fields.value", "Value")),
       },
     },
     licenses: {
-      label: "Licenses",
+      label: msg("fields.licenses", "Licenses"),
       type: "object" as const,
       objectFields: {
-        label: createTextField("Label"),
-        value: createTextField("Value"),
+        label: createTextField(msg("fields.label", "Label")),
+        value: createTextField(msg("fields.value", "Value")),
       },
     },
     specialties: {
-      label: "Specialties",
+      label: msg("fields.specialties", "Specialties"),
       type: "object" as const,
       objectFields: {
-        label: createTextField("Label"),
-        value: createTextField("Value"),
+        label: createTextField(msg("fields.label", "Label")),
+        value: createTextField(msg("fields.value", "Value")),
       },
     },
     cta: {
-      label: "CTA",
+      label: msg("fields.cta", "CTA"),
       type: "comprehensiveCTA" as const,
     },
   },
@@ -350,31 +351,31 @@ const advisorSource = createItemSource<AdvisorCard>({
 
 const AdvisorsFields: YextFields<PersonalFinanceAdvisorsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       cardBackgroundColor: {
-        label: "Card Background Color",
+        label: msg("fields.cardBackgroundColor", "Card Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
       sectionHeading: createStyledTextFieldWithData("Section Heading"),
@@ -382,16 +383,16 @@ const AdvisorsFields: YextFields<PersonalFinanceAdvisorsProps> = {
     },
   },
   styles: {
-    label: "Styles",
+    label: msg("fields.styles", "Styles"),
     type: "object",
     objectFields: {
-      image: createImageStyleField("Image"),
-      name: createStyledTextField("Name"),
-      role: createStyledTextField("Role"),
-      credentials: createStyledTextField("Credentials Subheading"),
-      licenses: createStyledTextField("Licenses Subheading"),
-      specialties: createStyledTextField("Specialties Subheading"),
-      factValue: createStyledTextField("Fact Value"),
+      image: createImageStyleField(msg("fields.image", "Image")),
+      name: createStyledTextField(msg("fields.name", "Name")),
+      role: createStyledTextField(msg("fields.role", "Role")),
+      credentials: createStyledTextField(msg("fields.credentialsSubheading", "Credentials Subheading")),
+      licenses: createStyledTextField(msg("fields.licensesSubheading", "Licenses Subheading")),
+      specialties: createStyledTextField(msg("fields.specialtiesSubheading", "Specialties Subheading")),
+      factValue: createStyledTextField(msg("fields.factValue", "Fact Value")),
     },
   },
 };

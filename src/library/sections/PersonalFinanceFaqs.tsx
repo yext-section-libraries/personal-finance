@@ -20,6 +20,7 @@ import {
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import {
+  msg,
   Background,
   EntityField,
   MaybeRTF,
@@ -94,10 +95,10 @@ const typographyScopeClass = "yextPersonalFinanceFaqsTypographyScope";
 const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const faqItemSource = createItemSource<FaqItem>({
-  label: "FAQs",
+  label: msg("fields.faqs", "FAQs"),
   mappingFields: {
-    question: createTextField("Question"),
-    answer: createRichTextField("Answer"),
+    question: createTextField(msg("fields.question", "Question")),
+    answer: createRichTextField(msg("fields.answer", "Answer")),
   },
   defaultValues: [
     {
@@ -154,38 +155,38 @@ const resolveRtfValue = (
 
 const SectionFields: YextFields<PersonalFinanceFaqsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Heading"),
+      sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
       items: faqItemSource.field,
     },
   },
   faqStyles: {
-    label: "FAQ Styles",
+    label: msg("fields.faqStyles", "FAQ Styles"),
     type: "object",
     objectFields: {
-      question: createStyledTextField("Question"),
-      answer: createStyledRtfField("Answer"),
+      question: createStyledTextField(msg("fields.question", "Question")),
+      answer: createStyledRtfField(msg("fields.answer", "Answer")),
     },
   },
 };

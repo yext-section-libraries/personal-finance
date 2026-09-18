@@ -13,7 +13,9 @@ import {
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import {
+  msg,
   Background,
   EntityField,
   MapboxStaticMapComponent,
@@ -39,7 +41,7 @@ import {
   type TranslatableString,
   type YextEntityField,
 } from "@yext/visual-editor";
-import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
+import { formatPhoneNumber, pt } from "@yext/visual-editor/section-library-support";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -193,48 +195,48 @@ const formatDistance = (
 
 const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
     },
   },
   content: {
-    label: "Content",
+    label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField("Heading"),
-      sectionDescription: createStyledRtfField("Description"),
+      sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
+      sectionDescription: createStyledRtfField(msg("fields.description", "Description")),
     },
   },
   map: {
-    label: "Map",
+    label: msg("fields.map", "Map"),
     type: "object",
     objectFields: {
       coordinate: {
         type: "entityField",
-        label: "Coordinates",
+        label: msg("fields.coordinates", "Coordinates"),
         filter: { types: ["type.coordinate"] },
       },
       mapStyle: {
-        label: "Mapbox Map Style",
+        label: msg("fields.mapboxMapStyle", "Mapbox Map Style"),
         type: "select",
         options: mapboxStaticMapStyleOptions,
       },
       zoom: {
-        label: "Zoom",
+        label: msg("fields.zoom", "Zoom"),
         type: "number",
         min: 0,
         max: 22,
@@ -242,121 +244,121 @@ const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
     },
   },
   styles: {
-    label: "Style",
+    label: msg("fields.style", "Style"),
     type: "object",
     objectFields: {
       cardBackgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       cardTitleColor: {
-        label: "Title Color",
+        label: msg("fields.titleColor", "Title Color"),
         type: "basicSelector",
         options: "SITE_COLOR",
       },
       showHours: {
-        label: "Show Hours",
+        label: msg("fields.showHours", "Show Hours"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       showPhone: {
-        label: "Show Phone",
+        label: msg("fields.showPhone", "Show Phone"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       showAddress: {
-        label: "Show Address",
+        label: msg("fields.showAddress", "Show Address"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       hoursStyles: {
-        label: "Hours Styles",
+        label: msg("fields.hoursStyles", "Hours Styles"),
         type: "object",
         objectFields: {
           showCurrentStatus: {
-            label: "Show Current Status",
+            label: msg("fields.showCurrentStatus", "Show Current Status"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
           timeFormat: {
-            label: "Time Format",
+            label: msg("fields.timeFormat", "Time Format"),
             type: "select",
             options: [
-              { label: "12 Hour", value: "12h" },
-              { label: "24 Hour", value: "24h" },
+              { label: msg("fields.options.12Hour", "12 Hour"), value: "12h" },
+              { label: msg("fields.options.24Hour", "24 Hour"), value: "24h" },
             ],
           },
           dayOfWeekFormat: {
-            label: "Day Of Week Format",
+            label: msg("fields.dayOfWeekFormat", "Day Of Week Format"),
             type: "select",
             options: [
-              { label: "Short", value: "short" },
-              { label: "Long", value: "long" },
+              { label: msg("fields.options.short", "Short"), value: "short" },
+              { label: msg("fields.options.long", "Long"), value: "long" },
             ],
           },
           showDayNames: {
-            label: "Show Day Names",
+            label: msg("fields.showDayNames", "Show Day Names"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
         },
       },
       phone: {
-        label: "Phone",
+        label: msg("fields.phone", "Phone"),
         type: "object",
         objectFields: {
           phoneFormat: {
-            label: "Phone Number Format",
+            label: msg("fields.phoneNumberFormat", "Phone Number Format"),
             type: "radio",
             options: [
-              { label: "Domestic", value: "domestic" },
-              { label: "International", value: "international" },
+              { label: msg("fields.options.domestic", "Domestic"), value: "domestic" },
+              { label: msg("fields.options.international", "International"), value: "international" },
             ],
           },
           includeHyperlink: {
-            label: "Include Phone Hyperlink",
+            label: msg("fields.includePhoneHyperlink", "Include Phone Hyperlink"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
         },
       },
       address: {
-        label: "Address",
+        label: msg("fields.address", "Address"),
         type: "object",
         objectFields: {
           showRegion: {
-            label: "Show Region",
+            label: msg("fields.showRegion", "Show Region"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
           showCountry: {
-            label: "Show Country",
+            label: msg("fields.showCountry", "Show Country"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.options.yes", "Yes"), value: true },
+              { label: msg("fields.options.no", "No"), value: false },
             ],
           },
         },
@@ -368,9 +370,12 @@ const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
 export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
   PersonalFinanceNearbyLocationsProps
 > = (props) => {
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument() as StreamDocument;
   const locale =
-    typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
+    typeof streamDocument?.locale === "string"
+      ? streamDocument.locale
+      : i18n.language;
   const { relativePrefixToRoot } = useTemplateProps<{
     relativePrefixToRoot?: string;
   }>();
@@ -438,7 +443,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
     if (nearbyLocationsStatus === "pending") {
       return (
         <div className="rounded-[14px] border border-black/5 bg-white/60 p-6 text-sm text-[#676767]">
-          Loading nearby locations
+          {t("loadingNearbyLocations", "Loading nearby locations")}
         </div>
       );
     }
@@ -454,7 +459,10 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
 
       return (
         <div className="rounded-[14px] border border-black/5 bg-white/60 p-6 text-sm text-[#676767]">
-          No nearby locations found for this location
+          {pt(
+            "noNearbyLocationsFound",
+            "No nearby locations found for this location",
+          )}
         </div>
       );
     }
@@ -486,7 +494,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
             className="text-[1.05rem] font-semibold"
             style={{ color: cardTitleColor }}
           >
-            {locationData.name || "Nearby Location"}
+            {locationData.name || t("nearbyLocation", "Nearby Location")}
           </a>
           {props.styles.showAddress && locationData.address ? (
             <div
@@ -515,6 +523,11 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                   hour12: props.styles.hoursStyles.timeFormat === "12h",
                 }}
                 statusTemplate={(params: StatusParams) => {
+                  const isComingSoon = Boolean(params.comingSoon);
+                  const isOpen24Hours = Boolean(
+                    params.currentInterval?.is24h?.(),
+                  );
+                  const isIndefinitelyClosed = !params.futureInterval;
                   const interval = params.isOpen
                     ? params.currentInterval
                     : params.futureInterval;
@@ -535,22 +548,42 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                           ?.setLocale(locale)
                           .toLocaleString(params.dayOptions) ?? "")
                     : "";
-                  const futureText = !time
+                  const isFuture = !isOpen24Hours && !isIndefinitelyClosed;
+                  const futureText = !isFuture || !time
                     ? ""
                     : params.isOpen
                       ? dayOfWeek
-                        ? `Closes at ${time} ${dayOfWeek}`
-                        : `Closes at ${time}`
+                        ? t(
+                            "closesAtTimeWeek",
+                            "Closes at {{time}} {{dayOfWeek}}",
+                            { time, dayOfWeek },
+                          )
+                        : t("closesAtTime", "Closes at {{time}}", { time })
                       : dayOfWeek
-                        ? `Opens at ${time} ${dayOfWeek}`
-                        : `Opens at ${time}`;
+                        ? t(
+                            "opensAtTimeWeek",
+                            "Opens at {{time}} {{dayOfWeek}}",
+                            { time, dayOfWeek },
+                          )
+                        : t("opensAtTime", "Opens at {{time}}", { time });
+                  const currentStatus = isComingSoon
+                    ? t("comingSoon", "Coming Soon")
+                    : isOpen24Hours
+                      ? t("open24Hours", "Open 24 Hours")
+                      : isIndefinitelyClosed
+                        ? t("temporarilyClosed", "Temporarily Closed")
+                        : params.isOpen
+                          ? t("openNow", "Open Now")
+                          : t("closed", "Closed");
 
                   return (
                     <div>
-                      {props.styles.hoursStyles.showCurrentStatus ? (
-                        <span>{params.isOpen ? "Open Now" : "Closed"}</span>
+                      {props.styles.hoursStyles.showCurrentStatus ||
+                      isComingSoon ? (
+                        <span>{currentStatus}</span>
                       ) : null}
-                      {props.styles.hoursStyles.showCurrentStatus &&
+                      {!isComingSoon &&
+                      props.styles.hoursStyles.showCurrentStatus &&
                       futureText ? (
                         <span aria-hidden="true"> • </span>
                       ) : null}
@@ -594,7 +627,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
             className="pt-1 text-sm font-medium"
             style={{ color: cardForegroundColor }}
           >
-            View location
+            {t("viewLocation", "View location")}
           </a>
         </Background>
       );
@@ -709,9 +742,14 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                     />
                   ) : (
                     <div className="flex h-full min-h-[420px] items-center justify-center px-6 text-center text-sm text-[#676767]">
-                      Add a Mapbox API key via{" "}
-                      <code>YEXT_EDIT_LAYOUT_MODE_MAPBOX_API_KEY</code> or{" "}
-                      <code>YEXT_MAPBOX_API_KEY</code> to render the map.
+                      {t(
+                        "addMapboxApiKeyInstructions",
+                        "Add a Mapbox API key via {{editKey}} or {{liveKey}} to render the map.",
+                        {
+                          editKey: "YEXT_EDIT_LAYOUT_MODE_MAPBOX_API_KEY",
+                          liveKey: "YEXT_MAPBOX_API_KEY",
+                        },
+                      )}
                     </div>
                   )}
                 </div>
