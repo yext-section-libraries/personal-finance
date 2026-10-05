@@ -1,9 +1,10 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
   createStyledTextDefault,
   createStyledTextField,
-  getScopedTypographyCss,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -79,9 +80,6 @@ type PersonalFinanceReviewsProps = {
   section: SectionTheme;
   content: ReviewsContent;
 };
-
-const typographyScopeClass = "yextPersonalFinanceReviewsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const formatDate = (value: string | undefined, locale: string) => {
   if (!value) return "";
@@ -228,14 +226,13 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -261,7 +258,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                   </div>
                   <p className="text-sm" style={{ color: bodyColor }}>
                     <EntityField
-                      displayName="Summary Label"
+                      displayName={msg("fields.summaryLabel", "Summary Label")}
                       fieldId={props.content.summaryLabel.text.field}
                       constantValueEnabled={
                         props.content.summaryLabel.text.constantValueEnabled
@@ -392,7 +389,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
 
 export const PersonalFinanceReviews: YextComponentConfig<PersonalFinanceReviewsProps> =
   {
-    label: "Reviews",
+    label: msg("components.reviewsSection", "Reviews Section"),
     fields: ReviewsFields,
     defaultProps: {
       section: {

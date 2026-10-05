@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -8,11 +10,10 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -22,7 +23,6 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  MaybeRTF,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
   resolveComponentData,
@@ -75,9 +75,6 @@ type PersonalFinanceStoryProps = {
     paragraphs: Omit<StyledRtfProps, "text">;
   };
 };
-
-const typographyScopeClass = "yextPersonalFinanceStoryTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -138,7 +135,9 @@ const StoryFields: YextFields<PersonalFinanceStoryProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
       paragraphs: {
         type: "array",
         label: msg("fields.paragraphs", "Paragraphs"),
@@ -188,14 +187,13 @@ export const PersonalFinanceStoryComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="about"
-          className={`${typographyScopeClass} overflow-x-clip border-t border-black/5 py-11`}
+          className="overflow-x-clip border-t border-black/5 py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6 text-center">
             <div className="mx-auto max-w-[980px]">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -241,13 +239,9 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                       fieldId={paragraph.text.field}
                       constantValueEnabled={paragraph.text.constantValueEnabled}
                     >
-                      {React.isValidElement(resolvedParagraph) ? (
-                        resolvedParagraph
-                      ) : (
-                        <MaybeRTF
-                          data={normalizeResolvedRichText(resolvedParagraph)}
-                          richTextStyleOverrides={richTextStyleOverrides}
-                        />
+                      {renderRichText(
+                        resolvedParagraph,
+                        richTextStyleOverrides,
                       )}
                     </EntityField>
                   );
@@ -255,7 +249,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
               </div>
               <div className="mt-8">
                 <EntityField
-                  displayName="Primary CTA"
+                  displayName={msg("fields.primaryCta", "Primary CTA")}
                   fieldId={props.content.primaryCta.data.cta.field}
                   constantValueEnabled={
                     props.content.primaryCta.data.cta.constantValueEnabled
@@ -279,7 +273,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
 
 export const PersonalFinanceStory: YextComponentConfig<PersonalFinanceStoryProps> =
   {
-    label: "About",
+    label: msg("components.aboutSection", "About Section"),
     fields: StoryFields,
     defaultProps: {
       section: {

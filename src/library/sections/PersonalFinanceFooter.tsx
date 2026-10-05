@@ -1,8 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
   defaultTextStyle,
-  getScopedTypographyCss,
   resolveThemeColor,
   type ThemeColorInput,
 } from "../shared/sectionHelpers";
@@ -165,9 +166,6 @@ type SectionTheme = {
   buttonTextColor?: ThemeColorValue;
   visibleOnLivePage: boolean;
 };
-
-const typographyScopeClass = "yextPersonalFinanceFooterTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultLinkStyle: StyledLinkValueFromVisualEditor = {
   ...defaultTextStyle,
@@ -654,13 +652,12 @@ export const PersonalFinanceFooterComponent: PuckComponent<
           background={props.section.backgroundColor}
           id="contact"
           style={{ ...sectionStyles, ...sectionSurfaceStyle }}
-          className={`${typographyScopeClass} overflow-x-clip`}
+          className="overflow-x-clip"
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6 py-8">
             <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
               <EntityField
-                displayName="Brand Text"
+                displayName={msg("fields.brandText", "Brand Text")}
                 fieldId={props.brandName.text.field}
                 constantValueEnabled={props.brandName.text.constantValueEnabled}
               >
@@ -740,7 +737,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
               </nav>
             </div>
             <EntityField
-              displayName="Copyright Text"
+              displayName={msg("fields.copyrightText", "Copyright Text")}
               fieldId={props.copyrightText.text.field}
               constantValueEnabled={
                 props.copyrightText.text.constantValueEnabled
@@ -765,7 +762,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
 
 export const PersonalFinanceFooter: YextComponentConfig<PersonalFinanceFooterProps> =
   {
-    label: "Footer",
+    label: msg("components.footer", "Footer"),
     fields: SectionFields,
     defaultProps: {
       section: {

@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -11,9 +13,8 @@ import {
   createStyledTextField,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -27,7 +28,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   TimestampAtom,
   TimestampOption,
   createItemSource,
@@ -117,9 +117,6 @@ type PersonalFinanceEventsProps = {
   content: EventsContent;
   styles: EventsStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceEventsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -331,7 +328,9 @@ const EventsFields: YextFields<PersonalFinanceEventsProps> = {
     type: "object",
     objectFields: {
       sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.description", "Description")),
+      sectionDescription: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
       events: eventSource.field,
     },
   },
@@ -368,7 +367,9 @@ const EventsFields: YextFields<PersonalFinanceEventsProps> = {
           },
         },
       },
-      description: createStyledRtfField(msg("fields.description", "Description")),
+      description: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
     },
   },
 };
@@ -407,14 +408,13 @@ export const PersonalFinanceEventsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -439,31 +439,27 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  <div className="mt-3">{resolvedDescription}</div>
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={{
-                      ...props.content.sectionDescription.styles,
-                      color: resolveThemeColor(
-                        props.content.sectionDescription.fontColor,
-                        sectionForegroundColor,
-                      ),
-                    }}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  {
+                    ...props.content.sectionDescription.styles,
+                    color: resolveThemeColor(
+                      props.content.sectionDescription.fontColor,
+                      sectionForegroundColor,
+                    ),
+                  },
+                  "mt-3 text-sm leading-7",
                 )}
               </EntityField>
             </div>
             <EntityField
-              displayName="Events"
+              displayName={msg("fields.events", "Events")}
               fieldId={props.content.events.field}
               constantValueEnabled={props.content.events.constantValueEnabled}
             >
@@ -576,16 +572,12 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                         >
                           {title}
                         </h3>
-                        {React.isValidElement(description) ? (
-                          <div className="mt-3">{description}</div>
-                        ) : (
-                          <MaybeRTF
-                            data={normalizeResolvedRichText(description)}
-                            className="mt-3 text-sm leading-7"
-                            richTextStyleOverrides={{
-                              ...descriptionStyles,
-                            }}
-                          />
+                        {renderRichText(
+                          description,
+                          {
+                            ...descriptionStyles,
+                          },
+                          "mt-3 text-sm leading-7",
                         )}
                         {event.cta ? (
                           <div className="mt-5">
@@ -620,7 +612,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
 
 export const PersonalFinanceEvents: YextComponentConfig<PersonalFinanceEventsProps> =
   {
-    label: "Events",
+    label: msg("components.eventsSection", "Events Section"),
     fields: EventsFields,
     defaultProps: {
       section: {

@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -5,10 +7,9 @@ import {
   createStyledRtfField,
   createStyledTextDefault,
   createStyledTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -19,7 +20,6 @@ import {
   Background,
   EntityField,
   MapboxStaticMapComponent,
-  MaybeRTF,
   getAnalyticsScopeHash,
   getPreferredDistanceUnit,
   getSurfaceColorStyle,
@@ -41,7 +41,10 @@ import {
   type TranslatableString,
   type YextEntityField,
 } from "@yext/visual-editor";
-import { formatPhoneNumber, pt } from "@yext/visual-editor/section-library-support";
+import {
+  formatPhoneNumber,
+  pt,
+} from "@yext/visual-editor/section-library-support";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -112,10 +115,6 @@ type PersonalFinanceNearbyLocationsProps = {
   map: NearbyLocationsMap;
   styles: NearbyLocationsStyles;
 };
-
-const typographyScopeClass =
-  "yextPersonalFinanceNearbyLocationsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const isDefaultToken = (value?: string) => {
   return !value || value === "default";
@@ -218,7 +217,9 @@ const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
     type: "object",
     objectFields: {
       sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.description", "Description")),
+      sectionDescription: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
     },
   },
   map: {
@@ -327,12 +328,21 @@ const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
             label: msg("fields.phoneNumberFormat", "Phone Number Format"),
             type: "radio",
             options: [
-              { label: msg("fields.options.domestic", "Domestic"), value: "domestic" },
-              { label: msg("fields.options.international", "International"), value: "international" },
+              {
+                label: msg("fields.options.domestic", "Domestic"),
+                value: "domestic",
+              },
+              {
+                label: msg("fields.options.international", "International"),
+                value: "international",
+              },
             ],
           },
           includeHyperlink: {
-            label: msg("fields.includePhoneHyperlink", "Include Phone Hyperlink"),
+            label: msg(
+              "fields.includePhoneHyperlink",
+              "Include Phone Hyperlink",
+            ),
             type: "radio",
             options: [
               { label: msg("fields.options.yes", "Yes"), value: true },
@@ -549,23 +559,24 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                           .toLocaleString(params.dayOptions) ?? "")
                     : "";
                   const isFuture = !isOpen24Hours && !isIndefinitelyClosed;
-                  const futureText = !isFuture || !time
-                    ? ""
-                    : params.isOpen
-                      ? dayOfWeek
-                        ? t(
-                            "closesAtTimeWeek",
-                            "Closes at {{time}} {{dayOfWeek}}",
-                            { time, dayOfWeek },
-                          )
-                        : t("closesAtTime", "Closes at {{time}}", { time })
-                      : dayOfWeek
-                        ? t(
-                            "opensAtTimeWeek",
-                            "Opens at {{time}} {{dayOfWeek}}",
-                            { time, dayOfWeek },
-                          )
-                        : t("opensAtTime", "Opens at {{time}}", { time });
+                  const futureText =
+                    !isFuture || !time
+                      ? ""
+                      : params.isOpen
+                        ? dayOfWeek
+                          ? t(
+                              "closesAtTimeWeek",
+                              "Closes at {{time}} {{dayOfWeek}}",
+                              { time, dayOfWeek },
+                            )
+                          : t("closesAtTime", "Closes at {{time}}", { time })
+                        : dayOfWeek
+                          ? t(
+                              "opensAtTimeWeek",
+                              "Opens at {{time}} {{dayOfWeek}}",
+                              { time, dayOfWeek },
+                            )
+                          : t("opensAtTime", "Opens at {{time}}", { time });
                   const currentStatus = isComingSoon
                     ? t("comingSoon", "Coming Soon")
                     : isOpen24Hours
@@ -655,10 +666,9 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="nearby-locations"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <style>
             {`
 .${mapClassName} .mapbox-static-map-shell,
@@ -676,7 +686,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[980px] text-center">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -699,32 +709,28 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Description"
+                displayName={msg("fields.description", "Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  resolvedDescription
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={{
-                      ...props.content.sectionDescription.styles,
-                      color: resolveThemeColor(
-                        props.content.sectionDescription.fontColor,
-                        sectionForegroundColor,
-                      ),
-                    }}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  {
+                    ...props.content.sectionDescription.styles,
+                    color: resolveThemeColor(
+                      props.content.sectionDescription.fontColor,
+                      sectionForegroundColor,
+                    ),
+                  },
+                  "mt-3 text-sm leading-7",
                 )}
               </EntityField>
             </div>
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.95fr)] lg:items-stretch">
               <EntityField
-                displayName="Map Location"
+                displayName={msg("fields.mapLocation", "Map Location")}
                 fieldId={props.map.coordinate.field}
                 constantValueEnabled={props.map.coordinate.constantValueEnabled}
               >
@@ -765,7 +771,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
 
 export const PersonalFinanceNearbyLocations: YextComponentConfig<PersonalFinanceNearbyLocationsProps> =
   {
-    label: "Nearby Locations",
+    label: msg("components.nearbyLocationsSection", "Nearby Locations Section"),
     fields: SectionFields,
     defaultProps: {
       section: {

@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -5,11 +7,10 @@ import {
   createStyledRtfField,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -19,7 +20,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   getAnalyticsScopeHash,
   resolveComponentData,
   VisibilityWrapper,
@@ -98,9 +98,6 @@ type PersonalFinanceHeroProps = {
   section: SectionTheme;
   content: HeroContent;
 };
-
-const typographyScopeClass = "yextPersonalFinanceHeroTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -275,7 +272,10 @@ const SectionFields: YextFields<PersonalFinanceHeroProps> = {
             type: "select",
             options: [
               { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
-              { label: msg("fields.options.filled", "Filled"), value: "filled" },
+              {
+                label: msg("fields.options.filled", "Filled"),
+                value: "filled",
+              },
             ],
           },
           styles: {
@@ -298,7 +298,9 @@ const SectionFields: YextFields<PersonalFinanceHeroProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      statusEyebrow: createEyebrowField(msg("fields.statusEyebrow", "Status Eyebrow")),
+      statusEyebrow: createEyebrowField(
+        msg("fields.statusEyebrow", "Status Eyebrow"),
+      ),
       hours: {
         type: "entityField",
         label: msg("fields.hours", "Hours"),
@@ -431,12 +433,11 @@ export const PersonalFinanceHeroComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceHero${getAnalyticsScopeHash(props.id)}`}
       >
-        <section className={`${typographyScopeClass} overflow-x-clip`}>
-          <style>{typographyScopeCss}</style>
+        <section className="overflow-x-clip">
           <div className="relative isolate overflow-hidden">
             {hasImageSource(resolvedHeroImage) && resolvedHeroImage ? (
               <EntityField
-                displayName="Hero Image"
+                displayName={msg("fields.heroImage", "Hero Image")}
                 fieldId={props.section.heroImage.image.field}
                 constantValueEnabled={
                   props.section.heroImage.image.constantValueEnabled
@@ -478,7 +479,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
               <div className="relative z-[1] flex min-w-0 max-w-[980px] flex-col gap-6 py-2">
                 {heroHours && timezone ? (
                   <EntityField
-                    displayName="Hours Status"
+                    displayName={msg("components.hoursStatus", "Hours Status")}
                     fieldId={props.content.hours.field}
                     constantValueEnabled={
                       props.content.hours.constantValueEnabled
@@ -542,27 +543,28 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                             : "";
                           const isFuture =
                             !isOpen24Hours && !isIndefinitelyClosed;
-                          const futureText = !isFuture || !time
-                            ? ""
-                            : params.isOpen
-                              ? dayOfWeek
-                                ? t(
-                                    "closesAtTimeWeek",
-                                    "Closes at {{time}} {{dayOfWeek}}",
-                                    { time, dayOfWeek },
-                                  )
-                                : t("closesAtTime", "Closes at {{time}}", {
-                                    time,
-                                  })
-                              : dayOfWeek
-                                ? t(
-                                    "opensAtTimeWeek",
-                                    "Opens at {{time}} {{dayOfWeek}}",
-                                    { time, dayOfWeek },
-                                  )
-                                : t("opensAtTime", "Opens at {{time}}", {
-                                    time,
-                                  });
+                          const futureText =
+                            !isFuture || !time
+                              ? ""
+                              : params.isOpen
+                                ? dayOfWeek
+                                  ? t(
+                                      "closesAtTimeWeek",
+                                      "Closes at {{time}} {{dayOfWeek}}",
+                                      { time, dayOfWeek },
+                                    )
+                                  : t("closesAtTime", "Closes at {{time}}", {
+                                      time,
+                                    })
+                                : dayOfWeek
+                                  ? t(
+                                      "opensAtTimeWeek",
+                                      "Opens at {{time}} {{dayOfWeek}}",
+                                      { time, dayOfWeek },
+                                    )
+                                  : t("opensAtTime", "Opens at {{time}}", {
+                                      time,
+                                    });
                           const currentStatus = isComingSoon
                             ? t("comingSoon", "Coming Soon")
                             : isOpen24Hours
@@ -594,7 +596,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                 ) : null}
                 <div className="space-y-4">
                   <EntityField
-                    displayName="Headline"
+                    displayName={msg("fields.headline", "Headline")}
                     fieldId={props.content.headline.text.field}
                     constantValueEnabled={
                       props.content.headline.text.constantValueEnabled
@@ -612,27 +614,20 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                     </h1>
                   </EntityField>
                   <EntityField
-                    displayName="Body"
+                    displayName={msg("fields.body", "Body")}
                     fieldId={props.content.body.text.field}
                     constantValueEnabled={
                       props.content.body.text.constantValueEnabled
                     }
                   >
                     <div className="max-w-[900px] text-[1rem] leading-8 md:text-[1.08rem]">
-                      {React.isValidElement(resolvedBody) ? (
-                        resolvedBody
-                      ) : (
-                        <MaybeRTF
-                          data={normalizeResolvedRichText(resolvedBody)}
-                          richTextStyleOverrides={richTextStyleOverrides}
-                        />
-                      )}
+                      {renderRichText(resolvedBody, richTextStyleOverrides)}
                     </div>
                   </EntityField>
                 </div>
                 <div className="flex flex-wrap gap-5 pt-1">
                   <EntityField
-                    displayName="Primary CTA"
+                    displayName={msg("fields.primaryCta", "Primary CTA")}
                     fieldId={props.content.primaryCta.data.cta.field}
                     constantValueEnabled={
                       props.content.primaryCta.data.cta.constantValueEnabled
@@ -647,7 +642,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                     />
                   </EntityField>
                   <EntityField
-                    displayName="Secondary CTA"
+                    displayName={msg("fields.secondaryCta", "Secondary CTA")}
                     fieldId={props.content.secondaryCta.data.cta.field}
                     constantValueEnabled={
                       props.content.secondaryCta.data.cta.constantValueEnabled

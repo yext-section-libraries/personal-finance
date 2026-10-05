@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import { PuckComponent } from "@puckeditor/core";
@@ -173,7 +175,7 @@ const PersonalFinanceBannerComponent: PuckComponent<
     >
       <EntityField
         constantValueEnabled={data.text.constantValueEnabled}
-        displayName="Banner Text"
+        displayName={msg("fields.bannerText", "Banner Text")}
         fieldId={data.text.field}
       >
         {renderRichText(resolvedText, richTextStyleOverrides)}
@@ -187,7 +189,7 @@ const PersonalFinanceBannerComponent: PuckComponent<
  */
 export const PersonalFinanceBanner: YextComponentConfig<PersonalFinanceBannerProps> =
   {
-    label: "Banner",
+    label: msg("components.bannerSection", "Banner Section"),
     fields: PersonalFinanceBannerFields,
     defaultProps: {
       data: {

@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -8,9 +10,8 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   createTextField,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -23,7 +24,6 @@ import {
   Background,
   EntityField,
   Image,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
@@ -96,9 +96,6 @@ type PersonalFinancePhotoGalleryProps = {
   gallerySurfaceBackgroundColor: ThemeColor;
   galleryStyles: GalleryStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinancePhotoGalleryTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultImageStyle: StyledImageValue = {
   borderRadius: "default",
@@ -241,13 +238,20 @@ const GalleryFields: YextFields<PersonalFinancePhotoGalleryProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.sectionDescription", "Section Description")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
+      sectionDescription: createStyledRtfField(
+        msg("fields.sectionDescription", "Section Description"),
+      ),
       photos: galleryPhotoSource.field,
     },
   },
   gallerySurfaceBackgroundColor: {
-    label: msg("fields.gallerySurfaceBackgroundColor", "Gallery Surface Background Color"),
+    label: msg(
+      "fields.gallerySurfaceBackgroundColor",
+      "Gallery Surface Background Color",
+    ),
     type: "basicSelector",
     options: "BACKGROUND_COLOR",
   },
@@ -306,14 +310,13 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -338,26 +341,22 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  resolvedDescription
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={descriptionOverrides}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  descriptionOverrides,
+                  "mt-3 text-sm leading-7",
                 )}
               </EntityField>
             </div>
             <div className="grid justify-center gap-5 md:grid-cols-2 xl:grid-cols-4">
               <EntityField
-                displayName="Photos"
+                displayName={msg("fields.photos", "Photos")}
                 fieldId={props.content.photos.field}
                 constantValueEnabled={props.content.photos.constantValueEnabled}
               >
@@ -441,7 +440,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
 
 export const PersonalFinancePhotoGallery: YextComponentConfig<PersonalFinancePhotoGalleryProps> =
   {
-    label: "Photo Gallery",
+    label: msg("components.photoGallerySection", "Photo Gallery Section"),
     fields: GalleryFields,
     defaultProps: {
       section: {

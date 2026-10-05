@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -5,11 +7,10 @@ import {
   createStyledRtfField,
   createStyledTextDefault,
   createStyledTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -20,7 +21,6 @@ import {
   Background,
   EntityField,
   MapboxStaticMapComponent,
-  MaybeRTF,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
   resolveComponentData,
@@ -78,9 +78,6 @@ type PersonalFinanceStaticMapProps = {
   map: StaticMapField;
 };
 
-const typographyScopeClass = "yextPersonalFinanceStaticMapTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
-
 const StaticMapFields: YextFields<PersonalFinanceStaticMapProps> = {
   section: {
     label: msg("fields.section", "Section"),
@@ -105,8 +102,12 @@ const StaticMapFields: YextFields<PersonalFinanceStaticMapProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.sectionDescription", "Section Description")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
+      sectionDescription: createStyledRtfField(
+        msg("fields.sectionDescription", "Section Description"),
+      ),
     },
   },
   map: {
@@ -192,14 +193,13 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -224,25 +224,21 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  resolvedDescription
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={sectionDescriptionStyles}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  sectionDescriptionStyles,
+                  "mt-3 text-sm leading-7",
                 )}
               </EntityField>
             </div>
             <EntityField
-              displayName="Map Location"
+              displayName={msg("fields.mapLocation", "Map Location")}
               fieldId={props.map.coordinate.field}
               constantValueEnabled={props.map.coordinate.constantValueEnabled}
             >
@@ -281,7 +277,7 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
 
 export const PersonalFinanceStaticMap: YextComponentConfig<PersonalFinanceStaticMapProps> =
   {
-    label: "Static Map",
+    label: msg("components.staticMapSection", "Static Map Section"),
     fields: StaticMapFields,
     defaultProps: {
       section: {

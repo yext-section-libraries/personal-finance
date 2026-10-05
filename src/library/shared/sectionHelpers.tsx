@@ -163,20 +163,6 @@ export const resolvePlainText = (
   return fallback;
 };
 
-export const normalizeResolvedRichText = (
-  value: string | React.ReactElement | TranslatableRichText | undefined,
-): string | ReturnType<typeof getDefaultRTF> | undefined => {
-  if (!value || typeof value === "string" || React.isValidElement(value)) {
-    return typeof value === "string" ? value : undefined;
-  }
-
-  if ("defaultValue" in value) {
-    return value.defaultValue;
-  }
-
-  return value as ReturnType<typeof getDefaultRTF>;
-};
-
 export const textStyleToCss = (
   styles?: Partial<StyledTextValue>,
 ): React.CSSProperties => ({
@@ -220,11 +206,11 @@ export const hasImageSource = (
 
   return Boolean(
     "image" in image &&
-      image.image &&
-      typeof image.image === "object" &&
-      "url" in image.image &&
-      typeof image.image.url === "string" &&
-      image.image.url.trim(),
+    image.image &&
+    typeof image.image === "object" &&
+    "url" in image.image &&
+    typeof image.image.url === "string" &&
+    image.image.url.trim(),
   );
 };
 
@@ -250,37 +236,77 @@ export const renderRichText = (
   richTextStyleOverrides?: MaybeRTFProps["richTextStyleOverrides"],
   className?: string,
 ): React.ReactNode => {
+  const { color: colorOverride, ...styleOverrides } =
+    richTextStyleOverrides ?? {};
+  const textStyle = textStyleToCss(styleOverrides);
+  const color = getThemeColorCssValue(colorOverride);
+  const bodyVariables = Object.fromEntries(
+    Object.entries(textStyle)
+      .filter(([, styleValue]) => styleValue !== undefined)
+      .flatMap(([property, styleValue]) => [
+        [`--personal-finance-body-${property}`, styleValue],
+        [`--${property}-body-${property}`, styleValue],
+      ]),
+  ) as React.CSSProperties;
+  const wrapperStyle = {
+    ...textStyle,
+    ...bodyVariables,
+    ...(color ? { color } : {}),
+  };
+
   if (React.isValidElement(value)) {
-    if (!richTextStyleOverrides && !className) {
-      return value;
+    if (value.type === MaybeRTF) {
+      const element = value as React.ReactElement<MaybeRTFProps>;
+      return React.cloneElement(element, {
+        className:
+          [element.props.className, className].filter(Boolean).join(" ") ||
+          undefined,
+        richTextStyleOverrides: {
+          ...element.props.richTextStyleOverrides,
+          ...richTextStyleOverrides,
+        },
+        style: { ...element.props.style, ...wrapperStyle },
+      });
     }
 
     const element = value as React.ReactElement<{
       className?: string;
       style?: React.CSSProperties;
+      children?: React.ReactNode;
     }>;
-    const resolvedColor = getThemeColorCssValue(
-      richTextStyleOverrides?.color,
-    );
-    const { color: _color, ...styleOverrides } =
-      richTextStyleOverrides ?? {};
+    const child = element.props.children;
+    const isMaybeRtfChild =
+      React.isValidElement(child) && child.type === MaybeRTF;
+    const isRtfWrapperChild =
+      React.isValidElement<{ className?: string; style?: React.CSSProperties }>(
+        child,
+      ) && child.props.className?.includes("rtf-wrapper");
 
     return React.cloneElement(element, {
       className:
         [element.props.className, className].filter(Boolean).join(" ") ||
         undefined,
-      style: {
-        ...element.props.style,
-        ...styleOverrides,
-        ...(resolvedColor ? { color: resolvedColor } : {}),
-      },
+      style: { ...element.props.style, ...wrapperStyle },
+      children: isMaybeRtfChild
+        ? renderRichText(child, richTextStyleOverrides)
+        : isRtfWrapperChild
+          ? React.cloneElement(child, {
+              style: { ...child.props.style, ...wrapperStyle },
+            })
+          : child,
     });
   }
 
+  const normalizedValue =
+    value && typeof value === "object" && "defaultValue" in value
+      ? value.defaultValue
+      : value;
   const data =
-    typeof value === "string" ||
-    (typeof value === "object" && value !== null && "html" in value)
-      ? (value as RichText | string)
+    typeof normalizedValue === "string" ||
+    (typeof normalizedValue === "object" &&
+      normalizedValue !== null &&
+      "html" in normalizedValue)
+      ? (normalizedValue as RichText | string)
       : undefined;
 
   return (
@@ -288,6 +314,7 @@ export const renderRichText = (
       className={className}
       data={data}
       richTextStyleOverrides={richTextStyleOverrides}
+      style={wrapperStyle}
     />
   );
 };
@@ -307,40 +334,3 @@ export const aspectRatioOptions = [
   { label: "3:4", value: 0.75 },
   { label: "2:3", value: 0.67 },
 ];
-
-export const getScopedTypographyCss = (scopeClass: string): string => `
-.${scopeClass} p,
-.${scopeClass} li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-${[1, 2, 3, 4, 5, 6]
-  .map(
-    (level) => `.${scopeClass} h${level} {
-  font-family: var(--fontFamily-h${level}-fontFamily);
-  font-size: var(--fontSize-h${level}-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h${level}-fontWeight);
-  font-style: var(--fontStyle-h${level}-fontStyle);
-  text-transform: var(--textTransform-h${level}-textTransform);
-}`,
-  )
-  .join("\n")}
-.${scopeClass} a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  line-height: 1.5;
-  text-decoration: none;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
-.${scopeClass} a:hover {
-  text-decoration: underline;
-}
-`;

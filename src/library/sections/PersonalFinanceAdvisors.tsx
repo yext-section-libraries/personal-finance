@@ -1,10 +1,11 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
   createEntityText,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
   resolvePlainText,
   resolveThemeColor,
@@ -103,9 +104,6 @@ type PersonalFinanceAdvisorsProps = {
   content: AdvisorsContent;
   styles: AdvisorsStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceAdvisorsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -430,14 +428,13 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="advisors"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -463,7 +460,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
               </EntityField>
             </div>
             <EntityField
-              displayName="Advisors"
+              displayName={msg("fields.advisors", "Advisors")}
               fieldId={props.content.advisors.field}
               constantValueEnabled={props.content.advisors.constantValueEnabled}
             >
@@ -661,7 +658,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
 
 export const PersonalFinanceAdvisors: YextComponentConfig<PersonalFinanceAdvisorsProps> =
   {
-    label: "Team",
+    label: msg("components.teamSection", "Team Section"),
     fields: AdvisorsFields,
     defaultProps: {
       section: {

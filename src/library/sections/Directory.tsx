@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import { Directory as SectionComponent } from "../shared/components/directory/Directory";
 import type { SectionConfig } from "@yext/visual-editor";
 

@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -9,12 +11,11 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   createTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
   type ThemeColorInput,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -23,7 +24,6 @@ import {
   msg,
   Background,
   EntityField,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
@@ -90,9 +90,6 @@ type PersonalFinanceFaqsProps = {
   content: FaqsContent;
   faqStyles: FaqStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceFaqsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const faqItemSource = createItemSource<FaqItem>({
   label: msg("fields.faqs", "FAQs"),
@@ -216,14 +213,13 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="faqs"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -251,7 +247,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
             </div>
             <div className="mx-auto max-w-[980px] divide-y divide-black/10 border-y border-black/10">
               <EntityField
-                displayName="FAQs"
+                displayName={msg("fields.faqs", "FAQs")}
                 fieldId={props.content.items.field}
                 constantValueEnabled={props.content.items.constantValueEnabled}
               >
@@ -312,14 +308,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                         </button>
                         {open ? (
                           <div className="mt-4 max-w-[880px] text-sm leading-7">
-                            {React.isValidElement(resolvedAnswer) ? (
-                              resolvedAnswer
-                            ) : (
-                              <MaybeRTF
-                                data={normalizeResolvedRichText(resolvedAnswer)}
-                                richTextStyleOverrides={answerStyles}
-                              />
-                            )}
+                            {renderRichText(resolvedAnswer, answerStyles)}
                           </div>
                         ) : null}
                       </div>
@@ -337,7 +326,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
 
 export const PersonalFinanceFaqs: YextComponentConfig<PersonalFinanceFaqsProps> =
   {
-    label: "FAQs",
+    label: msg("components.faqsSection", "FAQs Section"),
     fields: SectionFields,
     defaultProps: {
       section: {

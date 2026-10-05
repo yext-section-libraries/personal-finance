@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import { aspectRatioOptions, hasImageSource } from "../shared/sectionHelpers";
@@ -765,7 +767,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
     if (!hasImageSource(iconImage)) {
       return (
         <EntityField
-          displayName="Utility Icon"
+          displayName={msg("fields.utilityIcon", "Utility Icon")}
           fieldId={iconImageProps.image.field}
           constantValueEnabled={iconImageProps.image.constantValueEnabled}
         >
@@ -792,7 +794,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
     if (!iconUrl) {
       return (
         <EntityField
-          displayName="Utility Icon"
+          displayName={msg("fields.utilityIcon", "Utility Icon")}
           fieldId={iconImageProps.image.field}
           constantValueEnabled={iconImageProps.image.constantValueEnabled}
         >
@@ -817,7 +819,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
     return (
       <EntityField
-        displayName="Utility Icon"
+        displayName={msg("fields.utilityIcon", "Utility Icon")}
         fieldId={iconImageProps.image.field}
         constantValueEnabled={iconImageProps.image.constantValueEnabled}
       >
@@ -923,7 +925,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
     const logoContent = (
       <EntityField
-        displayName="Logo Image"
+        displayName={msg("fields.logoImage", "Logo Image")}
         fieldId={props.logoImage.image.field}
         constantValueEnabled={props.logoImage.image.constantValueEnabled}
       >
@@ -939,7 +941,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
     return logoUrl ? (
       <EntityField
-        displayName="Logo Link"
+        displayName={msg("fields.logoLink", "Logo Link")}
         fieldId={props.logoImage.url.field}
         constantValueEnabled={props.logoImage.url.constantValueEnabled}
       >
@@ -1041,7 +1043,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
           {showCta && topBarCtaItem ? (
             <div className="hidden items-center gap-3 md:flex">
               <EntityField
-                displayName="Responsive Top Bar CTA"
+                displayName={msg("fields.responsiveTopBarCta", "Responsive Top Bar CTA")}
                 fieldId={topBarCtaItem.cta.data.cta.field}
                 constantValueEnabled={
                   topBarCtaItem.cta.data.cta.constantValueEnabled
@@ -1202,7 +1204,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
 export const PersonalFinanceHeader: YextComponentConfig<PersonalFinanceHeaderProps> =
   {
-    label: "Header",
+    label: msg("components.header", "Header"),
     fields: PersonalFinanceHeaderFields,
     defaultProps: {
       variant: "utilityTopRow",

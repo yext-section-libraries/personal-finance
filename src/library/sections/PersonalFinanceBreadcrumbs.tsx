@@ -1,10 +1,11 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
   createEntityText,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -74,9 +75,6 @@ type PersonalFinanceBreadcrumbsProps = {
   section: SectionTheme;
   content: BreadcrumbContent;
 };
-
-const typographyScopeClass = "yextPersonalFinanceBreadcrumbsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const BreadcrumbFields: YextFields<PersonalFinanceBreadcrumbsProps> = {
   section: {
@@ -190,10 +188,9 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-4`}
+          className="overflow-x-clip py-4"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             {renderedItems.length ? (
               <ol className="flex flex-wrap items-center gap-y-2 text-[0.95rem]">
@@ -217,7 +214,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
                       </span>
                     ) : item.isRoot ? (
                       <EntityField
-                        displayName="Root Label"
+                        displayName={msg("fields.rootLabel", "Root Label")}
                         fieldId={props.content.rootLabel.text.field}
                         constantValueEnabled={
                           props.content.rootLabel.text.constantValueEnabled
@@ -274,7 +271,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
 
 export const PersonalFinanceBreadcrumbs: YextComponentConfig<PersonalFinanceBreadcrumbsProps> =
   {
-    label: "Breadcrumbs",
+    label: msg("components.breadcrumbsSection", "Breadcrumbs Section"),
     fields: BreadcrumbFields,
     defaultProps: {
       section: {

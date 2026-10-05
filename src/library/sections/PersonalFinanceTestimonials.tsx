@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -9,11 +11,10 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   createTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -27,7 +28,6 @@ import {
   getAnalyticsScopeHash,
   getDefaultRTF,
   getSurfaceColorStyle,
-  MaybeRTF,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -81,9 +81,6 @@ type PersonalFinanceTestimonialsProps = {
   content: TestimonialsContent;
   testimonialStyles: TestimonialStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceTestimonialsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const testimonialSource = createItemSource<TestimonialItem>({
   label: msg("fields.testimonials", "Testimonials"),
@@ -141,7 +138,9 @@ const TestimonialsFields: YextFields<PersonalFinanceTestimonialsProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
       testimonials: testimonialSource.field,
     },
   },
@@ -184,20 +183,13 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const quoteContent = React.isValidElement(resolvedQuote) ? (
-    resolvedQuote
-  ) : (
-    <MaybeRTF
-      data={normalizeResolvedRichText(resolvedQuote)}
-      richTextStyleOverrides={{
-        ...props.testimonialStyles.quote.styles,
-        color: resolveThemeColor(
-          props.testimonialStyles.quote.fontColor,
-          sectionForeground,
-        ),
-      }}
-    />
-  );
+  const quoteContent = renderRichText(resolvedQuote, {
+    ...props.testimonialStyles.quote.styles,
+    color: resolveThemeColor(
+      props.testimonialStyles.quote.fontColor,
+      sectionForeground,
+    ),
+  });
 
   return (
     <VisibilityWrapper
@@ -211,14 +203,13 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="testimonials"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto max-w-[780px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -299,7 +290,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 →
               </button>
               <EntityField
-                displayName="Testimonials"
+                displayName={msg("fields.testimonials", "Testimonials")}
                 fieldId={props.content.testimonials.field}
                 constantValueEnabled={
                   props.content.testimonials.constantValueEnabled
@@ -385,7 +376,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
 
 export const PersonalFinanceTestimonials: YextComponentConfig<PersonalFinanceTestimonialsProps> =
   {
-    label: "Testimonials",
+    label: msg("components.testimonialsSection", "Testimonials Section"),
     fields: TestimonialsFields,
     defaultProps: {
       section: {

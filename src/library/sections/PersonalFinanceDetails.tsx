@@ -1,10 +1,11 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
   createStyledTextDefault,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   resolvePlainText,
   resolveThemeColor,
 } from "../shared/sectionHelpers";
@@ -134,9 +135,6 @@ type PersonalFinanceDetailsProps = {
   content: DetailsContent;
   styles: DetailsStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceDetailsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -712,18 +710,18 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceDetails${getAnalyticsScopeHash(props.id)}`}
       >
-        <style>{typographyScopeCss}</style>
+
         <Background
           as="section"
           background={props.section.backgroundColor}
           id="locations"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -754,7 +752,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 style={cardStyle}
               >
                 <EntityField
-                  displayName="Primary Card Heading"
+                  displayName={msg("fields.primaryCardHeading", "Primary Card Heading")}
                   fieldId={props.content.infoCardTitle.text.field}
                   constantValueEnabled={
                     props.content.infoCardTitle.text.constantValueEnabled
@@ -780,7 +778,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   {resolvedAddress ? (
                     <div>
                       <EntityField
-                        displayName="Address Label"
+                        displayName={msg("fields.addressLabel", "Address Label")}
                         fieldId={props.content.addressLabel.text.field}
                         constantValueEnabled={
                           props.content.addressLabel.text.constantValueEnabled
@@ -803,7 +801,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         </div>
                       </EntityField>
                       <EntityField
-                        displayName="Address"
+                        displayName={msg("fields.address", "Address")}
                         fieldId={props.content.address.address.field}
                         constantValueEnabled={
                           props.content.address.address.constantValueEnabled
@@ -840,7 +838,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                           return (
                             <EntityField
                               key={`${item.label}-${item.originalNumber}`}
-                              displayName="Phone Number"
+                              displayName={msg("fields.phoneNumber", "Phone Number")}
                               fieldId={item.fieldId}
                               constantValueEnabled={item.constantValueEnabled}
                             >
@@ -864,7 +862,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   {resolvedEmails.length ? (
                     <div>
                       <EntityField
-                        displayName="Emails Label"
+                        displayName={msg("fields.emailsLabel", "Emails Label")}
                         fieldId={props.content.emailsLabel.text.field}
                         constantValueEnabled={
                           props.content.emailsLabel.text.constantValueEnabled
@@ -887,7 +885,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         </div>
                       </EntityField>
                       <EntityField
-                        displayName="Emails"
+                        displayName={msg("fields.emails", "Emails")}
                         fieldId={props.content.emails.list.field}
                         constantValueEnabled={
                           props.content.emails.list.constantValueEnabled
@@ -913,7 +911,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <EntityField
-                    displayName="Primary Action"
+                    displayName={msg("fields.primaryAction", "Primary Action")}
                     fieldId={props.content.primaryAction.data.cta.field}
                     constantValueEnabled={
                       props.content.primaryAction.data.cta.constantValueEnabled
@@ -928,7 +926,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     />
                   </EntityField>
                   <EntityField
-                    displayName="Secondary Action"
+                    displayName={msg("fields.secondaryAction", "Secondary Action")}
                     fieldId={props.content.secondaryAction.data.cta.field}
                     constantValueEnabled={
                       props.content.secondaryAction.data.cta
@@ -953,7 +951,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 style={cardStyle}
               >
                 <EntityField
-                  displayName="Hours Heading"
+                  displayName={msg("fields.hoursHeading", "Hours Heading")}
                   fieldId={props.content.hoursTitle.text.field}
                   constantValueEnabled={props.content.hoursTitle.text.constantValueEnabled}
                 >
@@ -975,7 +973,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 </EntityField>
                 <HoursTableBlock
                   value={props.content.hoursData}
-                  displayName="Hours"
+                  displayName={msg("fields.hours", "Hours")}
                   fallbackClassName="text-sm leading-6 [&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
                   textColor={bodyForeground}
                 />
@@ -999,7 +997,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       type="button"
                     >
                       <EntityField
-                        displayName="Secondary Hours Heading"
+                        displayName={msg("fields.secondaryHoursHeading", "Secondary Hours Heading")}
                         fieldId={props.content.hoursFooterText.text.field}
                         constantValueEnabled={
                           props.content.hoursFooterText.text.constantValueEnabled
@@ -1029,7 +1027,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         {secondaryHours ? (
                           <HoursTableBlock
                             value={props.content.secondaryHoursData}
-                            displayName="Secondary Hours"
+                            displayName={msg("fields.secondaryHours", "Secondary Hours")}
                             fallbackClassName="text-sm leading-6 [&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
                             textColor={bodyForeground}
                           />
@@ -1054,7 +1052,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 style={cardStyle}
               >
                 <EntityField
-                  displayName="Secondary Card Heading"
+                  displayName={msg("fields.secondaryCardHeading", "Secondary Card Heading")}
                   fieldId={props.content.clientServicesTitle.text.field}
                   constantValueEnabled={
                     props.content.clientServicesTitle.text.constantValueEnabled
@@ -1079,7 +1077,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 <div className="space-y-5 text-sm leading-6" style={{ color: bodyForeground }}>
                   <div>
                     <EntityField
-                      displayName="Languages Label"
+                      displayName={msg("fields.languagesLabel", "Languages Label")}
                       fieldId={props.content.languagesLabel.text.field}
                       constantValueEnabled={
                         props.content.languagesLabel.text.constantValueEnabled
@@ -1102,7 +1100,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       </div>
                     </EntityField>
                     <EntityField
-                      displayName="Languages Value"
+                      displayName={msg("fields.languagesValue", "Languages Value")}
                       fieldId={props.content.languagesValue.text.field}
                       constantValueEnabled={
                         props.content.languagesValue.text.constantValueEnabled
@@ -1121,7 +1119,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   </div>
                   <div>
                     <EntityField
-                      displayName="Accessibility Label"
+                      displayName={msg("fields.accessibilityLabel", "Accessibility Label")}
                       fieldId={props.content.accessibilityLabel.text.field}
                       constantValueEnabled={
                         props.content.accessibilityLabel.text.constantValueEnabled
@@ -1144,7 +1142,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       </div>
                     </EntityField>
                     <EntityField
-                      displayName="Accessibility Value"
+                      displayName={msg("fields.accessibilityValue", "Accessibility Value")}
                       fieldId={props.content.accessibilityValue.text.field}
                       constantValueEnabled={
                         props.content.accessibilityValue.text.constantValueEnabled
@@ -1163,7 +1161,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   </div>
                   <div>
                     <EntityField
-                      displayName="Services Label"
+                      displayName={msg("fields.servicesLabel", "Services Label")}
                       fieldId={props.content.servicesLabel.text.field}
                       constantValueEnabled={
                         props.content.servicesLabel.text.constantValueEnabled
@@ -1186,7 +1184,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       </div>
                     </EntityField>
                     <EntityField
-                      displayName="Service Items"
+                      displayName={msg("fields.serviceItems", "Service Items")}
                       fieldId={props.content.serviceItems.text.field}
                       constantValueEnabled={
                         props.content.serviceItems.text.constantValueEnabled
@@ -1218,7 +1216,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
 
 export const PersonalFinanceDetails: YextComponentConfig<PersonalFinanceDetailsProps> =
   {
-    label: "Location Details",
+    label: msg("components.locationDetailsSection", "Location Details Section"),
     fields: SectionFields,
     defaultProps: {
       section: {

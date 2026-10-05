@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -11,9 +13,8 @@ import {
   createStyledTextField,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -27,7 +28,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
@@ -107,9 +107,6 @@ type PersonalFinanceResourcesProps = {
   content: ResourcesContent;
   styles: ResourcesStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceResourcesTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -357,7 +354,9 @@ const ResourcesFields: YextFields<PersonalFinanceResourcesProps> = {
     objectFields: {
       image: createImageStyleField(msg("fields.image", "Image")),
       title: createStyledTextField(msg("fields.title", "Title")),
-      description: createStyledRtfField(msg("fields.description", "Description")),
+      description: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
     },
   },
 };
@@ -432,13 +431,12 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="disclosures"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <EntityField
-              displayName="Resource Cards"
+              displayName={msg("fields.resourceCards", "Resource Cards")}
               fieldId={props.content.cards.field}
               constantValueEnabled={props.content.cards.constantValueEnabled}
             >
@@ -548,16 +546,10 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                           {title}
                         </h3>
                         <>
-                          {React.isValidElement(resolvedDescription) ? (
-                            resolvedDescription
-                          ) : (
-                            <MaybeRTF
-                              data={normalizeResolvedRichText(
-                                resolvedDescription,
-                              )}
-                              className="mt-3 max-w-[560px] text-sm leading-7"
-                              richTextStyleOverrides={descriptionStyles}
-                            />
+                          {renderRichText(
+                            resolvedDescription,
+                            descriptionStyles,
+                            "mt-3 max-w-[560px] text-sm leading-7",
                           )}
                         </>
                         {card.primaryCta ? (
@@ -591,7 +583,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
 
 export const PersonalFinanceResources: YextComponentConfig<PersonalFinanceResourcesProps> =
   {
-    label: "Resources",
+    label: msg("components.resourcesSection", "Resources Section"),
     fields: ResourcesFields,
     defaultProps: {
       section: {

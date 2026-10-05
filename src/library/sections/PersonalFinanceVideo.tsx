@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -5,12 +7,11 @@ import {
   createRichTextField,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -23,7 +24,6 @@ import {
   getDefaultRTF,
   getSurfaceColorStyle,
   Image,
-  MaybeRTF,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -85,9 +85,6 @@ type PersonalFinanceVideoProps = {
   section: SectionTheme;
   content: VideoContent;
 };
-
-const typographyScopeClass = "yextPersonalFinanceVideoTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultImageStyle: StyledImageValue = {
   borderRadius: "default",
@@ -236,7 +233,10 @@ const VideoFields: YextFields<PersonalFinanceVideoProps> = {
             type: "select",
             options: [
               { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
-              { label: msg("fields.options.filled", "Filled"), value: "filled" },
+              {
+                label: msg("fields.options.filled", "Filled"),
+                value: "filled",
+              },
             ],
           },
           styles: {
@@ -347,23 +347,15 @@ export const PersonalFinanceVideoComponent: PuckComponent<
         ? "cover"
         : "contain",
   };
-  const descriptionContent = React.isValidElement(resolvedDescription) ? (
-    resolvedDescription
-  ) : (
-    <MaybeRTF
-      data={normalizeResolvedRichText(resolvedDescription)}
-      className="mt-3 text-sm leading-7"
-      richTextStyleOverrides={descriptionOverrides}
-    />
+  const descriptionContent = renderRichText(
+    resolvedDescription,
+    descriptionOverrides,
+    "mt-3 text-sm leading-7",
   );
-  const captionContent = React.isValidElement(resolvedCaption) ? (
-    resolvedCaption
-  ) : (
-    <MaybeRTF
-      data={normalizeResolvedRichText(resolvedCaption)}
-      className="px-6 py-5 text-sm leading-7"
-      richTextStyleOverrides={captionOverrides}
-    />
+  const captionContent = renderRichText(
+    resolvedCaption,
+    captionOverrides,
+    "px-6 py-5 text-sm leading-7",
   );
   const videoUrl = props.content.videoUrl.trim();
 
@@ -378,14 +370,13 @@ export const PersonalFinanceVideoComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-11"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <div className="mx-auto max-w-[1410px] px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
@@ -407,7 +398,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
@@ -440,7 +431,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
               ) : hasImageSource(posterImage) && posterImage ? (
                 <figure>
                   <EntityField
-                    displayName="Poster Image"
+                    displayName={msg("fields.posterImage", "Poster Image")}
                     fieldId={props.content.posterImage.image.field}
                     constantValueEnabled={
                       props.content.posterImage.image.constantValueEnabled
@@ -455,7 +446,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                     </div>
                   </EntityField>
                   <EntityField
-                    displayName="Poster Caption"
+                    displayName={msg("fields.posterCaption", "Poster Caption")}
                     fieldId={props.content.posterCaption.text.field}
                     constantValueEnabled={
                       props.content.posterCaption.text.constantValueEnabled
@@ -475,7 +466,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
 
 export const PersonalFinanceVideo: YextComponentConfig<PersonalFinanceVideoProps> =
   {
-    label: "Video",
+    label: msg("components.videoSection", "Video Section"),
     fields: VideoFields,
     defaultProps: {
       section: {
