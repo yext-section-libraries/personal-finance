@@ -379,7 +379,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
     streamDocument,
   );
   const cardSurfaceBackgroundColor =
-    cardSurfaceStyle?.backgroundColor ?? "#080e16";
+    cardSurfaceStyle?.backgroundColor ?? "var(--colors-palette-primary)";
   const cardSurfaceForegroundColor = cardSurfaceStyle?.color ?? "#ffffff";
   const cardSurfaceOverlay = withAlpha(cardSurfaceBackgroundColor, 0.92);
   type ResolvedResourceCard = (typeof cards)[number];
@@ -431,10 +431,10 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="disclosures"
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <EntityField
               displayName={msg("fields.resourceCards", "Resource Cards")}
               fieldId={props.content.cards.field}
@@ -488,7 +488,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                     ...props.styles.description.styles,
                     color: resolveThemeColor(
                       props.styles.description.fontColor,
-                      "#f2f5f7",
+                      cardSurfaceForegroundColor,
                     ),
                   };
                   const resolvedDescription = resolveComponentData(
@@ -514,7 +514,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                       as="div"
                       background={props.content.cardSurface.backgroundColor}
                       key={`${title}-${index}`}
-                      className="relative grid w-full self-start overflow-hidden rounded-[16px] shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                      className="relative grid w-full self-start overflow-hidden rounded-image-borderRadius shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                       style={cardSurfaceStyle}
                     >
                       {hasImageSource(image) && image ? (
@@ -532,7 +532,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                       <div
                         className="pointer-events-none col-start-1 row-start-1 min-h-[280px] h-full"
                         style={{
-                          backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(8,14,22,0.12) 34%, ${cardSurfaceOverlay} 100%)`,
+                          backgroundImage: `linear-gradient(180deg, transparent 0%, ${withAlpha(cardSurfaceBackgroundColor, 0.12)} 34%, ${cardSurfaceOverlay} 100%)`,
                         }}
                       />
                       <div className="col-start-1 row-start-1 flex min-h-[280px] flex-col justify-end p-6 md:min-h-0">
@@ -549,13 +549,13 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                           {renderRichText(
                             resolvedDescription,
                             descriptionStyles,
-                            "mt-3 max-w-[560px] text-sm leading-7",
+                            "mt-3 max-w-[560px]",
                           )}
                         </>
                         {card.primaryCta ? (
                           <div className="mt-5">
                             <EntityField
-                              displayName={`Resource ${index + 1} Primary CTA`}
+                              displayName={msg("fields.primaryCta", "Primary CTA")}
                               fieldId={primaryCtaField?.data.cta.field}
                               constantValueEnabled={
                                 primaryCtaField?.data.cta.constantValueEnabled
@@ -563,7 +563,6 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                             >
                               <ComprehensiveCTA
                                 value={rehydrateCta(card.primaryCta)}
-                                className="inline-flex min-h-[42px] items-center px-6 py-2.5"
                               />
                             </EntityField>
                           </div>

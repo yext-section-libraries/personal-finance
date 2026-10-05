@@ -203,10 +203,10 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="testimonials"
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto max-w-[780px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -238,8 +238,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               <div className="mb-6 flex justify-center gap-3 md:hidden">
                 <button
                   aria-label={t("previousTestimonial", "Previous testimonial")}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-xl"
-                  style={{ color: "#555555" }}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-current/10 text-xl"
                   onClick={() =>
                     setActiveIndex((value) =>
                       value === 0 ? testimonialCount - 1 : value - 1,
@@ -251,8 +250,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 </button>
                 <button
                   aria-label={t("nextTestimonial", "Next testimonial")}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-xl"
-                  style={{ color: "#555555" }}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-current/10 text-xl"
                   onClick={() =>
                     setActiveIndex((value) =>
                       value === testimonialCount - 1 ? 0 : value + 1,
@@ -265,8 +263,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               </div>
               <button
                 aria-label={t("previousTestimonial", "Previous testimonial")}
-                className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-xl md:flex"
-                style={{ color: "#555555" }}
+                className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-current/10 text-xl md:flex"
                 onClick={() =>
                   setActiveIndex((value) =>
                     value === 0 ? testimonialCount - 1 : value - 1,
@@ -278,8 +275,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               </button>
               <button
                 aria-label={t("nextTestimonial", "Next testimonial")}
-                className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-xl md:flex"
-                style={{ color: "#555555" }}
+                className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-current/10 text-xl md:flex"
                 onClick={() =>
                   setActiveIndex((value) =>
                     value === testimonialCount - 1 ? 0 : value + 1,
@@ -348,18 +344,16 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                   <button
                     key={`${resolvePlainText(testimonial.name, locale, streamDocument, `testimonial-${index}`)}-${index}`}
                     aria-label={`Show testimonial ${index + 1}`}
-                    className={`h-2.5 w-2.5 rounded-full ${
-                      index === activeIndex ? "" : "bg-[#b6b6bc]"
-                    }`}
+                    className="h-2.5 w-2.5 rounded-full"
                     style={
                       index === activeIndex
                         ? {
                             backgroundColor: resolveThemeColor(
                               props.testimonialStyles.name.fontColor,
-                              "#1a1a1a",
+                              sectionForeground,
                             ),
                           }
-                        : undefined
+                        : { backgroundColor: sectionForeground, opacity: 0.3 }
                     }
                     onClick={() => setActiveIndex(index)}
                     type="button"

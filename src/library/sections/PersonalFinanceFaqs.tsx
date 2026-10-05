@@ -213,10 +213,10 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="faqs"
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
                 displayName={msg("fields.heading", "Heading")}
@@ -232,7 +232,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor ??
                         sectionForeground,
-                      "#1a1a1a",
+                      "#000000",
                     ),
                   }}
                 >
@@ -245,7 +245,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                 </h2>
               </EntityField>
             </div>
-            <div className="mx-auto max-w-[980px] divide-y divide-black/10 border-y border-black/10">
+            <div className="mx-auto max-w-[980px] divide-y divide-current/10 border-y border-current/10">
               <EntityField
                 displayName={msg("fields.faqs", "FAQs")}
                 fieldId={props.content.items.field}
@@ -260,7 +260,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                       )
                         ? sectionForeground
                         : props.faqStyles.question.fontColor,
-                      "#1a1a1a",
+                      "#000000",
                     );
                     const answerStyles = {
                       ...props.faqStyles.answer.styles,

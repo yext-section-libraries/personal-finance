@@ -261,8 +261,6 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
       },
       button: {
         ...defaultButtonStyle,
-        fontSize: "14px",
-        fontWeight: "500",
       },
     },
   };
@@ -409,7 +407,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const cardStyle = getSurfaceColorStyle(
     props.section.cardBackgroundColor,
     streamDocument,
@@ -428,10 +426,10 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="advisors"
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -529,13 +527,13 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                       as="div"
                       background={props.section.cardBackgroundColor}
                       key={`${name}-${index}`}
-                      className="min-w-0 w-full rounded-[14px] border border-black/5 p-6"
+                      className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6"
                       style={cardStyle}
                     >
                       <div className="mb-[18px] flex min-w-0 items-center gap-4">
                         {hasImageSource(image) ? (
                           <div
-                            className="h-[92px] w-[92px] rounded-full"
+                            className="h-[92px] w-[92px] overflow-hidden rounded-image-borderRadius"
                             style={imageWrapperStyle}
                           >
                             <Image
@@ -577,7 +575,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                           </p>
                         </div>
                       </div>
-                      <dl className="space-y-3 border-t border-black/10 pt-[18px] text-sm leading-6">
+                      <dl className="space-y-3 border-t border-current/10 pt-[18px]">
                         {advisorFacts.map(({ fact, styles }, factIndex) => (
                           <div key={factIndex}>
                             <dt
@@ -620,28 +618,13 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                       </dl>
                       {advisorCta ? (
                         <div className="mt-4">
-                          {(() => {
-                            const ctaVariant = advisorCta.styles?.variant;
-
-                            return (
-                              <EntityField
-                                displayName={`Advisor ${index + 1} CTA`}
-                                fieldId={advisorCtaField?.field}
-                                constantValueEnabled={
-                                  advisorCtaField?.constantValueEnabled
-                                }
-                              >
-                                <ComprehensiveCTA
-                                  value={advisorCta}
-                                  className={
-                                    ctaVariant === "link"
-                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 shadow-none"
-                                      : "inline-flex min-h-[44px] items-center justify-center px-5 py-2.5"
-                                  }
-                                />
-                              </EntityField>
-                            );
-                          })()}
+                          <EntityField
+                            displayName={msg("fields.cta", "CTA")}
+                            fieldId={advisorCtaField?.field}
+                            constantValueEnabled={advisorCtaField?.constantValueEnabled}
+                          >
+                            <ComprehensiveCTA value={advisorCta} />
+                          </EntityField>
                         </div>
                       ) : null}
                     </Background>

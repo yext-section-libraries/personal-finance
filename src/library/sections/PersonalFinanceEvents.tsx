@@ -253,8 +253,6 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
       },
       button: {
         ...defaultButtonStyle,
-        fontSize: "14px",
-        fontWeight: "600",
       },
     },
   };
@@ -385,7 +383,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const cardStyle = getSurfaceColorStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
@@ -408,10 +406,10 @@ export const PersonalFinanceEventsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -454,7 +452,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                       sectionForegroundColor,
                     ),
                   },
-                  "mt-3 text-sm leading-7",
+                  "mt-3",
                 )}
               </EntityField>
             </div>
@@ -530,11 +528,14 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                       as="div"
                       background={props.styles.cardBackgroundColor}
                       key={`${title}-${index}`}
-                      className="overflow-hidden rounded-[16px] border border-black/5 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                      className="overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                       style={cardStyle}
                     >
                       {hasImageSource(image) && image ? (
-                        <div style={imageWrapperStyle}>
+                        <div
+                          className="overflow-hidden rounded-image-borderRadius"
+                          style={imageWrapperStyle}
+                        >
                           <Image
                             image={image}
                             className="w-full"
@@ -577,12 +578,12 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                           {
                             ...descriptionStyles,
                           },
-                          "mt-3 text-sm leading-7",
+                          "mt-3",
                         )}
                         {event.cta ? (
                           <div className="mt-5">
                             <EntityField
-                              displayName={`Event ${index + 1} CTA`}
+                              displayName={msg("fields.cta", "CTA")}
                               fieldId={eventCtaField?.data.cta.field}
                               constantValueEnabled={
                                 eventCtaField?.data.cta.constantValueEnabled
@@ -592,7 +593,6 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                                 value={
                                   event.cta as Partial<ComprehensiveCTAValue>
                                 }
-                                className="min-h-0 justify-start border-0 bg-transparent px-0 py-0 shadow-none"
                               />
                             </EntityField>
                           </div>

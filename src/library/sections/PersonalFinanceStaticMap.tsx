@@ -150,7 +150,7 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const mapboxApiKey =
     props.map.apiKey ||
     ((streamDocument?._env as { YEXT_EDIT_LAYOUT_MODE_MAPBOX_API_KEY?: string })
@@ -193,10 +193,10 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -233,7 +233,7 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
                 {renderRichText(
                   resolvedDescription,
                   sectionDescriptionStyles,
-                  "mt-3 text-sm leading-7",
+                  "mt-3",
                 )}
               </EntityField>
             </div>
@@ -243,7 +243,7 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
               constantValueEnabled={props.map.coordinate.constantValueEnabled}
             >
               <div
-                className={`${mapClassName} overflow-hidden rounded-[18px] border border-black/5 bg-white shadow-[0_8px_24px_rgba(9,30,66,0.08)]`}
+                className={`${mapClassName} overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_8px_24px_rgba(9,30,66,0.08)]`}
                 style={{ height: props.map.height || "520px" }}
               >
                 {mapboxApiKey ? (
@@ -256,10 +256,7 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
                     zoom={props.map.zoom}
                   />
                 ) : (
-                  <div
-                    className="flex h-full items-center justify-center px-6 text-center text-sm"
-                    style={{ color: "#676767" }}
-                  >
+                  <div className="flex h-full items-center justify-center px-6 text-center">
                     {t(
                       "mapboxApiKeyRequiredStaticMap",
                       "Add a Mapbox API key to render the static map preview.",

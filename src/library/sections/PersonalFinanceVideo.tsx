@@ -350,12 +350,12 @@ export const PersonalFinanceVideoComponent: PuckComponent<
   const descriptionContent = renderRichText(
     resolvedDescription,
     descriptionOverrides,
-    "mt-3 text-sm leading-7",
+    "mt-3",
   );
   const captionContent = renderRichText(
     resolvedCaption,
     captionOverrides,
-    "px-6 py-5 text-sm leading-7",
+    "px-6 py-5",
   );
   const videoUrl = props.content.videoUrl.trim();
 
@@ -370,10 +370,10 @@ export const PersonalFinanceVideoComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -410,7 +410,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
             <Background
               as="div"
               background={props.content.videoFrame.backgroundColor}
-              className="mx-auto max-w-[1160px] overflow-hidden rounded-[20px] border border-black/5 shadow-[0_8px_26px_rgba(9,30,66,0.08)]"
+              className="mx-auto max-w-[1160px] overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_8px_26px_rgba(9,30,66,0.08)]"
               style={videoFrameStyle}
             >
               {videoUrl ? (
@@ -437,7 +437,10 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                       props.content.posterImage.image.constantValueEnabled
                     }
                   >
-                    <div style={posterImageWrapperStyle}>
+                    <div
+                      className="overflow-hidden rounded-image-borderRadius"
+                      style={posterImageWrapperStyle}
+                    >
                       <Image
                         image={posterImage}
                         className="h-[260px] w-full md:h-[560px]"

@@ -191,9 +191,9 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
           className="overflow-x-clip py-4"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             {renderedItems.length ? (
-              <ol className="flex flex-wrap items-center gap-y-2 text-[0.95rem]">
+              <ol className="flex flex-wrap items-center gap-y-2">
                 {renderedItems.map((item, index) => (
                   <li
                     key={`${item.label}-${index}`}
@@ -202,7 +202,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
                     {index > 0 ? (
                       <span
                         aria-hidden="true"
-                        className="px-2 text-sm"
+                        className="px-2"
                         style={{ color: readableTextColor }}
                       >
                         /
@@ -249,7 +249,6 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
               </ol>
             ) : (
               <p
-                className="text-sm"
                 style={{
                   color: readableTextColor,
                   fontFamily: "Arial, Helvetica, sans-serif",

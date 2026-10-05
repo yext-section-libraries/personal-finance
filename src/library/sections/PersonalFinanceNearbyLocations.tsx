@@ -423,7 +423,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
     props.section.backgroundColor,
     streamDocument,
   );
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   let mapboxApiKey = streamDocument?._env?.YEXT_MAPBOX_API_KEY;
   if (
     typeof document !== "undefined" &&
@@ -452,7 +452,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
   const renderCardsContent = () => {
     if (nearbyLocationsStatus === "pending") {
       return (
-        <div className="rounded-[14px] border border-black/5 bg-white/60 p-6 text-sm text-[#676767]">
+        <div className="rounded-image-borderRadius border border-current/10 p-6">
           {t("loadingNearbyLocations", "Loading nearby locations")}
         </div>
       );
@@ -468,7 +468,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
       }
 
       return (
-        <div className="rounded-[14px] border border-black/5 bg-white/60 p-6 text-sm text-[#676767]">
+        <div className="rounded-image-borderRadius border border-current/10 p-6">
           {pt(
             "noNearbyLocationsFound",
             "No nearby locations found for this location",
@@ -496,7 +496,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           as="div"
           background={props.styles.cardBackgroundColor}
           key={locationData.id ?? locationData.name}
-          className="flex min-w-0 flex-col gap-3 rounded-[14px] border border-black/5 p-6"
+          className="flex min-w-0 flex-col gap-3 rounded-image-borderRadius border border-current/10 p-6"
           style={cardStyle}
         >
           <a
@@ -508,7 +508,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           </a>
           {props.styles.showAddress && locationData.address ? (
             <div
-              className="text-sm leading-6"
               style={{ color: cardForegroundColor }}
             >
               <Address
@@ -520,7 +519,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           ) : null}
           {props.styles.showHours && nearbyHours && nearbyTimezone ? (
             <div
-              className="text-sm leading-6"
               style={{ color: cardForegroundColor }}
             >
               <HoursStatus
@@ -608,7 +606,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           {props.styles.showPhone && phoneNumber ? (
             !props.styles.phone.includeHyperlink ? (
               <p
-                className="text-sm leading-6"
                 style={{ color: cardForegroundColor }}
               >
                 {formatPhoneNumber(phoneNumber, props.styles.phone.phoneFormat)}
@@ -627,7 +624,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           ) : null}
           {distanceText ? (
             <p
-              className="text-sm leading-6"
               style={{ color: cardForegroundColor }}
             >
               {distanceText}
@@ -666,7 +662,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="nearby-locations"
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
           <style>
@@ -683,7 +679,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
 }
 `}
           </style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[980px] text-center">
               <EntityField
                 displayName={msg("fields.heading", "Heading")}
@@ -724,7 +720,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                       sectionForegroundColor,
                     ),
                   },
-                  "mt-3 text-sm leading-7",
+                  "mt-3",
                 )}
               </EntityField>
             </div>
@@ -735,7 +731,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                 constantValueEnabled={props.map.coordinate.constantValueEnabled}
               >
                 <div
-                  className={`${mapClassName} h-full min-h-[420px] overflow-hidden rounded-[16px] border border-black/5 bg-white shadow-[0_6px_22px_rgba(9,30,66,0.08)]`}
+                  className={`${mapClassName} h-full min-h-[420px] overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_6px_22px_rgba(9,30,66,0.08)]`}
                 >
                   {mapboxApiKey ? (
                     <MapboxStaticMapComponent
@@ -747,7 +743,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                       zoom={props.map.zoom}
                     />
                   ) : (
-                    <div className="flex h-full min-h-[420px] items-center justify-center px-6 text-center text-sm text-[#676767]">
+                    <div className="flex h-full min-h-[420px] items-center justify-center px-6 text-center">
                       {t(
                         "addMapboxApiKeyInstructions",
                         "Add a Mapbox API key via {{editKey}} or {{liveKey}} to render the map.",

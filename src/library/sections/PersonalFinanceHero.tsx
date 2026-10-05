@@ -444,7 +444,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                 }
               >
                 <div
-                  className="absolute inset-0 overflow-hidden"
+                  className="absolute inset-0 overflow-hidden rounded-image-borderRadius"
                   style={{ ...heroImageWrapperStyle, zIndex: 0 }}
                 >
                   <Image
@@ -473,7 +473,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
               }}
             />
             <div
-              className="relative mx-auto flex min-h-[540px] max-w-[1410px] items-center px-6 py-12 md:min-h-[640px] md:py-16 lg:min-h-[680px] lg:py-20"
+              className="relative mx-auto flex min-h-[540px] max-w-pageSection-contentWidth items-center px-6 py-pageSection-verticalPadding md:min-h-[640px] lg:min-h-[680px]"
               style={{ zIndex: 2 }}
             >
               <div className="relative z-[1] flex min-w-0 max-w-[980px] flex-col gap-6 py-2">
@@ -488,17 +488,19 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                     <div
                       className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
-                        borderColor: "rgba(255,255,255,0.48)",
                         backgroundColor: eyebrowBackgroundColor,
                         opacity: 0.72,
                         ...textStyleToCss(
                           props.content.statusEyebrow.styles,
                           props.content.statusEyebrow.fontColor,
-                          "#44525c",
+                          "#000000",
                         ),
                       }}
                     >
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]" />
+                      <span
+                        className="h-2 w-2 rounded-full"
+                        style={{ backgroundColor: "var(--colors-palette-primary)" }}
+                      />
                       <HoursStatus
                         hours={heroHours}
                         timezone={timezone}
@@ -638,7 +640,6 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                         props.content
                           .primaryCta as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[60px] px-8 py-3"
                     />
                   </EntityField>
                   <EntityField
@@ -653,7 +654,6 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                         props.content
                           .secondaryCta as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[60px] px-8 py-3"
                     />
                   </EntityField>
                 </div>
@@ -668,7 +668,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
 
 export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> =
   {
-    label: "Hero",
+    label: msg("components.heroSection", "Hero Section"),
     fields: SectionFields,
     defaultProps: {
       overlayColor: {
@@ -714,7 +714,7 @@ export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> 
 
 export const config: SectionConfig = {
   id: "PersonalFinanceHero",
-  displayName: "Hero",
+  displayName: "Hero Section",
   description: "Hero",
   pageSetTypes: ["ENTITY"],
 };

@@ -298,8 +298,6 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
       },
       button: {
         ...defaultButtonStyle,
-        fontSize: "14px",
-        fontWeight: "500",
       },
     },
   } as ComprehensiveCTAValue;
@@ -421,7 +419,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const resolvedDescription = resolveComponentData(
     props.content.sectionDescription.text,
     locale,
@@ -440,10 +438,10 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="services"
-          className="overflow-x-clip border-t border-black/5 py-11"
+          className="overflow-x-clip border-t border-current/10 py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[1100px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -486,7 +484,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                       sectionForegroundColor,
                     ),
                   },
-                  "mt-3 text-sm leading-6",
+                  "mt-3",
                 )}
               </EntityField>
             </div>
@@ -556,6 +554,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                     >
                       <div
                         aria-hidden={!hasImageSource(image)}
+                        className="overflow-hidden rounded-image-borderRadius"
                         style={imageWrapperStyle}
                       >
                         {hasImageSource(image) ? (
@@ -588,33 +587,18 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                               sectionForegroundColor,
                             ),
                           },
-                          "text-sm leading-6",
+                          "",
                         )}
                       </div>
-                      {cardCta
-                        ? (() => {
-                            const ctaVariant = cardCta.styles?.variant;
-
-                            return (
-                              <EntityField
-                                displayName={`Service ${index + 1} CTA`}
-                                fieldId={cardCtaField?.field}
-                                constantValueEnabled={
-                                  cardCtaField?.constantValueEnabled
-                                }
-                              >
-                                <ComprehensiveCTA
-                                  value={cardCta}
-                                  className={
-                                    ctaVariant === "link"
-                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 shadow-none"
-                                      : "inline-flex min-h-[44px] items-center justify-center px-5 py-2.5"
-                                  }
-                                />
-                              </EntityField>
-                            );
-                          })()
-                        : null}
+                      {cardCta ? (
+                        <EntityField
+                          displayName={msg("fields.cta", "CTA")}
+                          fieldId={cardCtaField?.field}
+                          constantValueEnabled={cardCtaField?.constantValueEnabled}
+                        >
+                          <ComprehensiveCTA value={cardCta} />
+                        </EntityField>
+                      ) : null}
                     </article>
                   );
                 })}

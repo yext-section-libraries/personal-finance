@@ -171,7 +171,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const headingColor = resolveThemeColor(
     props.content.sectionHeading.fontColor,
     sectionForegroundColor,
@@ -226,10 +226,10 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -256,7 +256,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                       accentColor,
                     )}
                   </div>
-                  <p className="text-sm" style={{ color: bodyColor }}>
+                  <p style={{ color: bodyColor }}>
                     <EntityField
                       displayName={msg("fields.summaryLabel", "Summary Label")}
                       fieldId={props.content.summaryLabel.text.field}
@@ -295,7 +295,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                   </p>
                 </div>
               ) : (
-                <p className="mt-4 text-sm" style={{ color: bodyColor }}>
+                <p className="mt-4" style={{ color: bodyColor }}>
                   {pt(
                     "noFirstPartyReviews",
                     "No first-party reviews available for this location.",
@@ -310,7 +310,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                     as="div"
                     background={props.content.reviewCard.backgroundColor}
                     key={`${review.authorName || "review"}-${index}`}
-                    className="rounded-[16px] border border-black/5 p-6 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                    className="rounded-image-borderRadius border border-current/10 p-6 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                     style={cardStyle}
                   >
                     <div className="flex items-center justify-between gap-4">
@@ -325,7 +325,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                       >
                         {review.authorName || t("anonymous", "Anonymous")}
                       </h3>
-                      <div className="text-sm">
+                      <div>
                         {renderStars(
                           Math.round(review.rating ?? 0),
                           cardForegroundColor,
@@ -334,7 +334,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                     </div>
                     {review.reviewDate ? (
                       <p
-                        className="mt-2 text-xs uppercase tracking-[0.16em]"
+                        className="mt-2"
                         style={{ color: cardForegroundColor }}
                       >
                         {formatDate(review.reviewDate, locale)}
@@ -342,7 +342,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                     ) : null}
                     {review.content ? (
                       <p
-                        className="mt-4 text-sm leading-7"
+                        className="mt-4"
                         style={{ color: cardForegroundColor }}
                       >
                         {review.content}
@@ -354,7 +354,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                         background={
                           props.content.businessResponse.backgroundColor
                         }
-                        className="mt-5 rounded-[12px] border border-black/5 p-4"
+                        className="mt-5 rounded-image-borderRadius border border-current/10 p-4"
                         style={businessResponseStyle}
                       >
                         <p
@@ -369,7 +369,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                           {t("businessResponse", "Business Response")}
                         </p>
                         <p
-                          className="mt-2 text-sm leading-7"
+                          className="mt-2"
                           style={{ color: businessResponseForegroundColor }}
                         >
                           {review.comments[0].content}

@@ -605,7 +605,7 @@ const HoursTableBlock = ({
           }}
         />
         {value.hoursStyles.showAdditionalHoursText && additionalHoursText ? (
-          <span className="mt-3 text-sm leading-6">
+          <span className="mt-3">
             {additionalHoursText}
           </span>
         ) : null}
@@ -626,7 +626,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
     props.section.backgroundColor,
     streamDocument,
   );
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const cardStyle = getSurfaceColorStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
@@ -715,10 +715,10 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="locations"
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
                 displayName={msg("fields.heading", "Heading")}
@@ -748,7 +748,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               <Background
                 as="div"
                 background={props.styles.cardBackgroundColor}
-                className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
+                className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6 shadow-sm"
                 style={cardStyle}
               >
                 <EntityField
@@ -774,7 +774,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     )}
                   </h3>
                 </EntityField>
-                <div className="space-y-3 text-sm leading-6" style={{ color: bodyForeground }}>
+                <div className="space-y-3" style={{ color: bodyForeground }}>
                   {resolvedAddress ? (
                     <div>
                       <EntityField
@@ -947,7 +947,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               <Background
                 as="div"
                 background={props.styles.cardBackgroundColor}
-                className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
+                className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6 shadow-sm"
                 style={cardStyle}
               >
                 <EntityField
@@ -974,7 +974,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 <HoursTableBlock
                   value={props.content.hoursData}
                   displayName={msg("fields.hours", "Hours")}
-                  fallbackClassName="text-sm leading-6 [&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
+                  fallbackClassName="[&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
                   textColor={bodyForeground}
                 />
                 {!resolveComponentData(
@@ -982,12 +982,12 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   locale,
                   streamDocument,
                 ) ? (
-                  <div className="text-sm leading-6" style={{ color: bodyForeground }}>
+                  <div style={{ color: bodyForeground }}>
                     {t("hoursUnavailable", "Hours unavailable")}
                   </div>
                 ) : null}
                 {shouldShowSecondaryHours ? (
-                  <div className="mt-5 border-t border-black/10 pt-4">
+                  <div className="mt-5 border-t border-current/10 pt-4">
                     <button
                       className="flex w-full items-center justify-between text-left font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       onClick={() =>
@@ -1028,14 +1028,11 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                           <HoursTableBlock
                             value={props.content.secondaryHoursData}
                             displayName={msg("fields.secondaryHours", "Secondary Hours")}
-                            fallbackClassName="text-sm leading-6 [&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
+                            fallbackClassName="[&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
                             textColor={bodyForeground}
                           />
                         ) : (
-                          <div
-                            className="text-sm leading-6"
-                            style={{ color: bodyForeground }}
-                          >
+                          <div style={{ color: bodyForeground }}>
                             {t("hoursUnavailable", "Hours unavailable")}
                           </div>
                         )}
@@ -1048,7 +1045,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               <Background
                 as="div"
                 background={props.styles.cardBackgroundColor}
-                className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
+                className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6 shadow-sm"
                 style={cardStyle}
               >
                 <EntityField
@@ -1074,7 +1071,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     )}
                   </h3>
                 </EntityField>
-                <div className="space-y-5 text-sm leading-6" style={{ color: bodyForeground }}>
+                <div className="space-y-5" style={{ color: bodyForeground }}>
                   <div>
                     <EntityField
                       displayName={msg("fields.languagesLabel", "Languages Label")}

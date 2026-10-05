@@ -187,10 +187,10 @@ export const PersonalFinanceStoryComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="about"
-          className="overflow-x-clip border-t border-black/5 py-11"
+          className="overflow-x-clip border-t border-current/10 py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6 text-center">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6 text-center">
             <div className="mx-auto max-w-[980px]">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -217,7 +217,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                   )}
                 </h2>
               </EntityField>
-              <div className="mt-6 space-y-4 text-sm leading-7">
+              <div className="mt-6 space-y-4">
                 {props.content.paragraphs.map((paragraph, index) => {
                   const richTextStyleOverrides = {
                     ...props.paragraphStyles.paragraphs.styles,
@@ -235,7 +235,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                   return (
                     <EntityField
                       key={index}
-                      displayName={`Paragraph ${index + 1}`}
+                      displayName={msg("fields.paragraphs", "Paragraphs")}
                       fieldId={paragraph.text.field}
                       constantValueEnabled={paragraph.text.constantValueEnabled}
                     >
@@ -259,7 +259,6 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                     value={
                       props.content.primaryCta as Partial<ComprehensiveCTAValue>
                     }
-                    className="inline-flex min-h-[42px] items-center px-7 py-2.5"
                   />
                 </EntityField>
               </div>

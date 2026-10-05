@@ -122,7 +122,7 @@ const resolveReadableTextColor = (
   );
 
   if (!parsedColor) {
-    return "#1a1a1a";
+    return "#000000";
   }
 
   const [red, green, blue] = parsedColor.map((channel) => {
@@ -132,7 +132,7 @@ const resolveReadableTextColor = (
       : ((normalizedChannel + 0.055) / 1.055) ** 2.4;
   });
   const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-  return luminance > 0.5 ? "#1a1a1a" : "#ffffff";
+  return luminance > 0.5 ? "#000000" : "#ffffff";
 };
 
 type EditableMappedText = {
@@ -600,21 +600,24 @@ export const PersonalFinanceFooterComponent: PuckComponent<
     props.section,
     locale,
     streamDocument,
-    "#0d7e86",
+    "var(--colors-palette-secondary)",
   );
   const sectionSurfaceStyle = getSurfaceColorStyle(
     props.section.backgroundColor,
     streamDocument,
   );
-  const textColors = resolveSectionTextColors(props.section, {
-    headingTextColor: "#ffffff",
-    bodyTextColor: "#e5eef0",
-    linkTextColor: "#f8fafc",
-  });
   const readableSectionTextColorFallback =
     sectionSurfaceStyle?.color ??
-    resolveReadableTextColor(props.section.backgroundColor, "#0d7e86");
+    resolveReadableTextColor(
+      props.section.backgroundColor,
+      "var(--colors-palette-secondary)",
+    );
   const defaultSectionTextColor = readableSectionTextColorFallback;
+  const textColors = resolveSectionTextColors(props.section, {
+    headingTextColor: defaultSectionTextColor,
+    bodyTextColor: defaultSectionTextColor,
+    linkTextColor: defaultSectionTextColor,
+  });
   const brandName = resolveText(
     props.brandName.text,
     locale,
@@ -654,7 +657,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
           style={{ ...sectionStyles, ...sectionSurfaceStyle }}
           className="overflow-x-clip"
         >
-          <div className="mx-auto max-w-[1410px] px-6 py-8">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6 py-pageSection-verticalPadding">
             <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
               <EntityField
                 displayName={msg("fields.brandText", "Brand Text")}
@@ -724,7 +727,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
                     "field" in ctaField ? (
                     <EntityField
                       key={`${href}-${index}`}
-                      displayName={`Footer Link ${index + 1}`}
+                      displayName={t("fields.linkIndex", "Link {{index}}", { index: index + 1 })}
                       fieldId={ctaField.field}
                       constantValueEnabled={ctaField.constantValueEnabled}
                     >
@@ -744,7 +747,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
               }
             >
               <div
-                className="mt-5 border-t border-white/30 pt-5 text-center text-sm"
+                className="mt-5 border-t border-current/30 pt-5 text-center"
                 style={{
                   ...textStyleToCss(props.copyrightText.styles),
                   color: copyrightTextColor,

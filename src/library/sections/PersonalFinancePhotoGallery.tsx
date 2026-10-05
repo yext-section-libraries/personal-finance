@@ -275,7 +275,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const gallerySurfaceStyle = getSurfaceColorStyle(
     props.gallerySurfaceBackgroundColor,
     streamDocument,
@@ -310,10 +310,10 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className="overflow-x-clip py-11"
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
                 displayName={msg("fields.sectionHeading", "Section Heading")}
@@ -350,7 +350,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                 {renderRichText(
                   resolvedDescription,
                   descriptionOverrides,
-                  "mt-3 text-sm leading-7",
+                  "mt-3",
                 )}
               </EntityField>
             </div>
@@ -402,11 +402,14 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                       as="div"
                       background={props.gallerySurfaceBackgroundColor}
                       key={`${caption}-${index}`}
-                      className="overflow-hidden rounded-[16px] border border-black/5 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                      className="overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                       style={gallerySurfaceStyle}
                     >
                       {hasImageSource(image) && image ? (
-                        <div style={imageWrapperStyle}>
+                        <div
+                          className="overflow-hidden rounded-image-borderRadius"
+                          style={imageWrapperStyle}
+                        >
                           <Image
                             image={image}
                             className="h-[240px] w-full"
@@ -415,7 +418,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                         </div>
                       ) : null}
                       <figcaption
-                        className="px-5 py-4 text-sm leading-6"
+                        className="px-5 py-4"
                         style={{
                           color: resolveThemeColor(
                             props.galleryStyles.caption.fontColor,
