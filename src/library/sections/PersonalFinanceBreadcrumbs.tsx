@@ -294,7 +294,7 @@ export const PersonalFinanceBreadcrumbs: YextComponentConfig<PersonalFinanceBrea
 
 export const config: SectionConfig = {
   id: "PersonalFinanceBreadcrumbs",
-  displayName: "Breadcrumbs",
+  displayName: "Breadcrumbs Section",
   description: "Breadcrumbs",
   pageSetTypes: ["ENTITY"],
 };

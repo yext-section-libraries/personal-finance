@@ -313,7 +313,7 @@ export const PersonalFinanceStaticMap: YextComponentConfig<PersonalFinanceStatic
 
 export const config: SectionConfig = {
   id: "PersonalFinanceStaticMap",
-  displayName: "Static Map",
+  displayName: "Static Map Section",
   description: "Static Map",
   pageSetTypes: ["ENTITY"],
 };

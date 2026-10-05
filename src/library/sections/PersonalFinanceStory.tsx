@@ -315,7 +315,7 @@ export const PersonalFinanceStory: YextComponentConfig<PersonalFinanceStoryProps
 
 export const config: SectionConfig = {
   id: "PersonalFinanceStory",
-  displayName: "About",
+  displayName: "About Section",
   description: "About",
   pageSetTypes: ["ENTITY"],
 };

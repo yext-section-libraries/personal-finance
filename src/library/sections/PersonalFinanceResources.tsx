@@ -617,7 +617,7 @@ export const PersonalFinanceResources: YextComponentConfig<PersonalFinanceResour
 
 export const config: SectionConfig = {
   id: "PersonalFinanceResources",
-  displayName: "Resources",
+  displayName: "Resources Section",
   description: "Resources",
   pageSetTypes: ["ENTITY"],
 };

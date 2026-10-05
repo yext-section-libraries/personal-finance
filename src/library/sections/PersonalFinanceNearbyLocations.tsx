@@ -828,7 +828,7 @@ export const PersonalFinanceNearbyLocations: YextComponentConfig<PersonalFinance
 
 export const config: SectionConfig = {
   id: "PersonalFinanceNearbyLocations",
-  displayName: "Nearby Locations",
+  displayName: "Nearby Locations Section",
   description: "Nearby Locations",
   pageSetTypes: ["ENTITY"],
 };

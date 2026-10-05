@@ -652,7 +652,7 @@ export const PersonalFinanceEvents: YextComponentConfig<PersonalFinanceEventsPro
 
 export const config: SectionConfig = {
   id: "PersonalFinanceEvents",
-  displayName: "Events",
+  displayName: "Events Section",
   description: "Events",
   pageSetTypes: ["ENTITY"],
 };

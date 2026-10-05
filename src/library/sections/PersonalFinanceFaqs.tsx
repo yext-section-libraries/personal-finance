@@ -350,7 +350,7 @@ export const PersonalFinanceFaqs: YextComponentConfig<PersonalFinanceFaqsProps> 
 
 export const config: SectionConfig = {
   id: "PersonalFinanceFaqs",
-  displayName: "FAQs",
+  displayName: "FAQs Section",
   description: "FAQs",
   pageSetTypes: ["ENTITY"],
 };

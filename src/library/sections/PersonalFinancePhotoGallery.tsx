@@ -477,7 +477,7 @@ export const PersonalFinancePhotoGallery: YextComponentConfig<PersonalFinancePho
 
 export const config: SectionConfig = {
   id: "PersonalFinancePhotoGallery",
-  displayName: "Photo Gallery",
+  displayName: "Photo Gallery Section",
   description: "Photo Gallery",
   pageSetTypes: ["ENTITY"],
 };

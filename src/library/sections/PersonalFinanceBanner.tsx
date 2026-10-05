@@ -230,7 +230,7 @@ export const PersonalFinanceBanner: YextComponentConfig<PersonalFinanceBannerPro
 
 export const config: SectionConfig = {
   id: "PersonalFinanceBanner",
-  displayName: "Banner",
+  displayName: "Banner Section",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

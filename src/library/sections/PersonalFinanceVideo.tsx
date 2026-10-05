@@ -521,7 +521,7 @@ export const PersonalFinanceVideo: YextComponentConfig<PersonalFinanceVideoProps
 
 export const config: SectionConfig = {
   id: "PersonalFinanceVideo",
-  displayName: "Video",
+  displayName: "Video Section",
   description: "Video",
   pageSetTypes: ["ENTITY"],
 };
