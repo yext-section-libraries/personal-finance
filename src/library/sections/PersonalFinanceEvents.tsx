@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityRichText,
   createEntityText,
@@ -33,7 +34,6 @@ import {
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -378,15 +378,16 @@ export const PersonalFinanceEventsComponent: PuckComponent<
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
   const events = eventSource.resolveItems(props.content.events, streamDocument);
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
   const sectionForegroundColor = sectionStyle?.color ?? "#000000";
-  const cardStyle = getSurfaceColorStyle(
+  const cardStyle = getContrastingSurfaceStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
   const resolvedDescription = resolveComponentData(

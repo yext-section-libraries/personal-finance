@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityRichText,
   createEntityText,
   createRichTextField,
@@ -27,7 +28,6 @@ import {
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -168,7 +168,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
   );
   const testimonialCount = testimonials.length;
   const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );

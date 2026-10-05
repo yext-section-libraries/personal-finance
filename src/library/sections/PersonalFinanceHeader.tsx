@@ -2,7 +2,12 @@ import "../shared/typography.css";
 
 import type { SectionConfig } from "@yext/visual-editor";
 
-import { aspectRatioOptions, hasImageSource } from "../shared/sectionHelpers";
+import {
+  aspectRatioOptions,
+  getContrastingSurfaceStyle,
+  hasImageSource,
+  resolveSurfaceTextColor,
+} from "../shared/sectionHelpers";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
@@ -34,9 +39,7 @@ import {
   type YextEntityField,
   type YextFields,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   i18nPageInstance,
-  isDarkColor,
   normalizeLink,
   resolveComponentData,
   useDocument,
@@ -167,9 +170,7 @@ const getReadableForegroundColor = (
   streamDocument?: StreamDocument,
 ): ThemeColor => {
   return {
-    selectedColor: isDarkColor(surfaceColor, streamDocument)
-      ? "white"
-      : "black",
+    selectedColor: resolveSurfaceTextColor(surfaceColor, streamDocument),
     contrastingColor: surfaceColor.selectedColor,
   };
 };
@@ -666,7 +667,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
   const showUtilities = props.utilities.show;
   const showCta = props.cta.show;
   const showLogo = props.logoImage.show;
-  const headerSurfaceStyle = getSurfaceColorStyle(
+  const headerSurfaceStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );

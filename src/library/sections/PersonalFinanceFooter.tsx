@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   defaultTextStyle,
   resolveThemeColor,
   type ThemeColorInput,
@@ -15,7 +16,6 @@ import {
   Background,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   VisibilityWrapper,
   YextComponentConfig,
   YextFields,
@@ -50,89 +50,6 @@ const isDefaultColorSelection = (color?: ThemeColorInput): boolean => {
   const selectedColor =
     typeof color === "string" ? color : color?.selectedColor;
   return !selectedColor || selectedColor === "default";
-};
-
-const parseCssColor = (value: string): [number, number, number] | undefined => {
-  const normalizedValue = value.trim().toLowerCase();
-
-  if (normalizedValue === "white") {
-    return [255, 255, 255];
-  }
-
-  if (normalizedValue === "black") {
-    return [0, 0, 0];
-  }
-
-  const hexMatch = normalizedValue.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
-  if (hexMatch) {
-    const hexValue =
-      hexMatch[1].length === 3
-        ? [...hexMatch[1]]
-            .map((character) => `${character}${character}`)
-            .join("")
-        : hexMatch[1];
-
-    return [
-      Number.parseInt(hexValue.slice(0, 2), 16),
-      Number.parseInt(hexValue.slice(2, 4), 16),
-      Number.parseInt(hexValue.slice(4, 6), 16),
-    ];
-  }
-
-  const rgbMatch = normalizedValue.match(/^rgba?\(([^)]+)\)$/);
-  if (!rgbMatch) {
-    return undefined;
-  }
-
-  const channels = rgbMatch[1]
-    .split(",")
-    .slice(0, 3)
-    .map((channel) => Number.parseFloat(channel.trim()));
-
-  return channels.every((channel) => Number.isFinite(channel))
-    ? [channels[0], channels[1], channels[2]]
-    : undefined;
-};
-
-const resolveBrowserColor = (color: string): string => {
-  if (typeof window === "undefined" || typeof document === "undefined") {
-    return color;
-  }
-
-  const probe = document.createElement("span");
-  probe.style.color = color;
-  probe.style.display = "none";
-  document.body.appendChild(probe);
-  const resolvedColor = window.getComputedStyle(probe).color;
-  probe.remove();
-  return resolvedColor || color;
-};
-
-/**
- * Resolves the black-or-white text color that contrasts with the section background.
- */
-const resolveReadableTextColor = (
-  backgroundColor: ThemeColorInput,
-  fallbackBackgroundColor: string,
-): string => {
-  const parsedColor = parseCssColor(
-    resolveBrowserColor(
-      resolveThemeColor(backgroundColor, fallbackBackgroundColor),
-    ),
-  );
-
-  if (!parsedColor) {
-    return "#000000";
-  }
-
-  const [red, green, blue] = parsedColor.map((channel) => {
-    const normalizedChannel = channel / 255;
-    return normalizedChannel <= 0.03928
-      ? normalizedChannel / 12.92
-      : ((normalizedChannel + 0.055) / 1.055) ** 2.4;
-  });
-  const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-  return luminance > 0.5 ? "#000000" : "#ffffff";
 };
 
 type EditableMappedText = {
@@ -283,7 +200,6 @@ const resolveSectionStyles = (
   section: SectionTheme,
   locale: string,
   streamDocument: Record<string, unknown> | undefined,
-  fallbackColor = "#ffffff",
 ): CSSProperties => {
   const backgroundImage = resolveImageData(
     section.backgroundImage,
@@ -292,7 +208,6 @@ const resolveSectionStyles = (
   );
 
   return {
-    backgroundColor: resolveThemeColor(section.backgroundColor, fallbackColor),
     backgroundImage: backgroundImage.src
       ? `url(${backgroundImage.src})`
       : undefined,
@@ -600,19 +515,12 @@ export const PersonalFinanceFooterComponent: PuckComponent<
     props.section,
     locale,
     streamDocument,
-    "var(--colors-palette-secondary)",
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
-  const readableSectionTextColorFallback =
-    sectionSurfaceStyle?.color ??
-    resolveReadableTextColor(
-      props.section.backgroundColor,
-      "var(--colors-palette-secondary)",
-    );
-  const defaultSectionTextColor = readableSectionTextColorFallback;
+  const defaultSectionTextColor = sectionSurfaceStyle.color;
   const textColors = resolveSectionTextColors(props.section, {
     headingTextColor: defaultSectionTextColor,
     bodyTextColor: defaultSectionTextColor,

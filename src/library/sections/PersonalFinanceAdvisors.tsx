@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityText,
   createTextField,
   defaultTextStyle,
@@ -22,7 +23,6 @@ import {
   Image,
   createItemSource,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
   YextComponentConfig,
@@ -402,15 +402,16 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
     props.content.advisors,
     streamDocument,
   );
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
   const sectionForegroundColor = sectionStyle?.color ?? "#000000";
-  const cardStyle = getSurfaceColorStyle(
+  const cardStyle = getContrastingSurfaceStyle(
     props.section.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
 

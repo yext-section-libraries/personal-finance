@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityRichText,
   createEntityText,
   createRichTextField,
@@ -14,7 +15,6 @@ import {
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
-  type ThemeColorInput,
   renderRichText,
 } from "../shared/sectionHelpers";
 
@@ -27,7 +27,6 @@ import {
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
   VisibilityWrapper,
@@ -45,12 +44,6 @@ import { AnalyticsScopeProvider } from "@yext/pages-components";
 const defaultReadableTextColor: ThemeColor = {
   selectedColor: "default",
   contrastingColor: "black",
-};
-
-const isDefaultColorSelection = (color?: ThemeColorInput): boolean => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-  return !selectedColor || selectedColor === "default";
 };
 
 type SectionTheme = {
@@ -194,7 +187,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
   const [openIndex, setOpenIndex] = React.useState(0);
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -255,12 +248,8 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                   {items.map((item, index) => {
                     const open = index === openIndex;
                     const questionColor = resolveThemeColor(
-                      isDefaultColorSelection(
-                        props.faqStyles.question.fontColor,
-                      )
-                        ? sectionForeground
-                        : props.faqStyles.question.fontColor,
-                      "#000000",
+                      props.faqStyles.question.fontColor,
+                      sectionForeground,
                     );
                     const answerStyles = {
                       ...props.faqStyles.answer.styles,

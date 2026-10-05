@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityText,
   createStyledTextField,
   defaultTextStyle,
@@ -19,7 +20,6 @@ import {
   Background,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveBreadcrumbs,
   useDocument,
   useTemplateProps,
@@ -131,7 +131,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
   );
   const currentPageLabel =
     streamDocument.address?.line1 || streamDocument.name || "";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );

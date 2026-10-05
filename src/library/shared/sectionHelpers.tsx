@@ -4,7 +4,9 @@ import {
   msg,
   MaybeRTF,
   getDefaultRTF,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
+  getThemeColorHexValue,
   resolveComponentData,
   type EntityFieldSelectorField,
   type MaybeRTFProps,
@@ -191,7 +193,78 @@ export const textStyleToCss = (
 export const resolveThemeColor = (
   color?: ThemeColorInput,
   fallback = "#ffffff",
-): string => getThemeColorCssValue(color) ?? fallback;
+): string => {
+  if (
+    typeof color === "string" &&
+    (color.startsWith("#") ||
+      color.startsWith("var(") ||
+      color.startsWith("rgb(") ||
+      color.startsWith("rgba(") ||
+      color.startsWith("hsl(") ||
+      color === "currentColor")
+  ) {
+    return color;
+  }
+  return getThemeColorCssValue(color) ?? fallback;
+};
+
+/** Use the actual surface color for default text, inheriting through transparent surfaces. */
+export const resolveSurfaceTextColor = (
+  backgroundColor: ThemeColorInput,
+  streamDocument?: Record<string, unknown>,
+  inheritedColor = "#000000",
+): string => {
+  const selectedColor =
+    typeof backgroundColor === "string"
+      ? backgroundColor
+      : backgroundColor?.selectedColor;
+  if (!selectedColor || selectedColor === "default") {
+    return inheritedColor;
+  }
+
+  const translucentHex = selectedColor.match(/^\[#[0-9a-f]{6}([0-9a-f]{2})\]$/i);
+  if (translucentHex && translucentHex[1].toLowerCase() !== "ff") {
+    return inheritedColor;
+  }
+
+  const hex = getThemeColorHexValue(selectedColor, streamDocument);
+  const match = hex?.match(/^#([0-9a-f]{6})$/i);
+  if (match) {
+    const channels = [0, 2, 4].map((offset) =>
+      parseInt(match[1].slice(offset, offset + 2), 16) / 255,
+    );
+    const [red, green, blue] = channels.map((channel) =>
+      channel <= 0.04045
+        ? channel / 12.92
+        : ((channel + 0.055) / 1.055) ** 2.4,
+    );
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue > 0.179
+      ? "#000000"
+      : "#ffffff";
+  }
+
+  if (selectedColor.startsWith("[rgba(") || selectedColor === "transparent") {
+    return inheritedColor;
+  }
+
+  return (
+    getSurfaceColorStyle(backgroundColor, streamDocument)?.color ??
+    inheritedColor
+  );
+};
+
+export const getContrastingSurfaceStyle = (
+  backgroundColor: ThemeColorInput,
+  streamDocument?: Record<string, unknown>,
+  inheritedColor = "#000000",
+): React.CSSProperties & { color: string } => ({
+  ...getSurfaceColorStyle(backgroundColor, streamDocument),
+  color: resolveSurfaceTextColor(
+    backgroundColor,
+    streamDocument,
+    inheritedColor,
+  ),
+});
 
 export const hasImageSource = (
   image: ImageType | ComplexImageType | TranslatableAssetImage | undefined,

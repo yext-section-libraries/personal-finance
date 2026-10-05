@@ -19,14 +19,17 @@ import {
   type YextFields,
   backgroundColors,
   getDefaultRTF,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   resolveYextEntityField,
   useDocument,
   pt,
 } from "@yext/visual-editor";
-import { isRichTextEmpty, renderRichText } from "../shared/sectionHelpers";
+import {
+  getContrastingSurfaceStyle,
+  isRichTextEmpty,
+  renderRichText,
+} from "../shared/sectionHelpers";
 
 type PersonalFinanceBannerProps = {
   data: {
@@ -107,7 +110,7 @@ const PersonalFinanceBannerComponent: PuckComponent<
 > = ({ data, styles, section, puck }) => {
   const { i18n } = useTranslation();
   const streamDocument = useDocument();
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );

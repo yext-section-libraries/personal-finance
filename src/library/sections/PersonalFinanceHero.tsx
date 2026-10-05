@@ -7,6 +7,7 @@ import {
   createStyledRtfField,
   createStyledTextField,
   defaultTextStyle,
+  getContrastingSurfaceStyle,
   hasImageSource,
   resolvePlainText,
   resolveThemeColor,
@@ -21,6 +22,7 @@ import {
   EntityField,
   Image,
   getAnalyticsScopeHash,
+  getThemeColorCssValue,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -368,11 +370,12 @@ export const PersonalFinanceHeroComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     (streamDocument?.locale as string | undefined) ?? i18n.language ?? "en";
-  const sectionForeground = "#ffffff";
-  const overlayColor = resolveThemeColor(
+  const sectionForeground = getContrastingSurfaceStyle(
     props.overlayColor,
-    "var(--colors-palette-primary)",
-  );
+    streamDocument,
+    "#000000",
+  ).color;
+  const overlayColor = getThemeColorCssValue(props.overlayColor);
   const heroHours = resolveComponentData(
     props.content.hours,
     locale,
@@ -406,10 +409,14 @@ export const PersonalFinanceHeroComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const eyebrowBackgroundColor = resolveThemeColor(
+  const eyebrowBackgroundColor = getThemeColorCssValue(
     props.content.statusEyebrow.backgroundColor,
-    "#ffffff",
   );
+  const eyebrowForeground = getContrastingSurfaceStyle(
+    props.content.statusEyebrow.backgroundColor,
+    streamDocument,
+    sectionForeground,
+  ).color;
   const heroImageWrapperStyle: React.CSSProperties = {
     borderRadius:
       props.section.heroImage.styles?.borderRadius === "default"
@@ -489,11 +496,10 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                       className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
                         backgroundColor: eyebrowBackgroundColor,
-                        opacity: 0.72,
                         ...textStyleToCss(
                           props.content.statusEyebrow.styles,
                           props.content.statusEyebrow.fontColor,
-                          "#000000",
+                          eyebrowForeground,
                         ),
                       }}
                     >

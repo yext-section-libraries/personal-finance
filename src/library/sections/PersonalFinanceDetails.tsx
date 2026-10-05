@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createStyledTextDefault,
   createStyledTextField,
   defaultTextStyle,
@@ -18,7 +19,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -622,14 +622,15 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForegroundColor = sectionStyle?.color ?? "#000000";
-  const cardStyle = getSurfaceColorStyle(
+  const cardStyle = getContrastingSurfaceStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardForeground = cardStyle?.color ?? sectionForegroundColor;
   const bodyForeground = cardForeground;

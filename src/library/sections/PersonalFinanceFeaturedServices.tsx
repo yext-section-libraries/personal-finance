@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityRichText,
   createEntityText,
@@ -28,7 +29,6 @@ import {
   Image,
   createItemSource,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -414,7 +414,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
     props.content.cards,
     streamDocument,
   );
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );

@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createRichTextField,
   createTextField,
@@ -22,7 +23,6 @@ import {
   EntityField,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   Image,
   resolveComponentData,
   resolveLocalizedAssetImage,
@@ -282,7 +282,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -293,19 +293,22 @@ export const PersonalFinanceVideoComponent: PuckComponent<
   );
   const descriptionOverrides = {
     ...props.content.sectionDescription.styles,
-    color: props.content.sectionDescription.fontColor
-      ? resolveThemeColor(props.content.sectionDescription.fontColor)
-      : sectionForeground,
+    color: resolveThemeColor(
+      props.content.sectionDescription.fontColor,
+      sectionForeground,
+    ),
   };
-  const videoFrameStyle = getSurfaceColorStyle(
+  const videoFrameStyle = getContrastingSurfaceStyle(
     props.content.videoFrame.backgroundColor,
     streamDocument,
+    sectionStyle.color,
   );
   const captionOverrides = {
     ...props.content.posterCaption.styles,
-    color: props.content.posterCaption.fontColor
-      ? resolveThemeColor(props.content.posterCaption.fontColor)
-      : (videoFrameStyle?.color ?? sectionForeground),
+    color: resolveThemeColor(
+      props.content.posterCaption.fontColor,
+      videoFrameStyle.color,
+    ),
   };
   const resolvedDescription = resolveComponentData(
     props.content.sectionDescription.text,

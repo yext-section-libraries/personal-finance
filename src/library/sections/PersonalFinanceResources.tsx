@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityRichText,
   createEntityText,
@@ -31,7 +32,6 @@ import {
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -370,17 +370,18 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
     props.content.cards,
     streamDocument,
   );
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
-  const cardSurfaceStyle = getSurfaceColorStyle(
+  const cardSurfaceStyle = getContrastingSurfaceStyle(
     props.content.cardSurface.backgroundColor,
     streamDocument,
+    sectionStyle.color,
   );
   const cardSurfaceBackgroundColor =
-    cardSurfaceStyle?.backgroundColor ?? "var(--colors-palette-primary)";
-  const cardSurfaceForegroundColor = cardSurfaceStyle?.color ?? "#ffffff";
+    cardSurfaceStyle.backgroundColor ?? sectionStyle.backgroundColor ?? "transparent";
+  const cardSurfaceForegroundColor = cardSurfaceStyle.color;
   const cardSurfaceOverlay = withAlpha(cardSurfaceBackgroundColor, 0.92);
   type ResolvedResourceCard = (typeof cards)[number];
   const rehydrateCta = (

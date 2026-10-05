@@ -3,6 +3,7 @@ import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createStyledRtfDefault,
   createStyledRtfField,
   createStyledTextDefault,
@@ -22,7 +23,6 @@ import {
   MapboxStaticMapComponent,
   getAnalyticsScopeHash,
   getPreferredDistanceUnit,
-  getSurfaceColorStyle,
   mergeMeta,
   resolveComponentData,
   resolveUrlTemplate,
@@ -419,7 +419,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
     },
     constantValueEnabled: false,
   };
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -433,9 +433,10 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
   ) {
     mapboxApiKey = streamDocument._env.YEXT_EDIT_LAYOUT_MODE_MAPBOX_API_KEY;
   }
-  const cardStyle = getSurfaceColorStyle(
+  const cardStyle = getContrastingSurfaceStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardTitleColor = resolveThemeColor(
     props.styles.cardTitleColor,
