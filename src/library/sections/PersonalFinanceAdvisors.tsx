@@ -1,10 +1,12 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityText,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
   resolvePlainText,
   resolveThemeColor,
@@ -21,7 +23,6 @@ import {
   Image,
   createItemSource,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
   YextComponentConfig,
@@ -103,9 +104,6 @@ type PersonalFinanceAdvisorsProps = {
   content: AdvisorsContent;
   styles: AdvisorsStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceAdvisorsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -263,8 +261,6 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
       },
       button: {
         ...defaultButtonStyle,
-        fontSize: "14px",
-        fontWeight: "500",
       },
     },
   };
@@ -406,15 +402,16 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
     props.content.advisors,
     streamDocument,
   );
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
-  const cardStyle = getSurfaceColorStyle(
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
+  const cardStyle = getContrastingSurfaceStyle(
     props.section.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
 
@@ -430,21 +427,20 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="advisors"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -463,7 +459,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
               </EntityField>
             </div>
             <EntityField
-              displayName="Advisors"
+              displayName={msg("fields.advisors", "Advisors")}
               fieldId={props.content.advisors.field}
               constantValueEnabled={props.content.advisors.constantValueEnabled}
             >
@@ -532,13 +528,13 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                       as="div"
                       background={props.section.cardBackgroundColor}
                       key={`${name}-${index}`}
-                      className="min-w-0 w-full rounded-[14px] border border-black/5 p-6"
+                      className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6"
                       style={cardStyle}
                     >
                       <div className="mb-[18px] flex min-w-0 items-center gap-4">
                         {hasImageSource(image) ? (
                           <div
-                            className="h-[92px] w-[92px] rounded-full"
+                            className="h-[92px] w-[92px] overflow-hidden rounded-image-borderRadius"
                             style={imageWrapperStyle}
                           >
                             <Image
@@ -550,7 +546,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                         ) : null}
                         <div className="min-w-0">
                           <h3
-                            className="text-[1.15rem] font-semibold"
+                            className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                             style={{
                               color: resolveThemeColor(
                                 props.styles.name.fontColor,
@@ -562,7 +558,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                             {name}
                           </h3>
                           <p
-                            className="mt-1 text-[1rem]"
+                            className="mt-1 font-body-fontFamily text-body-fontSize font-body-fontWeight"
                             style={{
                               color: resolveThemeColor(
                                 props.styles.role.fontColor,
@@ -580,11 +576,11 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                           </p>
                         </div>
                       </div>
-                      <dl className="space-y-3 border-t border-black/10 pt-[18px] text-sm leading-6">
+                      <dl className="space-y-3 border-t border-current/10 pt-[18px]">
                         {advisorFacts.map(({ fact, styles }, factIndex) => (
                           <div key={factIndex}>
                             <dt
-                              className="font-semibold"
+                              className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                               style={{
                                 color: resolveThemeColor(
                                   styles.fontColor,
@@ -623,28 +619,13 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
                       </dl>
                       {advisorCta ? (
                         <div className="mt-4">
-                          {(() => {
-                            const ctaVariant = advisorCta.styles?.variant;
-
-                            return (
-                              <EntityField
-                                displayName={`Advisor ${index + 1} CTA`}
-                                fieldId={advisorCtaField?.field}
-                                constantValueEnabled={
-                                  advisorCtaField?.constantValueEnabled
-                                }
-                              >
-                                <ComprehensiveCTA
-                                  value={advisorCta}
-                                  className={
-                                    ctaVariant === "link"
-                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-medium shadow-none"
-                                      : "inline-flex min-h-[44px] items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium"
-                                  }
-                                />
-                              </EntityField>
-                            );
-                          })()}
+                          <EntityField
+                            displayName={msg("fields.cta", "CTA")}
+                            fieldId={advisorCtaField?.field}
+                            constantValueEnabled={advisorCtaField?.constantValueEnabled}
+                          >
+                            <ComprehensiveCTA value={advisorCta} />
+                          </EntityField>
                         </div>
                       ) : null}
                     </Background>
@@ -661,7 +642,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
 
 export const PersonalFinanceAdvisors: YextComponentConfig<PersonalFinanceAdvisorsProps> =
   {
-    label: "Team",
+    label: msg("components.teamSection", "Team Section"),
     fields: AdvisorsFields,
     defaultProps: {
       section: {
@@ -697,7 +678,7 @@ export const PersonalFinanceAdvisors: YextComponentConfig<PersonalFinanceAdvisor
 
 export const config: SectionConfig = {
   id: "PersonalFinanceAdvisors",
-  displayName: "Team",
+  displayName: "Team Section",
   description: "Team",
   pageSetTypes: ["ENTITY"],
 };

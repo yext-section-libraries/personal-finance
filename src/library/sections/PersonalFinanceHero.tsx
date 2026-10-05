@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
@@ -5,11 +7,11 @@ import {
   createStyledRtfField,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
+  getContrastingSurfaceStyle,
   hasImageSource,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -19,8 +21,8 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   getAnalyticsScopeHash,
+  getThemeColorCssValue,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -98,9 +100,6 @@ type PersonalFinanceHeroProps = {
   section: SectionTheme;
   content: HeroContent;
 };
-
-const typographyScopeClass = "yextPersonalFinanceHeroTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -275,7 +274,10 @@ const SectionFields: YextFields<PersonalFinanceHeroProps> = {
             type: "select",
             options: [
               { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
-              { label: msg("fields.options.filled", "Filled"), value: "filled" },
+              {
+                label: msg("fields.options.filled", "Filled"),
+                value: "filled",
+              },
             ],
           },
           styles: {
@@ -298,7 +300,9 @@ const SectionFields: YextFields<PersonalFinanceHeroProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      statusEyebrow: createEyebrowField(msg("fields.statusEyebrow", "Status Eyebrow")),
+      statusEyebrow: createEyebrowField(
+        msg("fields.statusEyebrow", "Status Eyebrow"),
+      ),
       hours: {
         type: "entityField",
         label: msg("fields.hours", "Hours"),
@@ -366,11 +370,12 @@ export const PersonalFinanceHeroComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     (streamDocument?.locale as string | undefined) ?? i18n.language ?? "en";
-  const sectionForeground = "#ffffff";
-  const overlayColor = resolveThemeColor(
+  const sectionForeground = getContrastingSurfaceStyle(
     props.overlayColor,
-    "var(--colors-palette-primary)",
-  );
+    streamDocument,
+    "#000000",
+  ).color;
+  const overlayColor = getThemeColorCssValue(props.overlayColor);
   const heroHours = resolveComponentData(
     props.content.hours,
     locale,
@@ -404,10 +409,14 @@ export const PersonalFinanceHeroComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const eyebrowBackgroundColor = resolveThemeColor(
+  const eyebrowBackgroundColor = getThemeColorCssValue(
     props.content.statusEyebrow.backgroundColor,
-    "#ffffff",
   );
+  const eyebrowForeground = getContrastingSurfaceStyle(
+    props.content.statusEyebrow.backgroundColor,
+    streamDocument,
+    sectionForeground,
+  ).color;
   const heroImageWrapperStyle: React.CSSProperties = {
     borderRadius:
       props.section.heroImage.styles?.borderRadius === "default"
@@ -431,19 +440,18 @@ export const PersonalFinanceHeroComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceHero${getAnalyticsScopeHash(props.id)}`}
       >
-        <section className={`${typographyScopeClass} overflow-x-clip`}>
-          <style>{typographyScopeCss}</style>
+        <section className="overflow-x-clip">
           <div className="relative isolate overflow-hidden">
             {hasImageSource(resolvedHeroImage) && resolvedHeroImage ? (
               <EntityField
-                displayName="Hero Image"
+                displayName={msg("fields.heroImage", "Hero Image")}
                 fieldId={props.section.heroImage.image.field}
                 constantValueEnabled={
                   props.section.heroImage.image.constantValueEnabled
                 }
               >
                 <div
-                  className="absolute inset-0 overflow-hidden"
+                  className="absolute inset-0 overflow-hidden rounded-image-borderRadius"
                   style={{ ...heroImageWrapperStyle, zIndex: 0 }}
                 >
                   <Image
@@ -472,32 +480,33 @@ export const PersonalFinanceHeroComponent: PuckComponent<
               }}
             />
             <div
-              className="relative mx-auto flex min-h-[540px] max-w-[1410px] items-center px-6 py-12 md:min-h-[640px] md:py-16 lg:min-h-[680px] lg:py-20"
+              className="relative mx-auto flex min-h-[540px] max-w-pageSection-contentWidth items-center px-6 py-pageSection-verticalPadding md:min-h-[640px] lg:min-h-[680px]"
               style={{ zIndex: 2 }}
             >
               <div className="relative z-[1] flex min-w-0 max-w-[980px] flex-col gap-6 py-2">
                 {heroHours && timezone ? (
                   <EntityField
-                    displayName="Hours Status"
+                    displayName={msg("components.hoursStatus", "Hours Status")}
                     fieldId={props.content.hours.field}
                     constantValueEnabled={
                       props.content.hours.constantValueEnabled
                     }
                   >
                     <div
-                      className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 text-[0.78rem] font-semibold uppercase tracking-[0.06em]"
+                      className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
-                        borderColor: "rgba(255,255,255,0.48)",
                         backgroundColor: eyebrowBackgroundColor,
-                        opacity: 0.72,
                         ...textStyleToCss(
                           props.content.statusEyebrow.styles,
                           props.content.statusEyebrow.fontColor,
-                          "#44525c",
+                          eyebrowForeground,
                         ),
                       }}
                     >
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]" />
+                      <span
+                        className="h-2 w-2 rounded-full"
+                        style={{ backgroundColor: "var(--colors-palette-primary)" }}
+                      />
                       <HoursStatus
                         hours={heroHours}
                         timezone={timezone}
@@ -542,27 +551,28 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                             : "";
                           const isFuture =
                             !isOpen24Hours && !isIndefinitelyClosed;
-                          const futureText = !isFuture || !time
-                            ? ""
-                            : params.isOpen
-                              ? dayOfWeek
-                                ? t(
-                                    "closesAtTimeWeek",
-                                    "Closes at {{time}} {{dayOfWeek}}",
-                                    { time, dayOfWeek },
-                                  )
-                                : t("closesAtTime", "Closes at {{time}}", {
-                                    time,
-                                  })
-                              : dayOfWeek
-                                ? t(
-                                    "opensAtTimeWeek",
-                                    "Opens at {{time}} {{dayOfWeek}}",
-                                    { time, dayOfWeek },
-                                  )
-                                : t("opensAtTime", "Opens at {{time}}", {
-                                    time,
-                                  });
+                          const futureText =
+                            !isFuture || !time
+                              ? ""
+                              : params.isOpen
+                                ? dayOfWeek
+                                  ? t(
+                                      "closesAtTimeWeek",
+                                      "Closes at {{time}} {{dayOfWeek}}",
+                                      { time, dayOfWeek },
+                                    )
+                                  : t("closesAtTime", "Closes at {{time}}", {
+                                      time,
+                                    })
+                                : dayOfWeek
+                                  ? t(
+                                      "opensAtTimeWeek",
+                                      "Opens at {{time}} {{dayOfWeek}}",
+                                      { time, dayOfWeek },
+                                    )
+                                  : t("opensAtTime", "Opens at {{time}}", {
+                                      time,
+                                    });
                           const currentStatus = isComingSoon
                             ? t("comingSoon", "Coming Soon")
                             : isOpen24Hours
@@ -594,14 +604,14 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                 ) : null}
                 <div className="space-y-4">
                   <EntityField
-                    displayName="Headline"
+                    displayName={msg("fields.headline", "Headline")}
                     fieldId={props.content.headline.text.field}
                     constantValueEnabled={
                       props.content.headline.text.constantValueEnabled
                     }
                   >
                     <h1
-                      className="max-w-[980px] text-[2.7rem] font-bold leading-[0.98] tracking-[-0.055em] md:text-[4.5rem] lg:text-[5rem]"
+                      className="max-w-[980px] font-h1-fontFamily text-h1-fontSize font-h1-fontWeight"
                       style={textStyleToCss(
                         props.content.headline.styles,
                         props.content.headline.fontColor,
@@ -612,27 +622,20 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                     </h1>
                   </EntityField>
                   <EntityField
-                    displayName="Body"
+                    displayName={msg("fields.body", "Body")}
                     fieldId={props.content.body.text.field}
                     constantValueEnabled={
                       props.content.body.text.constantValueEnabled
                     }
                   >
-                    <div className="max-w-[900px] text-[1rem] leading-8 md:text-[1.08rem]">
-                      {React.isValidElement(resolvedBody) ? (
-                        resolvedBody
-                      ) : (
-                        <MaybeRTF
-                          data={normalizeResolvedRichText(resolvedBody)}
-                          richTextStyleOverrides={richTextStyleOverrides}
-                        />
-                      )}
+                    <div className="max-w-[900px]">
+                      {renderRichText(resolvedBody, richTextStyleOverrides)}
                     </div>
                   </EntityField>
                 </div>
                 <div className="flex flex-wrap gap-5 pt-1">
                   <EntityField
-                    displayName="Primary CTA"
+                    displayName={msg("fields.primaryCta", "Primary CTA")}
                     fieldId={props.content.primaryCta.data.cta.field}
                     constantValueEnabled={
                       props.content.primaryCta.data.cta.constantValueEnabled
@@ -643,11 +646,10 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                         props.content
                           .primaryCta as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[60px] rounded-[14px] px-8 py-3 text-base font-semibold"
                     />
                   </EntityField>
                   <EntityField
-                    displayName="Secondary CTA"
+                    displayName={msg("fields.secondaryCta", "Secondary CTA")}
                     fieldId={props.content.secondaryCta.data.cta.field}
                     constantValueEnabled={
                       props.content.secondaryCta.data.cta.constantValueEnabled
@@ -658,7 +660,6 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                         props.content
                           .secondaryCta as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[60px] rounded-[14px] px-8 py-3 text-base font-semibold"
                     />
                   </EntityField>
                 </div>
@@ -673,7 +674,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
 
 export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> =
   {
-    label: "Hero",
+    label: msg("components.heroSection", "Hero Section"),
     fields: SectionFields,
     defaultProps: {
       overlayColor: {
@@ -719,7 +720,7 @@ export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> 
 
 export const config: SectionConfig = {
   id: "PersonalFinanceHero",
-  displayName: "Hero",
+  displayName: "Hero Section",
   description: "Hero",
   pageSetTypes: ["ENTITY"],
 };

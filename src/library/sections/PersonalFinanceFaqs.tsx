@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityRichText,
   createEntityText,
   createRichTextField,
@@ -9,12 +12,10 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   createTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
-  type ThemeColorInput,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -23,11 +24,9 @@ import {
   msg,
   Background,
   EntityField,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
   VisibilityWrapper,
@@ -45,12 +44,6 @@ import { AnalyticsScopeProvider } from "@yext/pages-components";
 const defaultReadableTextColor: ThemeColor = {
   selectedColor: "default",
   contrastingColor: "black",
-};
-
-const isDefaultColorSelection = (color?: ThemeColorInput): boolean => {
-  const selectedColor =
-    typeof color === "string" ? color : color?.selectedColor;
-  return !selectedColor || selectedColor === "default";
 };
 
 type SectionTheme = {
@@ -90,9 +83,6 @@ type PersonalFinanceFaqsProps = {
   content: FaqsContent;
   faqStyles: FaqStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceFaqsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const faqItemSource = createItemSource<FaqItem>({
   label: msg("fields.faqs", "FAQs"),
@@ -197,7 +187,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
   const [openIndex, setOpenIndex] = React.useState(0);
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -216,27 +206,26 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="faqs"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     ...textStyleToCss(props.content.sectionHeading.styles),
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor ??
                         sectionForeground,
-                      "#1a1a1a",
+                      "#000000",
                     ),
                   }}
                 >
@@ -249,9 +238,9 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                 </h2>
               </EntityField>
             </div>
-            <div className="mx-auto max-w-[980px] divide-y divide-black/10 border-y border-black/10">
+            <div className="mx-auto max-w-[980px] divide-y divide-current/10 border-y border-current/10">
               <EntityField
-                displayName="FAQs"
+                displayName={msg("fields.faqs", "FAQs")}
                 fieldId={props.content.items.field}
                 constantValueEnabled={props.content.items.constantValueEnabled}
               >
@@ -259,12 +248,8 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                   {items.map((item, index) => {
                     const open = index === openIndex;
                     const questionColor = resolveThemeColor(
-                      isDefaultColorSelection(
-                        props.faqStyles.question.fontColor,
-                      )
-                        ? sectionForeground
-                        : props.faqStyles.question.fontColor,
-                      "#1a1a1a",
+                      props.faqStyles.question.fontColor,
+                      sectionForeground,
                     );
                     const answerStyles = {
                       ...props.faqStyles.answer.styles,
@@ -288,7 +273,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                           type="button"
                         >
                           <span
-                            className="text-sm font-semibold"
+                            className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                             style={{
                               ...textStyleToCss(
                                 props.faqStyles.question.styles,
@@ -311,15 +296,8 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                           </span>
                         </button>
                         {open ? (
-                          <div className="mt-4 max-w-[880px] text-sm leading-7">
-                            {React.isValidElement(resolvedAnswer) ? (
-                              resolvedAnswer
-                            ) : (
-                              <MaybeRTF
-                                data={normalizeResolvedRichText(resolvedAnswer)}
-                                richTextStyleOverrides={answerStyles}
-                              />
-                            )}
+                          <div className="mt-4 max-w-[880px]">
+                            {renderRichText(resolvedAnswer, answerStyles)}
                           </div>
                         ) : null}
                       </div>
@@ -337,7 +315,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
 
 export const PersonalFinanceFaqs: YextComponentConfig<PersonalFinanceFaqsProps> =
   {
-    label: "FAQs",
+    label: msg("components.faqsSection", "FAQs Section"),
     fields: SectionFields,
     defaultProps: {
       section: {
@@ -361,7 +339,7 @@ export const PersonalFinanceFaqs: YextComponentConfig<PersonalFinanceFaqsProps> 
 
 export const config: SectionConfig = {
   id: "PersonalFinanceFaqs",
-  displayName: "FAQs",
+  displayName: "FAQs Section",
   description: "FAQs",
   pageSetTypes: ["ENTITY"],
 };

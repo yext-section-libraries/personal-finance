@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityRichText,
   createRichTextField,
   createStyledRtfDefault,
@@ -8,11 +11,10 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -22,9 +24,7 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  MaybeRTF,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -75,9 +75,6 @@ type PersonalFinanceStoryProps = {
     paragraphs: Omit<StyledRtfProps, "text">;
   };
 };
-
-const typographyScopeClass = "yextPersonalFinanceStoryTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -138,7 +135,9 @@ const StoryFields: YextFields<PersonalFinanceStoryProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
       paragraphs: {
         type: "array",
         label: msg("fields.paragraphs", "Paragraphs"),
@@ -170,7 +169,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -188,21 +187,20 @@ export const PersonalFinanceStoryComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="about"
-          className={`${typographyScopeClass} overflow-x-clip border-t border-black/5 py-11`}
+          className="overflow-x-clip border-t border-current/10 py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6 text-center">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6 text-center">
             <div className="mx-auto max-w-[980px]">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="mx-auto max-w-[780px] text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="mx-auto max-w-[780px] font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -219,7 +217,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                   )}
                 </h2>
               </EntityField>
-              <div className="mt-6 space-y-4 text-sm leading-7">
+              <div className="mt-6 space-y-4">
                 {props.content.paragraphs.map((paragraph, index) => {
                   const richTextStyleOverrides = {
                     ...props.paragraphStyles.paragraphs.styles,
@@ -237,17 +235,13 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                   return (
                     <EntityField
                       key={index}
-                      displayName={`Paragraph ${index + 1}`}
+                      displayName={msg("fields.paragraphs", "Paragraphs")}
                       fieldId={paragraph.text.field}
                       constantValueEnabled={paragraph.text.constantValueEnabled}
                     >
-                      {React.isValidElement(resolvedParagraph) ? (
-                        resolvedParagraph
-                      ) : (
-                        <MaybeRTF
-                          data={normalizeResolvedRichText(resolvedParagraph)}
-                          richTextStyleOverrides={richTextStyleOverrides}
-                        />
+                      {renderRichText(
+                        resolvedParagraph,
+                        richTextStyleOverrides,
                       )}
                     </EntityField>
                   );
@@ -255,7 +249,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
               </div>
               <div className="mt-8">
                 <EntityField
-                  displayName="Primary CTA"
+                  displayName={msg("fields.primaryCta", "Primary CTA")}
                   fieldId={props.content.primaryCta.data.cta.field}
                   constantValueEnabled={
                     props.content.primaryCta.data.cta.constantValueEnabled
@@ -265,7 +259,6 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                     value={
                       props.content.primaryCta as Partial<ComprehensiveCTAValue>
                     }
-                    className="inline-flex min-h-[42px] items-center rounded-[10px] px-7 py-2.5 text-sm font-bold"
                   />
                 </EntityField>
               </div>
@@ -279,7 +272,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
 
 export const PersonalFinanceStory: YextComponentConfig<PersonalFinanceStoryProps> =
   {
-    label: "About",
+    label: msg("components.aboutSection", "About Section"),
     fields: StoryFields,
     defaultProps: {
       section: {
@@ -321,7 +314,7 @@ export const PersonalFinanceStory: YextComponentConfig<PersonalFinanceStoryProps
 
 export const config: SectionConfig = {
   id: "PersonalFinanceStory",
-  displayName: "About",
+  displayName: "About Section",
   description: "About",
   pageSetTypes: ["ENTITY"],
 };

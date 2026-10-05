@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityRichText,
   createEntityText,
@@ -11,9 +14,8 @@ import {
   createStyledTextField,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -27,13 +29,11 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   TimestampAtom,
   TimestampOption,
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -117,9 +117,6 @@ type PersonalFinanceEventsProps = {
   content: EventsContent;
   styles: EventsStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceEventsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -256,8 +253,6 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
       },
       button: {
         ...defaultButtonStyle,
-        fontSize: "14px",
-        fontWeight: "600",
       },
     },
   };
@@ -331,7 +326,9 @@ const EventsFields: YextFields<PersonalFinanceEventsProps> = {
     type: "object",
     objectFields: {
       sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.description", "Description")),
+      sectionDescription: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
       events: eventSource.field,
     },
   },
@@ -368,7 +365,9 @@ const EventsFields: YextFields<PersonalFinanceEventsProps> = {
           },
         },
       },
-      description: createStyledRtfField(msg("fields.description", "Description")),
+      description: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
     },
   },
 };
@@ -379,15 +378,16 @@ export const PersonalFinanceEventsComponent: PuckComponent<
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
   const events = eventSource.resolveItems(props.content.events, streamDocument);
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
-  const cardStyle = getSurfaceColorStyle(
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
+  const cardStyle = getContrastingSurfaceStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardForegroundColor = cardStyle?.color ?? sectionForegroundColor;
   const resolvedDescription = resolveComponentData(
@@ -407,21 +407,20 @@ export const PersonalFinanceEventsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -439,31 +438,27 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  <div className="mt-3">{resolvedDescription}</div>
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={{
-                      ...props.content.sectionDescription.styles,
-                      color: resolveThemeColor(
-                        props.content.sectionDescription.fontColor,
-                        sectionForegroundColor,
-                      ),
-                    }}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  {
+                    ...props.content.sectionDescription.styles,
+                    color: resolveThemeColor(
+                      props.content.sectionDescription.fontColor,
+                      sectionForegroundColor,
+                    ),
+                  },
+                  "mt-3",
                 )}
               </EntityField>
             </div>
             <EntityField
-              displayName="Events"
+              displayName={msg("fields.events", "Events")}
               fieldId={props.content.events.field}
               constantValueEnabled={props.content.events.constantValueEnabled}
             >
@@ -534,11 +529,14 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                       as="div"
                       background={props.styles.cardBackgroundColor}
                       key={`${title}-${index}`}
-                      className="overflow-hidden rounded-[16px] border border-black/5 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                      className="overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                       style={cardStyle}
                     >
                       {hasImageSource(image) && image ? (
-                        <div style={imageWrapperStyle}>
+                        <div
+                          className="overflow-hidden rounded-image-borderRadius"
+                          style={imageWrapperStyle}
+                        >
                           <Image
                             image={image}
                             className="w-full"
@@ -549,7 +547,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                       <div className="p-6">
                         {event.eventTime.date ? (
                           <div
-                            className="text-xs font-semibold uppercase tracking-[0.18em]"
+                            className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                             style={{ color: cardForegroundColor }}
                           >
                             <TimestampAtom
@@ -565,7 +563,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                           </div>
                         ) : null}
                         <h3
-                          className="mt-3 text-[1.2rem] font-semibold"
+                          className="mt-3 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                           style={{
                             color: resolveThemeColor(
                               props.styles.name.fontColor,
@@ -576,21 +574,17 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                         >
                           {title}
                         </h3>
-                        {React.isValidElement(description) ? (
-                          <div className="mt-3">{description}</div>
-                        ) : (
-                          <MaybeRTF
-                            data={normalizeResolvedRichText(description)}
-                            className="mt-3 text-sm leading-7"
-                            richTextStyleOverrides={{
-                              ...descriptionStyles,
-                            }}
-                          />
+                        {renderRichText(
+                          description,
+                          {
+                            ...descriptionStyles,
+                          },
+                          "mt-3",
                         )}
                         {event.cta ? (
                           <div className="mt-5">
                             <EntityField
-                              displayName={`Event ${index + 1} CTA`}
+                              displayName={msg("fields.cta", "CTA")}
                               fieldId={eventCtaField?.data.cta.field}
                               constantValueEnabled={
                                 eventCtaField?.data.cta.constantValueEnabled
@@ -600,7 +594,6 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                                 value={
                                   event.cta as Partial<ComprehensiveCTAValue>
                                 }
-                                className="min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-semibold shadow-none"
                               />
                             </EntityField>
                           </div>
@@ -620,7 +613,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
 
 export const PersonalFinanceEvents: YextComponentConfig<PersonalFinanceEventsProps> =
   {
-    label: "Events",
+    label: msg("components.eventsSection", "Events Section"),
     fields: EventsFields,
     defaultProps: {
       section: {
@@ -660,7 +653,7 @@ export const PersonalFinanceEvents: YextComponentConfig<PersonalFinanceEventsPro
 
 export const config: SectionConfig = {
   id: "PersonalFinanceEvents",
-  displayName: "Events",
+  displayName: "Events Section",
   description: "Events",
   pageSetTypes: ["ENTITY"],
 };

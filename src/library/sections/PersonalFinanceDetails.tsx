@@ -1,10 +1,12 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createStyledTextDefault,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   resolvePlainText,
   resolveThemeColor,
 } from "../shared/sectionHelpers";
@@ -17,7 +19,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -134,9 +135,6 @@ type PersonalFinanceDetailsProps = {
   content: DetailsContent;
   styles: DetailsStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceDetailsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -607,7 +605,7 @@ const HoursTableBlock = ({
           }}
         />
         {value.hoursStyles.showAdditionalHoursText && additionalHoursText ? (
-          <span className="mt-3 text-sm leading-6">
+          <span className="mt-3">
             {additionalHoursText}
           </span>
         ) : null}
@@ -624,14 +622,15 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
-  const cardStyle = getSurfaceColorStyle(
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
+  const cardStyle = getContrastingSurfaceStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardForeground = cardStyle?.color ?? sectionForegroundColor;
   const bodyForeground = cardForeground;
@@ -712,25 +711,25 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`PersonalFinanceDetails${getAnalyticsScopeHash(props.id)}`}
       >
-        <style>{typographyScopeCss}</style>
+
         <Background
           as="section"
           background={props.section.backgroundColor}
           id="locations"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[780px] text-center">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={textStyleToCss(
                     props.content.sectionHeading.styles,
                     props.content.sectionHeading.fontColor,
@@ -750,18 +749,18 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               <Background
                 as="div"
                 background={props.styles.cardBackgroundColor}
-                className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
+                className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6 shadow-sm"
                 style={cardStyle}
               >
                 <EntityField
-                  displayName="Primary Card Heading"
+                  displayName={msg("fields.primaryCardHeading", "Primary Card Heading")}
                   fieldId={props.content.infoCardTitle.text.field}
                   constantValueEnabled={
                     props.content.infoCardTitle.text.constantValueEnabled
                   }
                 >
                   <h3
-                    className="mb-4 text-[1.02rem] font-semibold"
+                    className="mb-4 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                     style={textStyleToCss(
                       props.content.infoCardTitle.styles,
                       props.content.infoCardTitle.fontColor,
@@ -776,18 +775,18 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     )}
                   </h3>
                 </EntityField>
-                <div className="space-y-3 text-sm leading-6" style={{ color: bodyForeground }}>
+                <div className="space-y-3" style={{ color: bodyForeground }}>
                   {resolvedAddress ? (
                     <div>
                       <EntityField
-                        displayName="Address Label"
+                        displayName={msg("fields.addressLabel", "Address Label")}
                         fieldId={props.content.addressLabel.text.field}
                         constantValueEnabled={
                           props.content.addressLabel.text.constantValueEnabled
                         }
                       >
                         <div
-                          className="font-semibold"
+                          className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                           style={textStyleToCss(
                             props.content.addressLabel.styles,
                             props.content.addressLabel.fontColor,
@@ -803,7 +802,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         </div>
                       </EntityField>
                       <EntityField
-                        displayName="Address"
+                        displayName={msg("fields.address", "Address")}
                         fieldId={props.content.address.address.field}
                         constantValueEnabled={
                           props.content.address.address.constantValueEnabled
@@ -840,14 +839,14 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                           return (
                             <EntityField
                               key={`${item.label}-${item.originalNumber}`}
-                              displayName="Phone Number"
+                              displayName={msg("fields.phoneNumber", "Phone Number")}
                               fieldId={item.fieldId}
                               constantValueEnabled={item.constantValueEnabled}
                             >
                               <div className="space-y-0.5">
                                 {item.label ? (
                                   <div
-                                    className="font-semibold"
+                                    className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                                     style={{ color: cardForeground }}
                                   >
                                     {item.label}
@@ -864,14 +863,14 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   {resolvedEmails.length ? (
                     <div>
                       <EntityField
-                        displayName="Emails Label"
+                        displayName={msg("fields.emailsLabel", "Emails Label")}
                         fieldId={props.content.emailsLabel.text.field}
                         constantValueEnabled={
                           props.content.emailsLabel.text.constantValueEnabled
                         }
                       >
                         <div
-                          className="font-semibold"
+                          className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                           style={textStyleToCss(
                             props.content.emailsLabel.styles,
                             props.content.emailsLabel.fontColor,
@@ -887,7 +886,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         </div>
                       </EntityField>
                       <EntityField
-                        displayName="Emails"
+                        displayName={msg("fields.emails", "Emails")}
                         fieldId={props.content.emails.list.field}
                         constantValueEnabled={
                           props.content.emails.list.constantValueEnabled
@@ -913,7 +912,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <EntityField
-                    displayName="Primary Action"
+                    displayName={msg("fields.primaryAction", "Primary Action")}
                     fieldId={props.content.primaryAction.data.cta.field}
                     constantValueEnabled={
                       props.content.primaryAction.data.cta.constantValueEnabled
@@ -924,11 +923,11 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         props.content
                           .primaryAction as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[38px] rounded-[10px] px-4 text-xs font-bold"
+                      className="min-h-[38px] px-4"
                     />
                   </EntityField>
                   <EntityField
-                    displayName="Secondary Action"
+                    displayName={msg("fields.secondaryAction", "Secondary Action")}
                     fieldId={props.content.secondaryAction.data.cta.field}
                     constantValueEnabled={
                       props.content.secondaryAction.data.cta
@@ -940,7 +939,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         props.content
                           .secondaryAction as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[38px] px-1 text-xs font-medium"
+                      className="min-h-[38px] px-1"
                     />
                   </EntityField>
                 </div>
@@ -949,16 +948,16 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               <Background
                 as="div"
                 background={props.styles.cardBackgroundColor}
-                className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
+                className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6 shadow-sm"
                 style={cardStyle}
               >
                 <EntityField
-                  displayName="Hours Heading"
+                  displayName={msg("fields.hoursHeading", "Hours Heading")}
                   fieldId={props.content.hoursTitle.text.field}
                   constantValueEnabled={props.content.hoursTitle.text.constantValueEnabled}
                 >
                   <h3
-                    className="mb-4 text-[1.02rem] font-semibold"
+                    className="mb-4 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                     style={textStyleToCss(
                       props.content.hoursTitle.styles,
                       props.content.hoursTitle.fontColor,
@@ -975,8 +974,8 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 </EntityField>
                 <HoursTableBlock
                   value={props.content.hoursData}
-                  displayName="Hours"
-                  fallbackClassName="text-sm leading-6 [&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
+                  displayName={msg("fields.hours", "Hours")}
+                  fallbackClassName="[&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
                   textColor={bodyForeground}
                 />
                 {!resolveComponentData(
@@ -984,14 +983,14 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   locale,
                   streamDocument,
                 ) ? (
-                  <div className="text-sm leading-6" style={{ color: bodyForeground }}>
+                  <div style={{ color: bodyForeground }}>
                     {t("hoursUnavailable", "Hours unavailable")}
                   </div>
                 ) : null}
                 {shouldShowSecondaryHours ? (
-                  <div className="mt-5 border-t border-black/10 pt-4">
+                  <div className="mt-5 border-t border-current/10 pt-4">
                     <button
-                      className="flex w-full items-center justify-between text-left text-sm font-semibold"
+                      className="flex w-full items-center justify-between text-left font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       onClick={() =>
                         setShowSecondaryHours((currentValue) => !currentValue)
                       }
@@ -999,7 +998,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       type="button"
                     >
                       <EntityField
-                        displayName="Secondary Hours Heading"
+                        displayName={msg("fields.secondaryHoursHeading", "Secondary Hours Heading")}
                         fieldId={props.content.hoursFooterText.text.field}
                         constantValueEnabled={
                           props.content.hoursFooterText.text.constantValueEnabled
@@ -1029,15 +1028,12 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         {secondaryHours ? (
                           <HoursTableBlock
                             value={props.content.secondaryHoursData}
-                            displayName="Secondary Hours"
-                            fallbackClassName="text-sm leading-6 [&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
+                            displayName={msg("fields.secondaryHours", "Secondary Hours")}
+                            fallbackClassName="[&_.HoursTable-row]:grid [&_.HoursTable-row]:gap-1.5 sm:[&_.HoursTable-row]:grid-cols-[1fr_auto] sm:[&_.HoursTable-row]:gap-3"
                             textColor={bodyForeground}
                           />
                         ) : (
-                          <div
-                            className="text-sm leading-6"
-                            style={{ color: bodyForeground }}
-                          >
+                          <div style={{ color: bodyForeground }}>
                             {t("hoursUnavailable", "Hours unavailable")}
                           </div>
                         )}
@@ -1050,18 +1046,18 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
               <Background
                 as="div"
                 background={props.styles.cardBackgroundColor}
-                className="min-w-0 w-full rounded-[14px] border border-black/5 p-6 shadow-sm"
+                className="min-w-0 w-full rounded-image-borderRadius border border-current/10 p-6 shadow-sm"
                 style={cardStyle}
               >
                 <EntityField
-                  displayName="Secondary Card Heading"
+                  displayName={msg("fields.secondaryCardHeading", "Secondary Card Heading")}
                   fieldId={props.content.clientServicesTitle.text.field}
                   constantValueEnabled={
                     props.content.clientServicesTitle.text.constantValueEnabled
                   }
                 >
                   <h3
-                    className="mb-4 text-[1.02rem] font-semibold"
+                    className="mb-4 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                     style={textStyleToCss(
                       props.content.clientServicesTitle.styles,
                       props.content.clientServicesTitle.fontColor,
@@ -1076,17 +1072,17 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                     )}
                   </h3>
                 </EntityField>
-                <div className="space-y-5 text-sm leading-6" style={{ color: bodyForeground }}>
+                <div className="space-y-5" style={{ color: bodyForeground }}>
                   <div>
                     <EntityField
-                      displayName="Languages Label"
+                      displayName={msg("fields.languagesLabel", "Languages Label")}
                       fieldId={props.content.languagesLabel.text.field}
                       constantValueEnabled={
                         props.content.languagesLabel.text.constantValueEnabled
                       }
                     >
                       <div
-                        className="font-semibold"
+                        className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                         style={textStyleToCss(
                           props.content.languagesLabel.styles,
                           props.content.languagesLabel.fontColor,
@@ -1102,7 +1098,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       </div>
                     </EntityField>
                     <EntityField
-                      displayName="Languages Value"
+                      displayName={msg("fields.languagesValue", "Languages Value")}
                       fieldId={props.content.languagesValue.text.field}
                       constantValueEnabled={
                         props.content.languagesValue.text.constantValueEnabled
@@ -1121,14 +1117,14 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   </div>
                   <div>
                     <EntityField
-                      displayName="Accessibility Label"
+                      displayName={msg("fields.accessibilityLabel", "Accessibility Label")}
                       fieldId={props.content.accessibilityLabel.text.field}
                       constantValueEnabled={
                         props.content.accessibilityLabel.text.constantValueEnabled
                       }
                     >
                       <div
-                        className="font-semibold"
+                        className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                         style={textStyleToCss(
                           props.content.accessibilityLabel.styles,
                           props.content.accessibilityLabel.fontColor,
@@ -1144,7 +1140,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       </div>
                     </EntityField>
                     <EntityField
-                      displayName="Accessibility Value"
+                      displayName={msg("fields.accessibilityValue", "Accessibility Value")}
                       fieldId={props.content.accessibilityValue.text.field}
                       constantValueEnabled={
                         props.content.accessibilityValue.text.constantValueEnabled
@@ -1163,14 +1159,14 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   </div>
                   <div>
                     <EntityField
-                      displayName="Services Label"
+                      displayName={msg("fields.servicesLabel", "Services Label")}
                       fieldId={props.content.servicesLabel.text.field}
                       constantValueEnabled={
                         props.content.servicesLabel.text.constantValueEnabled
                       }
                     >
                       <div
-                        className="font-semibold"
+                        className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                         style={textStyleToCss(
                           props.content.servicesLabel.styles,
                           props.content.servicesLabel.fontColor,
@@ -1186,7 +1182,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       </div>
                     </EntityField>
                     <EntityField
-                      displayName="Service Items"
+                      displayName={msg("fields.serviceItems", "Service Items")}
                       fieldId={props.content.serviceItems.text.field}
                       constantValueEnabled={
                         props.content.serviceItems.text.constantValueEnabled
@@ -1218,7 +1214,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
 
 export const PersonalFinanceDetails: YextComponentConfig<PersonalFinanceDetailsProps> =
   {
-    label: "Location Details",
+    label: msg("components.locationDetailsSection", "Location Details Section"),
     fields: SectionFields,
     defaultProps: {
       section: {
@@ -1339,7 +1335,7 @@ export const PersonalFinanceDetails: YextComponentConfig<PersonalFinanceDetailsP
 
 export const config: SectionConfig = {
   id: "PersonalFinanceDetails",
-  displayName: "Location Details",
+  displayName: "Location Details Section",
   description: "Location Details",
   pageSetTypes: ["ENTITY"],
 };

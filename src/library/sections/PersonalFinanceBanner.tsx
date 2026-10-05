@@ -1,3 +1,5 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import { PuckComponent } from "@puckeditor/core";
@@ -17,14 +19,17 @@ import {
   type YextFields,
   backgroundColors,
   getDefaultRTF,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   resolveYextEntityField,
   useDocument,
   pt,
 } from "@yext/visual-editor";
-import { isRichTextEmpty, renderRichText } from "../shared/sectionHelpers";
+import {
+  getContrastingSurfaceStyle,
+  isRichTextEmpty,
+  renderRichText,
+} from "../shared/sectionHelpers";
 
 type PersonalFinanceBannerProps = {
   data: {
@@ -105,7 +110,7 @@ const PersonalFinanceBannerComponent: PuckComponent<
 > = ({ data, styles, section, puck }) => {
   const { i18n } = useTranslation();
   const streamDocument = useDocument();
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     section.backgroundColor,
     streamDocument,
   );
@@ -173,7 +178,7 @@ const PersonalFinanceBannerComponent: PuckComponent<
     >
       <EntityField
         constantValueEnabled={data.text.constantValueEnabled}
-        displayName="Banner Text"
+        displayName={msg("fields.bannerText", "Banner Text")}
         fieldId={data.text.field}
       >
         {renderRichText(resolvedText, richTextStyleOverrides)}
@@ -187,7 +192,7 @@ const PersonalFinanceBannerComponent: PuckComponent<
  */
 export const PersonalFinanceBanner: YextComponentConfig<PersonalFinanceBannerProps> =
   {
-    label: "Banner",
+    label: msg("components.bannerSection", "Banner Section"),
     fields: PersonalFinanceBannerFields,
     defaultProps: {
       data: {
@@ -228,7 +233,7 @@ export const PersonalFinanceBanner: YextComponentConfig<PersonalFinanceBannerPro
 
 export const config: SectionConfig = {
   id: "PersonalFinanceBanner",
-  displayName: "Banner",
+  displayName: "Banner Section",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

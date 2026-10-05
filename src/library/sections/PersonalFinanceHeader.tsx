@@ -1,6 +1,13 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
-import { aspectRatioOptions, hasImageSource } from "../shared/sectionHelpers";
+import {
+  aspectRatioOptions,
+  getContrastingSurfaceStyle,
+  hasImageSource,
+  resolveSurfaceTextColor,
+} from "../shared/sectionHelpers";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
@@ -32,9 +39,7 @@ import {
   type YextEntityField,
   type YextFields,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   i18nPageInstance,
-  isDarkColor,
   normalizeLink,
   resolveComponentData,
   useDocument,
@@ -165,9 +170,7 @@ const getReadableForegroundColor = (
   streamDocument?: StreamDocument,
 ): ThemeColor => {
   return {
-    selectedColor: isDarkColor(surfaceColor, streamDocument)
-      ? "white"
-      : "black",
+    selectedColor: resolveSurfaceTextColor(surfaceColor, streamDocument),
     contrastingColor: surfaceColor.selectedColor,
   };
 };
@@ -664,7 +667,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
   const showUtilities = props.utilities.show;
   const showCta = props.cta.show;
   const showLogo = props.logoImage.show;
-  const headerSurfaceStyle = getSurfaceColorStyle(
+  const headerSurfaceStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -765,7 +768,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
     if (!hasImageSource(iconImage)) {
       return (
         <EntityField
-          displayName="Utility Icon"
+          displayName={msg("fields.utilityIcon", "Utility Icon")}
           fieldId={iconImageProps.image.field}
           constantValueEnabled={iconImageProps.image.constantValueEnabled}
         >
@@ -792,7 +795,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
     if (!iconUrl) {
       return (
         <EntityField
-          displayName="Utility Icon"
+          displayName={msg("fields.utilityIcon", "Utility Icon")}
           fieldId={iconImageProps.image.field}
           constantValueEnabled={iconImageProps.image.constantValueEnabled}
         >
@@ -817,11 +820,14 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
     return (
       <EntityField
-        displayName="Utility Icon"
+        displayName={msg("fields.utilityIcon", "Utility Icon")}
         fieldId={iconImageProps.image.field}
         constantValueEnabled={iconImageProps.image.constantValueEnabled}
       >
-        <div style={wrapperStyle}>
+        <div
+          className="rounded-image-borderRadius"
+          style={wrapperStyle}
+        >
           <img
             alt=""
             src={iconUrl}
@@ -868,14 +874,14 @@ const PersonalFinanceHeaderComponent: PuckComponent<
           {ctaItems.map((item, index) => (
             <EntityField
               key={`desktop-cta-${index}`}
-              displayName={`Desktop CTA ${index + 1}`}
+              displayName={msg("fields.cta", "CTA")}
               fieldId={item.cta.data.cta.field}
               constantValueEnabled={item.cta.data.cta.constantValueEnabled}
             >
               <ComprehensiveCTA
                 value={item.cta as Partial<ComprehensiveCTAValue>}
                 eventName={`headerCta${index}`}
-                className="inline-flex h-10 items-center justify-center px-5 transition-opacity hover:opacity-90"
+                className="transition-opacity hover:opacity-90"
               />
             </EntityField>
           ))}
@@ -923,11 +929,14 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
     const logoContent = (
       <EntityField
-        displayName="Logo Image"
+        displayName={msg("fields.logoImage", "Logo Image")}
         fieldId={props.logoImage.image.field}
         constantValueEnabled={props.logoImage.image.constantValueEnabled}
       >
-        <div style={logoWrapperStyle}>
+        <div
+          className="rounded-image-borderRadius"
+          style={logoWrapperStyle}
+        >
           <Image
             image={resolvedLogoImage}
             className="h-full w-full"
@@ -939,7 +948,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
     return logoUrl ? (
       <EntityField
-        displayName="Logo Link"
+        displayName={msg("fields.logoLink", "Logo Link")}
         fieldId={props.logoImage.url.field}
         constantValueEnabled={props.logoImage.url.constantValueEnabled}
       >
@@ -1034,14 +1043,16 @@ const PersonalFinanceHeaderComponent: PuckComponent<
           color: resolveThemeColorCssValue(navigationColor),
         }}
       >
-        <div className="hidden lg:block">{desktopVariantContent}</div>
+        <div className="mx-auto hidden max-w-pageSection-contentWidth lg:block">
+          {desktopVariantContent}
+        </div>
 
-        <div className="flex min-h-[82px] items-center gap-4 px-6 md:px-8 lg:hidden">
+        <div className="mx-auto flex min-h-[82px] max-w-pageSection-contentWidth items-center gap-4 px-6 md:px-8 lg:hidden">
           <div className="min-w-0 flex-1">{renderLogo()}</div>
           {showCta && topBarCtaItem ? (
             <div className="hidden items-center gap-3 md:flex">
               <EntityField
-                displayName="Responsive Top Bar CTA"
+                displayName={msg("fields.responsiveTopBarCta", "Responsive Top Bar CTA")}
                 fieldId={topBarCtaItem.cta.data.cta.field}
                 constantValueEnabled={
                   topBarCtaItem.cta.data.cta.constantValueEnabled
@@ -1050,7 +1061,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
                 <ComprehensiveCTA
                   value={topBarCtaItem.cta as Partial<ComprehensiveCTAValue>}
                   eventName="responsiveTopBarCta"
-                  className="inline-flex h-10 items-center justify-center px-5 transition-opacity hover:opacity-90"
+                  className="transition-opacity hover:opacity-90"
                 />
               </EntityField>
             </div>
@@ -1116,7 +1127,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
                       {drawerCtaItems.map((item, index) => (
                         <EntityField
                           key={`tablet-cta-${index}`}
-                          displayName={`Tablet Menu CTA ${index + 1}`}
+                          displayName={msg("fields.cta", "CTA")}
                           fieldId={item.cta.data.cta.field}
                           constantValueEnabled={
                             item.cta.data.cta.constantValueEnabled
@@ -1125,7 +1136,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
                           <ComprehensiveCTA
                             value={item.cta as Partial<ComprehensiveCTAValue>}
                             eventName={`tabletOverlayCta${index}`}
-                            className="inline-flex h-10 w-full items-center justify-center px-5 transition-opacity hover:opacity-90"
+                            className="w-full transition-opacity hover:opacity-90"
                           />
                         </EntityField>
                       ))}
@@ -1136,7 +1147,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
                       {mobileDrawerCtaItems.map((item, index) => (
                         <EntityField
                           key={`mobile-cta-${index}`}
-                          displayName={`Mobile Menu CTA ${index + 1}`}
+                          displayName={msg("fields.cta", "CTA")}
                           fieldId={item.cta.data.cta.field}
                           constantValueEnabled={
                             item.cta.data.cta.constantValueEnabled
@@ -1145,7 +1156,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
                           <ComprehensiveCTA
                             value={item.cta as Partial<ComprehensiveCTAValue>}
                             eventName={`mobileOverlayCta${index}`}
-                            className="inline-flex h-10 w-full items-center justify-center px-5 transition-opacity hover:opacity-90"
+                            className="w-full transition-opacity hover:opacity-90"
                           />
                         </EntityField>
                       ))}
@@ -1202,7 +1213,7 @@ const PersonalFinanceHeaderComponent: PuckComponent<
 
 export const PersonalFinanceHeader: YextComponentConfig<PersonalFinanceHeaderProps> =
   {
-    label: "Header",
+    label: msg("components.header", "Header"),
     fields: PersonalFinanceHeaderFields,
     defaultProps: {
       variant: "utilityTopRow",

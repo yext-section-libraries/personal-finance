@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityRichText,
   createEntityText,
   createRichTextField,
@@ -9,11 +12,10 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   createTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -26,8 +28,6 @@ import {
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
-  MaybeRTF,
   resolveComponentData,
   VisibilityWrapper,
   YextComponentConfig,
@@ -81,9 +81,6 @@ type PersonalFinanceTestimonialsProps = {
   content: TestimonialsContent;
   testimonialStyles: TestimonialStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceTestimonialsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const testimonialSource = createItemSource<TestimonialItem>({
   label: msg("fields.testimonials", "Testimonials"),
@@ -141,7 +138,9 @@ const TestimonialsFields: YextFields<PersonalFinanceTestimonialsProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
       testimonials: testimonialSource.field,
     },
   },
@@ -169,7 +168,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
   );
   const testimonialCount = testimonials.length;
   const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -184,20 +183,13 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
     locale,
     streamDocument,
   );
-  const quoteContent = React.isValidElement(resolvedQuote) ? (
-    resolvedQuote
-  ) : (
-    <MaybeRTF
-      data={normalizeResolvedRichText(resolvedQuote)}
-      richTextStyleOverrides={{
-        ...props.testimonialStyles.quote.styles,
-        color: resolveThemeColor(
-          props.testimonialStyles.quote.fontColor,
-          sectionForeground,
-        ),
-      }}
-    />
-  );
+  const quoteContent = renderRichText(resolvedQuote, {
+    ...props.testimonialStyles.quote.styles,
+    color: resolveThemeColor(
+      props.testimonialStyles.quote.fontColor,
+      sectionForeground,
+    ),
+  });
 
   return (
     <VisibilityWrapper
@@ -211,21 +203,20 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="testimonials"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto max-w-[780px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -247,8 +238,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               <div className="mb-6 flex justify-center gap-3 md:hidden">
                 <button
                   aria-label={t("previousTestimonial", "Previous testimonial")}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-xl"
-                  style={{ color: "#555555" }}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-current/10 text-xl"
                   onClick={() =>
                     setActiveIndex((value) =>
                       value === 0 ? testimonialCount - 1 : value - 1,
@@ -260,8 +250,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 </button>
                 <button
                   aria-label={t("nextTestimonial", "Next testimonial")}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-xl"
-                  style={{ color: "#555555" }}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-current/10 text-xl"
                   onClick={() =>
                     setActiveIndex((value) =>
                       value === testimonialCount - 1 ? 0 : value + 1,
@@ -274,8 +263,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               </div>
               <button
                 aria-label={t("previousTestimonial", "Previous testimonial")}
-                className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-xl md:flex"
-                style={{ color: "#555555" }}
+                className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-current/10 text-xl md:flex"
                 onClick={() =>
                   setActiveIndex((value) =>
                     value === 0 ? testimonialCount - 1 : value - 1,
@@ -287,8 +275,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               </button>
               <button
                 aria-label={t("nextTestimonial", "Next testimonial")}
-                className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-xl md:flex"
-                style={{ color: "#555555" }}
+                className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-current/10 text-xl md:flex"
                 onClick={() =>
                   setActiveIndex((value) =>
                     value === testimonialCount - 1 ? 0 : value + 1,
@@ -299,7 +286,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 →
               </button>
               <EntityField
-                displayName="Testimonials"
+                displayName={msg("fields.testimonials", "Testimonials")}
                 fieldId={props.content.testimonials.field}
                 constantValueEnabled={
                   props.content.testimonials.constantValueEnabled
@@ -307,7 +294,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               >
                 <>
                   <blockquote
-                    className="mx-auto max-w-[760px] px-0 text-[1.7rem] italic leading-[1.45] tracking-[-0.02em] md:px-14 md:text-[2.1rem]"
+                    className="mx-auto max-w-[760px] px-0 font-body-fontFamily text-body-fontSize font-body-fontWeight md:px-14"
                     style={textStyleToCss(props.testimonialStyles.quote.styles)}
                   >
                     <span aria-hidden="true">“</span>
@@ -316,7 +303,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                   </blockquote>
                   <div className="mt-8">
                     <div
-                      className="text-[1.05rem] font-semibold"
+                      className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
                         color: resolveThemeColor(
                           props.testimonialStyles.name.fontColor,
@@ -333,7 +320,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                       )}
                     </div>
                     <div
-                      className="text-sm"
+                      className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
                         color: resolveThemeColor(
                           props.testimonialStyles.role.fontColor,
@@ -357,18 +344,16 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                   <button
                     key={`${resolvePlainText(testimonial.name, locale, streamDocument, `testimonial-${index}`)}-${index}`}
                     aria-label={`Show testimonial ${index + 1}`}
-                    className={`h-2.5 w-2.5 rounded-full ${
-                      index === activeIndex ? "" : "bg-[#b6b6bc]"
-                    }`}
+                    className="h-2.5 w-2.5 rounded-full"
                     style={
                       index === activeIndex
                         ? {
                             backgroundColor: resolveThemeColor(
                               props.testimonialStyles.name.fontColor,
-                              "#1a1a1a",
+                              sectionForeground,
                             ),
                           }
-                        : undefined
+                        : { backgroundColor: sectionForeground, opacity: 0.3 }
                     }
                     onClick={() => setActiveIndex(index)}
                     type="button"
@@ -385,7 +370,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
 
 export const PersonalFinanceTestimonials: YextComponentConfig<PersonalFinanceTestimonialsProps> =
   {
-    label: "Testimonials",
+    label: msg("components.testimonialsSection", "Testimonials Section"),
     fields: TestimonialsFields,
     defaultProps: {
       section: {
@@ -410,7 +395,7 @@ export const PersonalFinanceTestimonials: YextComponentConfig<PersonalFinanceTes
 
 export const config: SectionConfig = {
   id: "PersonalFinanceTestimonials",
-  displayName: "Testimonials",
+  displayName: "Testimonials Section",
   description: "Testimonials",
   pageSetTypes: ["ENTITY"],
 };

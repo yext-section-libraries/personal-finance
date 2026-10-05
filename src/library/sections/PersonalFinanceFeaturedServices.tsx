@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityRichText,
   createEntityText,
@@ -9,9 +12,8 @@ import {
   createStyledTextDefault,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -25,10 +27,8 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -105,10 +105,6 @@ type PersonalFinanceFeaturedServicesProps = {
   content: FeaturedServicesContent;
   styles: FeaturedServicesStyles;
 };
-
-const typographyScopeClass =
-  "yextPersonalFinanceFeaturedServicesTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -302,8 +298,6 @@ const createDefaultCta = (label: string, link = "#"): ComprehensiveCTAValue => {
       },
       button: {
         ...defaultButtonStyle,
-        fontSize: "14px",
-        fontWeight: "500",
       },
     },
   } as ComprehensiveCTAValue;
@@ -404,7 +398,9 @@ const FeaturedServicesFields: YextFields<PersonalFinanceFeaturedServicesProps> =
       objectFields: {
         image: createImageStyleField(msg("fields.image", "Image")),
         title: createStyledTextField(msg("fields.title", "Title")),
-        description: createStyledRtfField(msg("fields.description", "Description")),
+        description: createStyledRtfField(
+          msg("fields.description", "Description"),
+        ),
       },
     },
   };
@@ -418,12 +414,12 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
     props.content.cards,
     streamDocument,
   );
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   const resolvedDescription = resolveComponentData(
     props.content.sectionDescription.text,
     locale,
@@ -442,21 +438,20 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="services"
-          className={`${typographyScopeClass} overflow-x-clip border-t border-black/5 py-11`}
+          className="overflow-x-clip border-t border-current/10 py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[1100px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -474,31 +469,27 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  <div className="mt-3">{resolvedDescription}</div>
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-6"
-                    richTextStyleOverrides={{
-                      ...props.content.sectionDescription.styles,
-                      color: resolveThemeColor(
-                        props.content.sectionDescription.fontColor,
-                        sectionForegroundColor,
-                      ),
-                    }}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  {
+                    ...props.content.sectionDescription.styles,
+                    color: resolveThemeColor(
+                      props.content.sectionDescription.fontColor,
+                      sectionForegroundColor,
+                    ),
+                  },
+                  "mt-3",
                 )}
               </EntityField>
             </div>
             <EntityField
-              displayName="Service Cards"
+              displayName={msg("fields.serviceCards", "Service Cards")}
               fieldId={props.content.cards.field}
               constantValueEnabled={props.content.cards.constantValueEnabled}
             >
@@ -563,6 +554,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                     >
                       <div
                         aria-hidden={!hasImageSource(image)}
+                        className="overflow-hidden rounded-image-borderRadius"
                         style={imageWrapperStyle}
                       >
                         {hasImageSource(image) ? (
@@ -575,7 +567,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                       </div>
                       <div className="space-y-2">
                         <h3
-                          className="text-[1.15rem] font-semibold"
+                          className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                           style={{
                             color: resolveThemeColor(
                               props.styles.title.fontColor,
@@ -586,46 +578,27 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                         >
                           {title}
                         </h3>
-                        {React.isValidElement(description) ? (
-                          description
-                        ) : (
-                          <MaybeRTF
-                            data={normalizeResolvedRichText(description)}
-                            className="text-sm leading-6"
-                            richTextStyleOverrides={{
-                              ...props.styles.description.styles,
-                              color: resolveThemeColor(
-                                props.styles.description.fontColor,
-                                sectionForegroundColor,
-                              ),
-                            }}
-                          />
+                        {renderRichText(
+                          description,
+                          {
+                            ...props.styles.description.styles,
+                            color: resolveThemeColor(
+                              props.styles.description.fontColor,
+                              sectionForegroundColor,
+                            ),
+                          },
+                          "",
                         )}
                       </div>
-                      {cardCta
-                        ? (() => {
-                            const ctaVariant = cardCta.styles?.variant;
-
-                            return (
-                              <EntityField
-                                displayName={`Service ${index + 1} CTA`}
-                                fieldId={cardCtaField?.field}
-                                constantValueEnabled={
-                                  cardCtaField?.constantValueEnabled
-                                }
-                              >
-                                <ComprehensiveCTA
-                                  value={cardCta}
-                                  className={
-                                    ctaVariant === "link"
-                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-medium shadow-none"
-                                      : "inline-flex min-h-[44px] items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium"
-                                  }
-                                />
-                              </EntityField>
-                            );
-                          })()
-                        : null}
+                      {cardCta ? (
+                        <EntityField
+                          displayName={msg("fields.cta", "CTA")}
+                          fieldId={cardCtaField?.field}
+                          constantValueEnabled={cardCtaField?.constantValueEnabled}
+                        >
+                          <ComprehensiveCTA value={cardCta} />
+                        </EntityField>
+                      ) : null}
                     </article>
                   );
                 })}
@@ -640,7 +613,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
 
 export const PersonalFinanceFeaturedServices: YextComponentConfig<PersonalFinanceFeaturedServicesProps> =
   {
-    label: "Featured Services",
+    label: msg("components.featuredServicesSection", "Featured Services Section"),
     fields: FeaturedServicesFields,
     defaultProps: {
       section: {
@@ -672,7 +645,7 @@ export const PersonalFinanceFeaturedServices: YextComponentConfig<PersonalFinanc
 
 export const config: SectionConfig = {
   id: "PersonalFinanceFeaturedServices",
-  displayName: "Featured Services",
+  displayName: "Featured Services Section",
   description: "Featured Services",
   pageSetTypes: ["ENTITY"],
 };

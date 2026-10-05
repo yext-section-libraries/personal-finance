@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityText,
   createStyledRtfDefault,
@@ -8,9 +11,8 @@ import {
   createStyledTextDefault,
   createStyledTextField,
   createTextField,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -23,10 +25,8 @@ import {
   Background,
   EntityField,
   Image,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -96,9 +96,6 @@ type PersonalFinancePhotoGalleryProps = {
   gallerySurfaceBackgroundColor: ThemeColor;
   galleryStyles: GalleryStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinancePhotoGalleryTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultImageStyle: StyledImageValue = {
   borderRadius: "default",
@@ -241,13 +238,20 @@ const GalleryFields: YextFields<PersonalFinancePhotoGalleryProps> = {
     label: msg("fields.content", "Content"),
     type: "object",
     objectFields: {
-      sectionHeading: createStyledTextField(msg("fields.sectionHeading", "Section Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.sectionDescription", "Section Description")),
+      sectionHeading: createStyledTextField(
+        msg("fields.sectionHeading", "Section Heading"),
+      ),
+      sectionDescription: createStyledRtfField(
+        msg("fields.sectionDescription", "Section Description"),
+      ),
       photos: galleryPhotoSource.field,
     },
   },
   gallerySurfaceBackgroundColor: {
-    label: msg("fields.gallerySurfaceBackgroundColor", "Gallery Surface Background Color"),
+    label: msg(
+      "fields.gallerySurfaceBackgroundColor",
+      "Gallery Surface Background Color",
+    ),
     type: "basicSelector",
     options: "BACKGROUND_COLOR",
   },
@@ -266,15 +270,16 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
 > = (props) => {
   const streamDocument = useDocument<StreamDocument>();
   const locale = streamDocument.locale ?? "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
   const sectionForeground = sectionStyle?.color ?? "currentColor";
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
-  const gallerySurfaceStyle = getSurfaceColorStyle(
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
+  const gallerySurfaceStyle = getContrastingSurfaceStyle(
     props.gallerySurfaceBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const galleryForegroundColor =
     gallerySurfaceStyle?.color ?? sectionForegroundColor;
@@ -306,21 +311,20 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -338,26 +342,22 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  resolvedDescription
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={descriptionOverrides}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  descriptionOverrides,
+                  "mt-3",
                 )}
               </EntityField>
             </div>
             <div className="grid justify-center gap-5 md:grid-cols-2 xl:grid-cols-4">
               <EntityField
-                displayName="Photos"
+                displayName={msg("fields.photos", "Photos")}
                 fieldId={props.content.photos.field}
                 constantValueEnabled={props.content.photos.constantValueEnabled}
               >
@@ -403,11 +403,14 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                       as="div"
                       background={props.gallerySurfaceBackgroundColor}
                       key={`${caption}-${index}`}
-                      className="overflow-hidden rounded-[16px] border border-black/5 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                      className="overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                       style={gallerySurfaceStyle}
                     >
                       {hasImageSource(image) && image ? (
-                        <div style={imageWrapperStyle}>
+                        <div
+                          className="overflow-hidden rounded-image-borderRadius"
+                          style={imageWrapperStyle}
+                        >
                           <Image
                             image={image}
                             className="h-[240px] w-full"
@@ -416,7 +419,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                         </div>
                       ) : null}
                       <figcaption
-                        className="px-5 py-4 text-sm leading-6"
+                        className="px-5 py-4"
                         style={{
                           color: resolveThemeColor(
                             props.galleryStyles.caption.fontColor,
@@ -441,7 +444,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
 
 export const PersonalFinancePhotoGallery: YextComponentConfig<PersonalFinancePhotoGalleryProps> =
   {
-    label: "Photo Gallery",
+    label: msg("components.photoGallerySection", "Photo Gallery Section"),
     fields: GalleryFields,
     defaultProps: {
       section: {
@@ -478,7 +481,7 @@ export const PersonalFinancePhotoGallery: YextComponentConfig<PersonalFinancePho
 
 export const config: SectionConfig = {
   id: "PersonalFinancePhotoGallery",
-  displayName: "Photo Gallery",
+  displayName: "Photo Gallery Section",
   description: "Photo Gallery",
   pageSetTypes: ["ENTITY"],
 };

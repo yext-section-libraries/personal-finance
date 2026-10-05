@@ -1,8 +1,10 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   defaultTextStyle,
-  getScopedTypographyCss,
   resolveThemeColor,
   type ThemeColorInput,
 } from "../shared/sectionHelpers";
@@ -14,7 +16,6 @@ import {
   Background,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   VisibilityWrapper,
   YextComponentConfig,
   YextFields,
@@ -51,89 +52,6 @@ const isDefaultColorSelection = (color?: ThemeColorInput): boolean => {
   return !selectedColor || selectedColor === "default";
 };
 
-const parseCssColor = (value: string): [number, number, number] | undefined => {
-  const normalizedValue = value.trim().toLowerCase();
-
-  if (normalizedValue === "white") {
-    return [255, 255, 255];
-  }
-
-  if (normalizedValue === "black") {
-    return [0, 0, 0];
-  }
-
-  const hexMatch = normalizedValue.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
-  if (hexMatch) {
-    const hexValue =
-      hexMatch[1].length === 3
-        ? [...hexMatch[1]]
-            .map((character) => `${character}${character}`)
-            .join("")
-        : hexMatch[1];
-
-    return [
-      Number.parseInt(hexValue.slice(0, 2), 16),
-      Number.parseInt(hexValue.slice(2, 4), 16),
-      Number.parseInt(hexValue.slice(4, 6), 16),
-    ];
-  }
-
-  const rgbMatch = normalizedValue.match(/^rgba?\(([^)]+)\)$/);
-  if (!rgbMatch) {
-    return undefined;
-  }
-
-  const channels = rgbMatch[1]
-    .split(",")
-    .slice(0, 3)
-    .map((channel) => Number.parseFloat(channel.trim()));
-
-  return channels.every((channel) => Number.isFinite(channel))
-    ? [channels[0], channels[1], channels[2]]
-    : undefined;
-};
-
-const resolveBrowserColor = (color: string): string => {
-  if (typeof window === "undefined" || typeof document === "undefined") {
-    return color;
-  }
-
-  const probe = document.createElement("span");
-  probe.style.color = color;
-  probe.style.display = "none";
-  document.body.appendChild(probe);
-  const resolvedColor = window.getComputedStyle(probe).color;
-  probe.remove();
-  return resolvedColor || color;
-};
-
-/**
- * Resolves the black-or-white text color that contrasts with the section background.
- */
-const resolveReadableTextColor = (
-  backgroundColor: ThemeColorInput,
-  fallbackBackgroundColor: string,
-): string => {
-  const parsedColor = parseCssColor(
-    resolveBrowserColor(
-      resolveThemeColor(backgroundColor, fallbackBackgroundColor),
-    ),
-  );
-
-  if (!parsedColor) {
-    return "#1a1a1a";
-  }
-
-  const [red, green, blue] = parsedColor.map((channel) => {
-    const normalizedChannel = channel / 255;
-    return normalizedChannel <= 0.03928
-      ? normalizedChannel / 12.92
-      : ((normalizedChannel + 0.055) / 1.055) ** 2.4;
-  });
-  const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-  return luminance > 0.5 ? "#1a1a1a" : "#ffffff";
-};
-
 type EditableMappedText = {
   constantValue: TranslatableStringFromVisualEditor;
   mappedField?: YextEntityFieldFromVisualEditor<TranslatableStringFromVisualEditor>;
@@ -165,9 +83,6 @@ type SectionTheme = {
   buttonTextColor?: ThemeColorValue;
   visibleOnLivePage: boolean;
 };
-
-const typographyScopeClass = "yextPersonalFinanceFooterTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultLinkStyle: StyledLinkValueFromVisualEditor = {
   ...defaultTextStyle,
@@ -285,7 +200,6 @@ const resolveSectionStyles = (
   section: SectionTheme,
   locale: string,
   streamDocument: Record<string, unknown> | undefined,
-  fallbackColor = "#ffffff",
 ): CSSProperties => {
   const backgroundImage = resolveImageData(
     section.backgroundImage,
@@ -294,7 +208,6 @@ const resolveSectionStyles = (
   );
 
   return {
-    backgroundColor: resolveThemeColor(section.backgroundColor, fallbackColor),
     backgroundImage: backgroundImage.src
       ? `url(${backgroundImage.src})`
       : undefined,
@@ -602,21 +515,17 @@ export const PersonalFinanceFooterComponent: PuckComponent<
     props.section,
     locale,
     streamDocument,
-    "#0d7e86",
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
+  const sectionSurfaceStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
+  const defaultSectionTextColor = sectionSurfaceStyle.color;
   const textColors = resolveSectionTextColors(props.section, {
-    headingTextColor: "#ffffff",
-    bodyTextColor: "#e5eef0",
-    linkTextColor: "#f8fafc",
+    headingTextColor: defaultSectionTextColor,
+    bodyTextColor: defaultSectionTextColor,
+    linkTextColor: defaultSectionTextColor,
   });
-  const readableSectionTextColorFallback =
-    sectionSurfaceStyle?.color ??
-    resolveReadableTextColor(props.section.backgroundColor, "#0d7e86");
-  const defaultSectionTextColor = readableSectionTextColorFallback;
   const brandName = resolveText(
     props.brandName.text,
     locale,
@@ -654,18 +563,17 @@ export const PersonalFinanceFooterComponent: PuckComponent<
           background={props.section.backgroundColor}
           id="contact"
           style={{ ...sectionStyles, ...sectionSurfaceStyle }}
-          className={`${typographyScopeClass} overflow-x-clip`}
+          className="overflow-x-clip"
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6 py-8">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6 py-pageSection-verticalPadding">
             <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
               <EntityField
-                displayName="Brand Text"
+                displayName={msg("fields.brandText", "Brand Text")}
                 fieldId={props.brandName.text.field}
                 constantValueEnabled={props.brandName.text.constantValueEnabled}
               >
                 <p
-                  className="text-sm font-semibold"
+                  className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                   style={{
                     ...textStyleToCss(props.brandName.styles),
                     color: brandTextColor,
@@ -727,7 +635,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
                     "field" in ctaField ? (
                     <EntityField
                       key={`${href}-${index}`}
-                      displayName={`Footer Link ${index + 1}`}
+                      displayName={t("fields.linkIndex", "Link {{index}}", { index: index + 1 })}
                       fieldId={ctaField.field}
                       constantValueEnabled={ctaField.constantValueEnabled}
                     >
@@ -740,14 +648,14 @@ export const PersonalFinanceFooterComponent: PuckComponent<
               </nav>
             </div>
             <EntityField
-              displayName="Copyright Text"
+              displayName={msg("fields.copyrightText", "Copyright Text")}
               fieldId={props.copyrightText.text.field}
               constantValueEnabled={
                 props.copyrightText.text.constantValueEnabled
               }
             >
               <div
-                className="mt-5 border-t border-white/30 pt-5 text-center text-sm"
+                className="mt-5 border-t border-current/30 pt-5 text-center"
                 style={{
                   ...textStyleToCss(props.copyrightText.styles),
                   color: copyrightTextColor,
@@ -765,7 +673,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
 
 export const PersonalFinanceFooter: YextComponentConfig<PersonalFinanceFooterProps> =
   {
-    label: "Footer",
+    label: msg("components.footer", "Footer"),
     fields: SectionFields,
     defaultProps: {
       section: {

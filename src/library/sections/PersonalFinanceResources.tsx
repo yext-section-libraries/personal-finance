@@ -1,6 +1,9 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createEntityRichText,
   createEntityText,
@@ -11,9 +14,8 @@ import {
   createStyledTextField,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
+  renderRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -27,11 +29,9 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   createItemSource,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -107,9 +107,6 @@ type PersonalFinanceResourcesProps = {
   content: ResourcesContent;
   styles: ResourcesStyles;
 };
-
-const typographyScopeClass = "yextPersonalFinanceResourcesTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultButtonStyle: StyledButtonValue = {
   ...defaultTextStyle,
@@ -357,7 +354,9 @@ const ResourcesFields: YextFields<PersonalFinanceResourcesProps> = {
     objectFields: {
       image: createImageStyleField(msg("fields.image", "Image")),
       title: createStyledTextField(msg("fields.title", "Title")),
-      description: createStyledRtfField(msg("fields.description", "Description")),
+      description: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
     },
   },
 };
@@ -371,17 +370,18 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
     props.content.cards,
     streamDocument,
   );
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
-  const cardSurfaceStyle = getSurfaceColorStyle(
+  const cardSurfaceStyle = getContrastingSurfaceStyle(
     props.content.cardSurface.backgroundColor,
     streamDocument,
+    sectionStyle.color,
   );
   const cardSurfaceBackgroundColor =
-    cardSurfaceStyle?.backgroundColor ?? "#080e16";
-  const cardSurfaceForegroundColor = cardSurfaceStyle?.color ?? "#ffffff";
+    cardSurfaceStyle.backgroundColor ?? sectionStyle.backgroundColor ?? "transparent";
+  const cardSurfaceForegroundColor = cardSurfaceStyle.color;
   const cardSurfaceOverlay = withAlpha(cardSurfaceBackgroundColor, 0.92);
   type ResolvedResourceCard = (typeof cards)[number];
   const rehydrateCta = (
@@ -432,13 +432,12 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="disclosures"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <EntityField
-              displayName="Resource Cards"
+              displayName={msg("fields.resourceCards", "Resource Cards")}
               fieldId={props.content.cards.field}
               constantValueEnabled={props.content.cards.constantValueEnabled}
             >
@@ -490,7 +489,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                     ...props.styles.description.styles,
                     color: resolveThemeColor(
                       props.styles.description.fontColor,
-                      "#f2f5f7",
+                      cardSurfaceForegroundColor,
                     ),
                   };
                   const resolvedDescription = resolveComponentData(
@@ -516,7 +515,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                       as="div"
                       background={props.content.cardSurface.backgroundColor}
                       key={`${title}-${index}`}
-                      className="relative grid w-full self-start overflow-hidden rounded-[16px] shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
+                      className="relative grid w-full self-start overflow-hidden rounded-image-borderRadius shadow-[0_6px_22px_rgba(9,30,66,0.08)]"
                       style={cardSurfaceStyle}
                     >
                       {hasImageSource(image) && image ? (
@@ -534,12 +533,12 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                       <div
                         className="pointer-events-none col-start-1 row-start-1 min-h-[280px] h-full"
                         style={{
-                          backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(8,14,22,0.12) 34%, ${cardSurfaceOverlay} 100%)`,
+                          backgroundImage: `linear-gradient(180deg, transparent 0%, ${withAlpha(cardSurfaceBackgroundColor, 0.12)} 34%, ${cardSurfaceOverlay} 100%)`,
                         }}
                       />
                       <div className="col-start-1 row-start-1 flex min-h-[280px] flex-col justify-end p-6 md:min-h-0">
                         <h3
-                          className="text-[1.35rem] font-semibold"
+                          className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                           style={{
                             color: titleColor,
                             ...textStyleToCss(props.styles.title.styles),
@@ -548,22 +547,16 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                           {title}
                         </h3>
                         <>
-                          {React.isValidElement(resolvedDescription) ? (
-                            resolvedDescription
-                          ) : (
-                            <MaybeRTF
-                              data={normalizeResolvedRichText(
-                                resolvedDescription,
-                              )}
-                              className="mt-3 max-w-[560px] text-sm leading-7"
-                              richTextStyleOverrides={descriptionStyles}
-                            />
+                          {renderRichText(
+                            resolvedDescription,
+                            descriptionStyles,
+                            "mt-3 max-w-[560px]",
                           )}
                         </>
                         {card.primaryCta ? (
                           <div className="mt-5">
                             <EntityField
-                              displayName={`Resource ${index + 1} Primary CTA`}
+                              displayName={msg("fields.primaryCta", "Primary CTA")}
                               fieldId={primaryCtaField?.data.cta.field}
                               constantValueEnabled={
                                 primaryCtaField?.data.cta.constantValueEnabled
@@ -571,7 +564,6 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                             >
                               <ComprehensiveCTA
                                 value={rehydrateCta(card.primaryCta)}
-                                className="inline-flex min-h-[42px] items-center rounded-[10px] px-6 py-2.5 text-sm font-bold"
                               />
                             </EntityField>
                           </div>
@@ -591,7 +583,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
 
 export const PersonalFinanceResources: YextComponentConfig<PersonalFinanceResourcesProps> =
   {
-    label: "Resources",
+    label: msg("components.resourcesSection", "Resources Section"),
     fields: ResourcesFields,
     defaultProps: {
       section: {
@@ -625,7 +617,7 @@ export const PersonalFinanceResources: YextComponentConfig<PersonalFinanceResour
 
 export const config: SectionConfig = {
   id: "PersonalFinanceResources",
-  displayName: "Resources",
+  displayName: "Resources Section",
   description: "Resources",
   pageSetTypes: ["ENTITY"],
 };

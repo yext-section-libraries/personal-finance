@@ -1,14 +1,16 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createStyledRtfDefault,
   createStyledRtfField,
   createStyledTextDefault,
   createStyledTextField,
-  getScopedTypographyCss,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -19,10 +21,8 @@ import {
   Background,
   EntityField,
   MapboxStaticMapComponent,
-  MaybeRTF,
   getAnalyticsScopeHash,
   getPreferredDistanceUnit,
-  getSurfaceColorStyle,
   mergeMeta,
   resolveComponentData,
   resolveUrlTemplate,
@@ -41,7 +41,10 @@ import {
   type TranslatableString,
   type YextEntityField,
 } from "@yext/visual-editor";
-import { formatPhoneNumber, pt } from "@yext/visual-editor/section-library-support";
+import {
+  formatPhoneNumber,
+  pt,
+} from "@yext/visual-editor/section-library-support";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -112,10 +115,6 @@ type PersonalFinanceNearbyLocationsProps = {
   map: NearbyLocationsMap;
   styles: NearbyLocationsStyles;
 };
-
-const typographyScopeClass =
-  "yextPersonalFinanceNearbyLocationsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const isDefaultToken = (value?: string) => {
   return !value || value === "default";
@@ -218,7 +217,9 @@ const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
     type: "object",
     objectFields: {
       sectionHeading: createStyledTextField(msg("fields.heading", "Heading")),
-      sectionDescription: createStyledRtfField(msg("fields.description", "Description")),
+      sectionDescription: createStyledRtfField(
+        msg("fields.description", "Description"),
+      ),
     },
   },
   map: {
@@ -327,12 +328,21 @@ const SectionFields: YextFields<PersonalFinanceNearbyLocationsProps> = {
             label: msg("fields.phoneNumberFormat", "Phone Number Format"),
             type: "radio",
             options: [
-              { label: msg("fields.options.domestic", "Domestic"), value: "domestic" },
-              { label: msg("fields.options.international", "International"), value: "international" },
+              {
+                label: msg("fields.options.domestic", "Domestic"),
+                value: "domestic",
+              },
+              {
+                label: msg("fields.options.international", "International"),
+                value: "international",
+              },
             ],
           },
           includeHyperlink: {
-            label: msg("fields.includePhoneHyperlink", "Include Phone Hyperlink"),
+            label: msg(
+              "fields.includePhoneHyperlink",
+              "Include Phone Hyperlink",
+            ),
             type: "radio",
             options: [
               { label: msg("fields.options.yes", "Yes"), value: true },
@@ -409,11 +419,11 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
     },
     constantValueEnabled: false,
   };
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
-  const sectionForegroundColor = sectionStyle?.color ?? "#1a1a1a";
+  const sectionForegroundColor = sectionStyle?.color ?? "#000000";
   let mapboxApiKey = streamDocument?._env?.YEXT_MAPBOX_API_KEY;
   if (
     typeof document !== "undefined" &&
@@ -423,9 +433,10 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
   ) {
     mapboxApiKey = streamDocument._env.YEXT_EDIT_LAYOUT_MODE_MAPBOX_API_KEY;
   }
-  const cardStyle = getSurfaceColorStyle(
+  const cardStyle = getContrastingSurfaceStyle(
     props.styles.cardBackgroundColor,
     streamDocument,
+    sectionForegroundColor,
   );
   const cardTitleColor = resolveThemeColor(
     props.styles.cardTitleColor,
@@ -442,7 +453,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
   const renderCardsContent = () => {
     if (nearbyLocationsStatus === "pending") {
       return (
-        <div className="rounded-[14px] border border-black/5 bg-white/60 p-6 text-sm text-[#676767]">
+        <div className="rounded-image-borderRadius border border-current/10 p-6">
           {t("loadingNearbyLocations", "Loading nearby locations")}
         </div>
       );
@@ -458,7 +469,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
       }
 
       return (
-        <div className="rounded-[14px] border border-black/5 bg-white/60 p-6 text-sm text-[#676767]">
+        <div className="rounded-image-borderRadius border border-current/10 p-6">
           {pt(
             "noNearbyLocationsFound",
             "No nearby locations found for this location",
@@ -486,19 +497,18 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           as="div"
           background={props.styles.cardBackgroundColor}
           key={locationData.id ?? locationData.name}
-          className="flex min-w-0 flex-col gap-3 rounded-[14px] border border-black/5 p-6"
+          className="flex min-w-0 flex-col gap-3 rounded-image-borderRadius border border-current/10 p-6"
           style={cardStyle}
         >
           <a
             href={resolvedUrl}
-            className="text-[1.05rem] font-semibold"
+            className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
             style={{ color: cardTitleColor }}
           >
             {locationData.name || t("nearbyLocation", "Nearby Location")}
           </a>
           {props.styles.showAddress && locationData.address ? (
             <div
-              className="text-sm leading-6"
               style={{ color: cardForegroundColor }}
             >
               <Address
@@ -510,7 +520,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           ) : null}
           {props.styles.showHours && nearbyHours && nearbyTimezone ? (
             <div
-              className="text-sm leading-6"
               style={{ color: cardForegroundColor }}
             >
               <HoursStatus
@@ -549,23 +558,24 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                           .toLocaleString(params.dayOptions) ?? "")
                     : "";
                   const isFuture = !isOpen24Hours && !isIndefinitelyClosed;
-                  const futureText = !isFuture || !time
-                    ? ""
-                    : params.isOpen
-                      ? dayOfWeek
-                        ? t(
-                            "closesAtTimeWeek",
-                            "Closes at {{time}} {{dayOfWeek}}",
-                            { time, dayOfWeek },
-                          )
-                        : t("closesAtTime", "Closes at {{time}}", { time })
-                      : dayOfWeek
-                        ? t(
-                            "opensAtTimeWeek",
-                            "Opens at {{time}} {{dayOfWeek}}",
-                            { time, dayOfWeek },
-                          )
-                        : t("opensAtTime", "Opens at {{time}}", { time });
+                  const futureText =
+                    !isFuture || !time
+                      ? ""
+                      : params.isOpen
+                        ? dayOfWeek
+                          ? t(
+                              "closesAtTimeWeek",
+                              "Closes at {{time}} {{dayOfWeek}}",
+                              { time, dayOfWeek },
+                            )
+                          : t("closesAtTime", "Closes at {{time}}", { time })
+                        : dayOfWeek
+                          ? t(
+                              "opensAtTimeWeek",
+                              "Opens at {{time}} {{dayOfWeek}}",
+                              { time, dayOfWeek },
+                            )
+                          : t("opensAtTime", "Opens at {{time}}", { time });
                   const currentStatus = isComingSoon
                     ? t("comingSoon", "Coming Soon")
                     : isOpen24Hours
@@ -597,7 +607,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           {props.styles.showPhone && phoneNumber ? (
             !props.styles.phone.includeHyperlink ? (
               <p
-                className="text-sm leading-6"
                 style={{ color: cardForegroundColor }}
               >
                 {formatPhoneNumber(phoneNumber, props.styles.phone.phoneFormat)}
@@ -616,7 +625,6 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           ) : null}
           {distanceText ? (
             <p
-              className="text-sm leading-6"
               style={{ color: cardForegroundColor }}
             >
               {distanceText}
@@ -624,7 +632,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           ) : null}
           <a
             href={resolvedUrl}
-            className="pt-1 text-sm font-medium"
+            className="pt-1 font-link-fontFamily text-link-fontSize font-link-fontWeight"
             style={{ color: cardForegroundColor }}
           >
             {t("viewLocation", "View location")}
@@ -655,10 +663,9 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           as="section"
           background={props.section.backgroundColor}
           id="nearby-locations"
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
           <style>
             {`
 .${mapClassName} .mapbox-static-map-shell,
@@ -673,17 +680,17 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
 }
 `}
           </style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[980px] text-center">
               <EntityField
-                displayName="Heading"
+                displayName={msg("fields.heading", "Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={textStyleToCss(
                     props.content.sectionHeading.styles,
                     props.content.sectionHeading.fontColor,
@@ -699,37 +706,33 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Description"
+                displayName={msg("fields.description", "Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
                 }
               >
-                {React.isValidElement(resolvedDescription) ? (
-                  resolvedDescription
-                ) : (
-                  <MaybeRTF
-                    data={normalizeResolvedRichText(resolvedDescription)}
-                    className="mt-3 text-sm leading-7"
-                    richTextStyleOverrides={{
-                      ...props.content.sectionDescription.styles,
-                      color: resolveThemeColor(
-                        props.content.sectionDescription.fontColor,
-                        sectionForegroundColor,
-                      ),
-                    }}
-                  />
+                {renderRichText(
+                  resolvedDescription,
+                  {
+                    ...props.content.sectionDescription.styles,
+                    color: resolveThemeColor(
+                      props.content.sectionDescription.fontColor,
+                      sectionForegroundColor,
+                    ),
+                  },
+                  "mt-3",
                 )}
               </EntityField>
             </div>
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.95fr)] lg:items-stretch">
               <EntityField
-                displayName="Map Location"
+                displayName={msg("fields.mapLocation", "Map Location")}
                 fieldId={props.map.coordinate.field}
                 constantValueEnabled={props.map.coordinate.constantValueEnabled}
               >
                 <div
-                  className={`${mapClassName} h-full min-h-[420px] overflow-hidden rounded-[16px] border border-black/5 bg-white shadow-[0_6px_22px_rgba(9,30,66,0.08)]`}
+                  className={`${mapClassName} h-full min-h-[420px] overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_6px_22px_rgba(9,30,66,0.08)]`}
                 >
                   {mapboxApiKey ? (
                     <MapboxStaticMapComponent
@@ -741,7 +744,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                       zoom={props.map.zoom}
                     />
                   ) : (
-                    <div className="flex h-full min-h-[420px] items-center justify-center px-6 text-center text-sm text-[#676767]">
+                    <div className="flex h-full min-h-[420px] items-center justify-center px-6 text-center">
                       {t(
                         "addMapboxApiKeyInstructions",
                         "Add a Mapbox API key via {{editKey}} or {{liveKey}} to render the map.",
@@ -765,7 +768,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
 
 export const PersonalFinanceNearbyLocations: YextComponentConfig<PersonalFinanceNearbyLocationsProps> =
   {
-    label: "Nearby Locations",
+    label: msg("components.nearbyLocationsSection", "Nearby Locations Section"),
     fields: SectionFields,
     defaultProps: {
       section: {
@@ -822,7 +825,7 @@ export const PersonalFinanceNearbyLocations: YextComponentConfig<PersonalFinance
 
 export const config: SectionConfig = {
   id: "PersonalFinanceNearbyLocations",
-  displayName: "Nearby Locations",
+  displayName: "Nearby Locations Section",
   description: "Nearby Locations",
   pageSetTypes: ["ENTITY"],
 };

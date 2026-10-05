@@ -1,10 +1,12 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   createEntityText,
   createStyledTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
@@ -18,7 +20,6 @@ import {
   Background,
   EntityField,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   resolveBreadcrumbs,
   useDocument,
   useTemplateProps,
@@ -75,9 +76,6 @@ type PersonalFinanceBreadcrumbsProps = {
   content: BreadcrumbContent;
 };
 
-const typographyScopeClass = "yextPersonalFinanceBreadcrumbsTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
-
 const BreadcrumbFields: YextFields<PersonalFinanceBreadcrumbsProps> = {
   section: {
     label: msg("fields.section", "Section"),
@@ -133,7 +131,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
   );
   const currentPageLabel =
     streamDocument.address?.line1 || streamDocument.name || "";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -190,13 +188,12 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-4`}
+          className="overflow-x-clip py-4"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             {renderedItems.length ? (
-              <ol className="flex flex-wrap items-center gap-y-2 text-[0.95rem]">
+              <ol className="flex flex-wrap items-center gap-y-2">
                 {renderedItems.map((item, index) => (
                   <li
                     key={`${item.label}-${index}`}
@@ -205,7 +202,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
                     {index > 0 ? (
                       <span
                         aria-hidden="true"
-                        className="px-2 text-sm"
+                        className="px-2"
                         style={{ color: readableTextColor }}
                       >
                         /
@@ -217,7 +214,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
                       </span>
                     ) : item.isRoot ? (
                       <EntityField
-                        displayName="Root Label"
+                        displayName={msg("fields.rootLabel", "Root Label")}
                         fieldId={props.content.rootLabel.text.field}
                         constantValueEnabled={
                           props.content.rootLabel.text.constantValueEnabled
@@ -252,7 +249,6 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
               </ol>
             ) : (
               <p
-                className="text-sm"
                 style={{
                   color: readableTextColor,
                   fontFamily: "Arial, Helvetica, sans-serif",
@@ -274,7 +270,7 @@ export const PersonalFinanceBreadcrumbsComponent: PuckComponent<
 
 export const PersonalFinanceBreadcrumbs: YextComponentConfig<PersonalFinanceBreadcrumbsProps> =
   {
-    label: "Breadcrumbs",
+    label: msg("components.breadcrumbsSection", "Breadcrumbs Section"),
     fields: BreadcrumbFields,
     defaultProps: {
       section: {
@@ -297,7 +293,7 @@ export const PersonalFinanceBreadcrumbs: YextComponentConfig<PersonalFinanceBrea
 
 export const config: SectionConfig = {
   id: "PersonalFinanceBreadcrumbs",
-  displayName: "Breadcrumbs",
+  displayName: "Breadcrumbs Section",
   description: "Breadcrumbs",
   pageSetTypes: ["ENTITY"],
 };

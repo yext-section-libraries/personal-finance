@@ -1,16 +1,18 @@
+import "../shared/typography.css";
+
 import type { SectionConfig } from "@yext/visual-editor";
 
 import {
+  getContrastingSurfaceStyle,
   aspectRatioOptions,
   createRichTextField,
   createTextField,
   defaultTextStyle,
-  getScopedTypographyCss,
   hasImageSource,
-  normalizeResolvedRichText,
   resolvePlainText,
   resolveThemeColor,
   textStyleToCss,
+  renderRichText,
 } from "../shared/sectionHelpers";
 
 import * as React from "react";
@@ -21,9 +23,7 @@ import {
   EntityField,
   getAnalyticsScopeHash,
   getDefaultRTF,
-  getSurfaceColorStyle,
   Image,
-  MaybeRTF,
   resolveComponentData,
   resolveLocalizedAssetImage,
   VisibilityWrapper,
@@ -85,9 +85,6 @@ type PersonalFinanceVideoProps = {
   section: SectionTheme;
   content: VideoContent;
 };
-
-const typographyScopeClass = "yextPersonalFinanceVideoTypographyScope";
-const typographyScopeCss = getScopedTypographyCss(typographyScopeClass);
 
 const defaultImageStyle: StyledImageValue = {
   borderRadius: "default",
@@ -236,7 +233,10 @@ const VideoFields: YextFields<PersonalFinanceVideoProps> = {
             type: "select",
             options: [
               { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
-              { label: msg("fields.options.filled", "Filled"), value: "filled" },
+              {
+                label: msg("fields.options.filled", "Filled"),
+                value: "filled",
+              },
             ],
           },
           styles: {
@@ -282,7 +282,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
   const streamDocument = useDocument() as Record<string, unknown> | undefined;
   const locale =
     typeof streamDocument?.locale === "string" ? streamDocument.locale : "en";
-  const sectionStyle = getSurfaceColorStyle(
+  const sectionStyle = getContrastingSurfaceStyle(
     props.section.backgroundColor,
     streamDocument,
   );
@@ -293,19 +293,22 @@ export const PersonalFinanceVideoComponent: PuckComponent<
   );
   const descriptionOverrides = {
     ...props.content.sectionDescription.styles,
-    color: props.content.sectionDescription.fontColor
-      ? resolveThemeColor(props.content.sectionDescription.fontColor)
-      : sectionForeground,
+    color: resolveThemeColor(
+      props.content.sectionDescription.fontColor,
+      sectionForeground,
+    ),
   };
-  const videoFrameStyle = getSurfaceColorStyle(
+  const videoFrameStyle = getContrastingSurfaceStyle(
     props.content.videoFrame.backgroundColor,
     streamDocument,
+    sectionStyle.color,
   );
   const captionOverrides = {
     ...props.content.posterCaption.styles,
-    color: props.content.posterCaption.fontColor
-      ? resolveThemeColor(props.content.posterCaption.fontColor)
-      : (videoFrameStyle?.color ?? sectionForeground),
+    color: resolveThemeColor(
+      props.content.posterCaption.fontColor,
+      videoFrameStyle.color,
+    ),
   };
   const resolvedDescription = resolveComponentData(
     props.content.sectionDescription.text,
@@ -347,23 +350,15 @@ export const PersonalFinanceVideoComponent: PuckComponent<
         ? "cover"
         : "contain",
   };
-  const descriptionContent = React.isValidElement(resolvedDescription) ? (
-    resolvedDescription
-  ) : (
-    <MaybeRTF
-      data={normalizeResolvedRichText(resolvedDescription)}
-      className="mt-3 text-sm leading-7"
-      richTextStyleOverrides={descriptionOverrides}
-    />
+  const descriptionContent = renderRichText(
+    resolvedDescription,
+    descriptionOverrides,
+    "mt-3",
   );
-  const captionContent = React.isValidElement(resolvedCaption) ? (
-    resolvedCaption
-  ) : (
-    <MaybeRTF
-      data={normalizeResolvedRichText(resolvedCaption)}
-      className="px-6 py-5 text-sm leading-7"
-      richTextStyleOverrides={captionOverrides}
-    />
+  const captionContent = renderRichText(
+    resolvedCaption,
+    captionOverrides,
+    "px-6 py-5",
   );
   const videoUrl = props.content.videoUrl.trim();
 
@@ -378,21 +373,20 @@ export const PersonalFinanceVideoComponent: PuckComponent<
         <Background
           as="section"
           background={props.section.backgroundColor}
-          className={`${typographyScopeClass} overflow-x-clip py-11`}
+          className="overflow-x-clip py-pageSection-verticalPadding"
           style={sectionStyle}
         >
-          <style>{typographyScopeCss}</style>
-          <div className="mx-auto max-w-[1410px] px-6">
+          <div className="mx-auto max-w-pageSection-contentWidth px-6">
             <div className="mx-auto mb-8 max-w-[820px] text-center">
               <EntityField
-                displayName="Section Heading"
+                displayName={msg("fields.sectionHeading", "Section Heading")}
                 fieldId={props.content.sectionHeading.text.field}
                 constantValueEnabled={
                   props.content.sectionHeading.text.constantValueEnabled
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: headingColor,
                     ...textStyleToCss(props.content.sectionHeading.styles),
@@ -407,7 +401,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                 </h2>
               </EntityField>
               <EntityField
-                displayName="Section Description"
+                displayName={msg("fields.sectionDescription", "Section Description")}
                 fieldId={props.content.sectionDescription.text.field}
                 constantValueEnabled={
                   props.content.sectionDescription.text.constantValueEnabled
@@ -419,7 +413,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
             <Background
               as="div"
               background={props.content.videoFrame.backgroundColor}
-              className="mx-auto max-w-[1160px] overflow-hidden rounded-[20px] border border-black/5 shadow-[0_8px_26px_rgba(9,30,66,0.08)]"
+              className="mx-auto max-w-[1160px] overflow-hidden rounded-image-borderRadius border border-current/10 shadow-[0_8px_26px_rgba(9,30,66,0.08)]"
               style={videoFrameStyle}
             >
               {videoUrl ? (
@@ -440,13 +434,16 @@ export const PersonalFinanceVideoComponent: PuckComponent<
               ) : hasImageSource(posterImage) && posterImage ? (
                 <figure>
                   <EntityField
-                    displayName="Poster Image"
+                    displayName={msg("fields.posterImage", "Poster Image")}
                     fieldId={props.content.posterImage.image.field}
                     constantValueEnabled={
                       props.content.posterImage.image.constantValueEnabled
                     }
                   >
-                    <div style={posterImageWrapperStyle}>
+                    <div
+                      className="overflow-hidden rounded-image-borderRadius"
+                      style={posterImageWrapperStyle}
+                    >
                       <Image
                         image={posterImage}
                         className="h-[260px] w-full md:h-[560px]"
@@ -455,7 +452,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                     </div>
                   </EntityField>
                   <EntityField
-                    displayName="Poster Caption"
+                    displayName={msg("fields.posterCaption", "Poster Caption")}
                     fieldId={props.content.posterCaption.text.field}
                     constantValueEnabled={
                       props.content.posterCaption.text.constantValueEnabled
@@ -475,7 +472,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
 
 export const PersonalFinanceVideo: YextComponentConfig<PersonalFinanceVideoProps> =
   {
-    label: "Video",
+    label: msg("components.videoSection", "Video Section"),
     fields: VideoFields,
     defaultProps: {
       section: {
@@ -530,7 +527,7 @@ export const PersonalFinanceVideo: YextComponentConfig<PersonalFinanceVideoProps
 
 export const config: SectionConfig = {
   id: "PersonalFinanceVideo",
-  displayName: "Video",
+  displayName: "Video Section",
   description: "Video",
   pageSetTypes: ["ENTITY"],
 };
