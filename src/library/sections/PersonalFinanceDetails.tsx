@@ -728,7 +728,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={textStyleToCss(
                     props.content.sectionHeading.styles,
                     props.content.sectionHeading.fontColor,
@@ -759,7 +759,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   }
                 >
                   <h3
-                    className="mb-4 text-[1.02rem] font-semibold"
+                    className="mb-4 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                     style={textStyleToCss(
                       props.content.infoCardTitle.styles,
                       props.content.infoCardTitle.fontColor,
@@ -785,7 +785,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         }
                       >
                         <div
-                          className="font-semibold"
+                          className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                           style={textStyleToCss(
                             props.content.addressLabel.styles,
                             props.content.addressLabel.fontColor,
@@ -845,7 +845,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                               <div className="space-y-0.5">
                                 {item.label ? (
                                   <div
-                                    className="font-semibold"
+                                    className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                                     style={{ color: cardForeground }}
                                   >
                                     {item.label}
@@ -869,7 +869,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         }
                       >
                         <div
-                          className="font-semibold"
+                          className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                           style={textStyleToCss(
                             props.content.emailsLabel.styles,
                             props.content.emailsLabel.fontColor,
@@ -922,7 +922,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         props.content
                           .primaryAction as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[38px] rounded-[10px] px-4 text-xs font-bold"
+                      className="min-h-[38px] px-4"
                     />
                   </EntityField>
                   <EntityField
@@ -938,7 +938,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                         props.content
                           .secondaryAction as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[38px] px-1 text-xs font-medium"
+                      className="min-h-[38px] px-1"
                     />
                   </EntityField>
                 </div>
@@ -956,7 +956,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   constantValueEnabled={props.content.hoursTitle.text.constantValueEnabled}
                 >
                   <h3
-                    className="mb-4 text-[1.02rem] font-semibold"
+                    className="mb-4 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                     style={textStyleToCss(
                       props.content.hoursTitle.styles,
                       props.content.hoursTitle.fontColor,
@@ -989,7 +989,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                 {shouldShowSecondaryHours ? (
                   <div className="mt-5 border-t border-black/10 pt-4">
                     <button
-                      className="flex w-full items-center justify-between text-left text-sm font-semibold"
+                      className="flex w-full items-center justify-between text-left font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       onClick={() =>
                         setShowSecondaryHours((currentValue) => !currentValue)
                       }
@@ -1059,7 +1059,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                   }
                 >
                   <h3
-                    className="mb-4 text-[1.02rem] font-semibold"
+                    className="mb-4 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                     style={textStyleToCss(
                       props.content.clientServicesTitle.styles,
                       props.content.clientServicesTitle.fontColor,
@@ -1084,7 +1084,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       }
                     >
                       <div
-                        className="font-semibold"
+                        className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                         style={textStyleToCss(
                           props.content.languagesLabel.styles,
                           props.content.languagesLabel.fontColor,
@@ -1126,7 +1126,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       }
                     >
                       <div
-                        className="font-semibold"
+                        className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                         style={textStyleToCss(
                           props.content.accessibilityLabel.styles,
                           props.content.accessibilityLabel.fontColor,
@@ -1168,7 +1168,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
                       }
                     >
                       <div
-                        className="font-semibold"
+                        className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                         style={textStyleToCss(
                           props.content.servicesLabel.styles,
                           props.content.servicesLabel.fontColor,

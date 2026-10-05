@@ -200,7 +200,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="mx-auto max-w-[780px] text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="mx-auto max-w-[780px] font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -259,7 +259,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
                     value={
                       props.content.primaryCta as Partial<ComprehensiveCTAValue>
                     }
-                    className="inline-flex min-h-[42px] items-center rounded-[10px] px-7 py-2.5 text-sm font-bold"
+                    className="inline-flex min-h-[42px] items-center px-7 py-2.5"
                   />
                 </EntityField>
               </div>

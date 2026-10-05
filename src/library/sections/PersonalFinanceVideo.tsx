@@ -383,7 +383,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: headingColor,
                     ...textStyleToCss(props.content.sectionHeading.styles),

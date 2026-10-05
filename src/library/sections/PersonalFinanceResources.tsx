@@ -537,7 +537,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                       />
                       <div className="col-start-1 row-start-1 flex min-h-[280px] flex-col justify-end p-6 md:min-h-0">
                         <h3
-                          className="text-[1.35rem] font-semibold"
+                          className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                           style={{
                             color: titleColor,
                             ...textStyleToCss(props.styles.title.styles),
@@ -563,7 +563,7 @@ export const PersonalFinanceResourcesComponent: PuckComponent<
                             >
                               <ComprehensiveCTA
                                 value={rehydrateCta(card.primaryCta)}
-                                className="inline-flex min-h-[42px] items-center rounded-[10px] px-6 py-2.5 text-sm font-bold"
+                                className="inline-flex min-h-[42px] items-center px-6 py-2.5"
                               />
                             </EntityField>
                           </div>

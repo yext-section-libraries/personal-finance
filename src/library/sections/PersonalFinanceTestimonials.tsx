@@ -216,7 +216,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -298,7 +298,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
               >
                 <>
                   <blockquote
-                    className="mx-auto max-w-[760px] px-0 text-[1.7rem] italic leading-[1.45] tracking-[-0.02em] md:px-14 md:text-[2.1rem]"
+                    className="mx-auto max-w-[760px] px-0 font-body-fontFamily text-body-fontSize font-body-fontWeight md:px-14"
                     style={textStyleToCss(props.testimonialStyles.quote.styles)}
                   >
                     <span aria-hidden="true">“</span>
@@ -307,7 +307,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                   </blockquote>
                   <div className="mt-8">
                     <div
-                      className="text-[1.05rem] font-semibold"
+                      className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
                         color: resolveThemeColor(
                           props.testimonialStyles.name.fontColor,
@@ -324,7 +324,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
                       )}
                     </div>
                     <div
-                      className="text-sm"
+                      className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
                         color: resolveThemeColor(
                           props.testimonialStyles.role.fontColor,

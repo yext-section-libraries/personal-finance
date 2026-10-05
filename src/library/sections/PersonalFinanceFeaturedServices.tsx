@@ -453,7 +453,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -568,7 +568,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                       </div>
                       <div className="space-y-2">
                         <h3
-                          className="text-[1.15rem] font-semibold"
+                          className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                           style={{
                             color: resolveThemeColor(
                               props.styles.title.fontColor,
@@ -607,8 +607,8 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
                                   value={cardCta}
                                   className={
                                     ctaVariant === "link"
-                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-medium shadow-none"
-                                      : "inline-flex min-h-[44px] items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium"
+                                      ? "min-h-0 justify-start border-0 bg-transparent px-0 py-0 shadow-none"
+                                      : "inline-flex min-h-[44px] items-center justify-center px-5 py-2.5"
                                   }
                                 />
                               </EntityField>

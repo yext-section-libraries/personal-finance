@@ -662,7 +662,7 @@ export const PersonalFinanceFooterComponent: PuckComponent<
                 constantValueEnabled={props.brandName.text.constantValueEnabled}
               >
                 <p
-                  className="text-sm font-semibold"
+                  className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                   style={{
                     ...textStyleToCss(props.brandName.styles),
                     color: brandTextColor,

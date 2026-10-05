@@ -501,7 +501,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
         >
           <a
             href={resolvedUrl}
-            className="text-[1.05rem] font-semibold"
+            className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
             style={{ color: cardTitleColor }}
           >
             {locationData.name || t("nearbyLocation", "Nearby Location")}
@@ -635,7 +635,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
           ) : null}
           <a
             href={resolvedUrl}
-            className="pt-1 text-sm font-medium"
+            className="pt-1 font-link-fontFamily text-link-fontSize font-link-fontWeight"
             style={{ color: cardForegroundColor }}
           >
             {t("viewLocation", "View location")}
@@ -693,7 +693,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={textStyleToCss(
                     props.content.sectionHeading.styles,
                     props.content.sectionHeading.fontColor,

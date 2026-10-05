@@ -486,7 +486,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                     }
                   >
                     <div
-                      className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 text-[0.78rem] font-semibold uppercase tracking-[0.06em]"
+                      className="inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{
                         borderColor: "rgba(255,255,255,0.48)",
                         backgroundColor: eyebrowBackgroundColor,
@@ -603,7 +603,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                     }
                   >
                     <h1
-                      className="max-w-[980px] text-[2.7rem] font-bold leading-[0.98] tracking-[-0.055em] md:text-[4.5rem] lg:text-[5rem]"
+                      className="max-w-[980px] font-h1-fontFamily text-h1-fontSize font-h1-fontWeight"
                       style={textStyleToCss(
                         props.content.headline.styles,
                         props.content.headline.fontColor,
@@ -620,7 +620,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                       props.content.body.text.constantValueEnabled
                     }
                   >
-                    <div className="max-w-[900px] text-[1rem] leading-8 md:text-[1.08rem]">
+                    <div className="max-w-[900px]">
                       {renderRichText(resolvedBody, richTextStyleOverrides)}
                     </div>
                   </EntityField>
@@ -638,7 +638,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                         props.content
                           .primaryCta as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[60px] rounded-[14px] px-8 py-3 text-base font-semibold"
+                      className="min-h-[60px] px-8 py-3"
                     />
                   </EntityField>
                   <EntityField
@@ -653,7 +653,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
                         props.content
                           .secondaryCta as Partial<ComprehensiveCTAValue>
                       }
-                      className="min-h-[60px] rounded-[14px] px-8 py-3 text-base font-semibold"
+                      className="min-h-[60px] px-8 py-3"
                     />
                   </EntityField>
                 </div>
@@ -668,7 +668,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
 
 export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> =
   {
-    label: msg("components.heroSection", "Hero Section"),
+    label: "Hero",
     fields: SectionFields,
     defaultProps: {
       overlayColor: {
@@ -714,7 +714,7 @@ export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> 
 
 export const config: SectionConfig = {
   id: "PersonalFinanceHero",
-  displayName: "Hero Section",
+  displayName: "Hero",
   description: "Hero",
   pageSetTypes: ["ENTITY"],
 };

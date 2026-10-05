@@ -421,7 +421,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,
@@ -545,7 +545,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                       <div className="p-6">
                         {event.eventTime.date ? (
                           <div
-                            className="text-xs font-semibold uppercase tracking-[0.18em]"
+                            className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                             style={{ color: cardForegroundColor }}
                           >
                             <TimestampAtom
@@ -561,7 +561,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                           </div>
                         ) : null}
                         <h3
-                          className="mt-3 text-[1.2rem] font-semibold"
+                          className="mt-3 font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                           style={{
                             color: resolveThemeColor(
                               props.styles.name.fontColor,
@@ -592,7 +592,7 @@ export const PersonalFinanceEventsComponent: PuckComponent<
                                 value={
                                   event.cta as Partial<ComprehensiveCTAValue>
                                 }
-                                className="min-h-0 justify-start border-0 bg-transparent px-0 py-0 text-sm font-semibold shadow-none"
+                                className="min-h-0 justify-start border-0 bg-transparent px-0 py-0 shadow-none"
                               />
                             </EntityField>
                           </div>

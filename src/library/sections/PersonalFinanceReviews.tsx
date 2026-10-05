@@ -239,7 +239,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: headingColor,
                     ...textStyleToCss(props.content.sectionHeading.styles),
@@ -277,14 +277,14 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                       </span>
                     </EntityField>{" "}
                     <span
-                      className="font-semibold"
+                      className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{ color: headingColor }}
                     >
                       {(aggregate.averageRating ?? 0).toFixed(1)}
                     </span>{" "}
                     {t("from", "from")}{" "}
                     <span
-                      className="font-semibold"
+                      className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                       style={{ color: headingColor }}
                     >
                       {aggregate.reviewCount ?? reviews.length}{" "}
@@ -315,7 +315,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                   >
                     <div className="flex items-center justify-between gap-4">
                       <h3
-                        className="text-base font-semibold"
+                        className="font-h3-fontFamily text-h3-fontSize font-h3-fontWeight"
                         style={{
                           color: resolveThemeColor(
                             props.content.sectionHeading.fontColor,
@@ -358,7 +358,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
                         style={businessResponseStyle}
                       >
                         <p
-                          className="text-xs font-semibold uppercase tracking-[0.16em]"
+                          className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                           style={{
                             color: resolveThemeColor(
                               props.content.sectionHeading.fontColor,

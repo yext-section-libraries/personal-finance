@@ -323,7 +323,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     color: resolveThemeColor(
                       props.content.sectionHeading.fontColor,

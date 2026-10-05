@@ -226,7 +226,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                 }
               >
                 <h2
-                  className="text-[2.2rem] font-bold tracking-[-0.04em]"
+                  className="font-h2-fontFamily text-h2-fontSize font-h2-fontWeight"
                   style={{
                     ...textStyleToCss(props.content.sectionHeading.styles),
                     color: resolveThemeColor(
@@ -284,7 +284,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                           type="button"
                         >
                           <span
-                            className="text-sm font-semibold"
+                            className="font-body-fontFamily text-body-fontSize font-body-fontWeight"
                             style={{
                               ...textStyleToCss(
                                 props.faqStyles.question.styles,
@@ -307,7 +307,7 @@ export const PersonalFinanceFaqsComponent: PuckComponent<
                           </span>
                         </button>
                         {open ? (
-                          <div className="mt-4 max-w-[880px] text-sm leading-7">
+                          <div className="mt-4 max-w-[880px]">
                             {renderRichText(resolvedAnswer, answerStyles)}
                           </div>
                         ) : null}
