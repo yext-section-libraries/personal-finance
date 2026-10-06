@@ -472,7 +472,7 @@ export const PersonalFinanceVideoComponent: PuckComponent<
 
 export const PersonalFinanceVideo: YextComponentConfig<PersonalFinanceVideoProps> =
   {
-    label: msg("components.videoSection", "Video Section"),
+    label: msg("components.videoSection", "Video"),
     fields: VideoFields,
     defaultProps: {
       section: {
@@ -527,7 +527,7 @@ export const PersonalFinanceVideo: YextComponentConfig<PersonalFinanceVideoProps
 
 export const config: SectionConfig = {
   id: "PersonalFinanceVideo",
-  displayName: "Video Section",
+  displayName: "Video",
   description: "Video",
   pageSetTypes: ["ENTITY"],
 };

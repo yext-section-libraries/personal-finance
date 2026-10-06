@@ -391,7 +391,7 @@ export const PersonalFinanceReviewsComponent: PuckComponent<
 
 export const PersonalFinanceReviews: YextComponentConfig<PersonalFinanceReviewsProps> =
   {
-    label: msg("components.reviewsSection", "Reviews Section"),
+    label: msg("components.reviewsSection", "Reviews"),
     fields: ReviewsFields,
     defaultProps: {
       section: {
@@ -423,7 +423,7 @@ export const PersonalFinanceReviews: YextComponentConfig<PersonalFinanceReviewsP
 
 export const config: SectionConfig = {
   id: "PersonalFinanceReviews",
-  displayName: "Reviews Section",
+  displayName: "Reviews",
   description: "Reviews",
   pageSetTypes: ["ENTITY"],
 };

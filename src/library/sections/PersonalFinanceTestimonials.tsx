@@ -370,7 +370,7 @@ export const PersonalFinanceTestimonialsComponent: PuckComponent<
 
 export const PersonalFinanceTestimonials: YextComponentConfig<PersonalFinanceTestimonialsProps> =
   {
-    label: msg("components.testimonialsSection", "Testimonials Section"),
+    label: msg("components.testimonialsSection", "Testimonials"),
     fields: TestimonialsFields,
     defaultProps: {
       section: {
@@ -395,7 +395,7 @@ export const PersonalFinanceTestimonials: YextComponentConfig<PersonalFinanceTes
 
 export const config: SectionConfig = {
   id: "PersonalFinanceTestimonials",
-  displayName: "Testimonials Section",
+  displayName: "Testimonials",
   description: "Testimonials",
   pageSetTypes: ["ENTITY"],
 };

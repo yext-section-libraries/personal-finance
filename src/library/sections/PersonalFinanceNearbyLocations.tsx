@@ -768,7 +768,7 @@ export const PersonalFinanceNearbyLocationsComponent: PuckComponent<
 
 export const PersonalFinanceNearbyLocations: YextComponentConfig<PersonalFinanceNearbyLocationsProps> =
   {
-    label: msg("components.nearbyLocationsSection", "Nearby Locations Section"),
+    label: msg("components.nearbyLocationsSection", "Nearby Locations"),
     fields: SectionFields,
     defaultProps: {
       section: {
@@ -825,7 +825,7 @@ export const PersonalFinanceNearbyLocations: YextComponentConfig<PersonalFinance
 
 export const config: SectionConfig = {
   id: "PersonalFinanceNearbyLocations",
-  displayName: "Nearby Locations Section",
+  displayName: "Nearby Locations",
   description: "Nearby Locations",
   pageSetTypes: ["ENTITY"],
 };

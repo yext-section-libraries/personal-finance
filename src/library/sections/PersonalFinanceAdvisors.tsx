@@ -642,7 +642,7 @@ export const PersonalFinanceAdvisorsComponent: PuckComponent<
 
 export const PersonalFinanceAdvisors: YextComponentConfig<PersonalFinanceAdvisorsProps> =
   {
-    label: msg("components.teamSection", "Team Section"),
+    label: msg("components.teamSection", "Team"),
     fields: AdvisorsFields,
     defaultProps: {
       section: {
@@ -678,7 +678,7 @@ export const PersonalFinanceAdvisors: YextComponentConfig<PersonalFinanceAdvisor
 
 export const config: SectionConfig = {
   id: "PersonalFinanceAdvisors",
-  displayName: "Team Section",
+  displayName: "Team",
   description: "Team",
   pageSetTypes: ["ENTITY"],
 };

@@ -674,7 +674,7 @@ export const PersonalFinanceHeroComponent: PuckComponent<
 
 export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> =
   {
-    label: msg("components.heroSection", "Hero Section"),
+    label: msg("components.heroSection", "Hero"),
     fields: SectionFields,
     defaultProps: {
       overlayColor: {
@@ -720,7 +720,7 @@ export const PersonalFinanceHero: YextComponentConfig<PersonalFinanceHeroProps> 
 
 export const config: SectionConfig = {
   id: "PersonalFinanceHero",
-  displayName: "Hero Section",
+  displayName: "Hero",
   description: "Hero",
   pageSetTypes: ["ENTITY"],
 };

@@ -272,7 +272,7 @@ export const PersonalFinanceStoryComponent: PuckComponent<
 
 export const PersonalFinanceStory: YextComponentConfig<PersonalFinanceStoryProps> =
   {
-    label: msg("components.aboutSection", "About Section"),
+    label: msg("components.aboutSection", "About"),
     fields: StoryFields,
     defaultProps: {
       section: {
@@ -314,7 +314,7 @@ export const PersonalFinanceStory: YextComponentConfig<PersonalFinanceStoryProps
 
 export const config: SectionConfig = {
   id: "PersonalFinanceStory",
-  displayName: "About Section",
+  displayName: "About",
   description: "About",
   pageSetTypes: ["ENTITY"],
 };

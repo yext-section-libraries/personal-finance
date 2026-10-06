@@ -613,7 +613,7 @@ export const PersonalFinanceFeaturedServicesComponent: PuckComponent<
 
 export const PersonalFinanceFeaturedServices: YextComponentConfig<PersonalFinanceFeaturedServicesProps> =
   {
-    label: msg("components.featuredServicesSection", "Featured Services Section"),
+    label: msg("components.featuredServicesSection", "Featured Services"),
     fields: FeaturedServicesFields,
     defaultProps: {
       section: {
@@ -645,7 +645,7 @@ export const PersonalFinanceFeaturedServices: YextComponentConfig<PersonalFinanc
 
 export const config: SectionConfig = {
   id: "PersonalFinanceFeaturedServices",
-  displayName: "Featured Services Section",
+  displayName: "Featured Services",
   description: "Featured Services",
   pageSetTypes: ["ENTITY"],
 };

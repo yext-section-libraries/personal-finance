@@ -444,7 +444,7 @@ export const PersonalFinancePhotoGalleryComponent: PuckComponent<
 
 export const PersonalFinancePhotoGallery: YextComponentConfig<PersonalFinancePhotoGalleryProps> =
   {
-    label: msg("components.photoGallerySection", "Photo Gallery Section"),
+    label: msg("components.photoGallerySection", "Photo Gallery"),
     fields: GalleryFields,
     defaultProps: {
       section: {
@@ -481,7 +481,7 @@ export const PersonalFinancePhotoGallery: YextComponentConfig<PersonalFinancePho
 
 export const config: SectionConfig = {
   id: "PersonalFinancePhotoGallery",
-  displayName: "Photo Gallery Section",
+  displayName: "Photo Gallery",
   description: "Photo Gallery",
   pageSetTypes: ["ENTITY"],
 };

@@ -1214,7 +1214,7 @@ export const PersonalFinanceDetailsComponent: PuckComponent<
 
 export const PersonalFinanceDetails: YextComponentConfig<PersonalFinanceDetailsProps> =
   {
-    label: msg("components.locationDetailsSection", "Location Details Section"),
+    label: msg("components.locationDetailsSection", "Location Details"),
     fields: SectionFields,
     defaultProps: {
       section: {
@@ -1335,7 +1335,7 @@ export const PersonalFinanceDetails: YextComponentConfig<PersonalFinanceDetailsP
 
 export const config: SectionConfig = {
   id: "PersonalFinanceDetails",
-  displayName: "Location Details Section",
+  displayName: "Location Details",
   description: "Location Details",
   pageSetTypes: ["ENTITY"],
 };

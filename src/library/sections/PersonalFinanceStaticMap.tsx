@@ -274,7 +274,7 @@ export const PersonalFinanceStaticMapComponent: PuckComponent<
 
 export const PersonalFinanceStaticMap: YextComponentConfig<PersonalFinanceStaticMapProps> =
   {
-    label: msg("components.staticMapSection", "Static Map Section"),
+    label: msg("components.staticMapSection", "Static Map"),
     fields: StaticMapFields,
     defaultProps: {
       section: {
@@ -310,7 +310,7 @@ export const PersonalFinanceStaticMap: YextComponentConfig<PersonalFinanceStatic
 
 export const config: SectionConfig = {
   id: "PersonalFinanceStaticMap",
-  displayName: "Static Map Section",
+  displayName: "Static Map",
   description: "Static Map",
   pageSetTypes: ["ENTITY"],
 };
