@@ -409,5 +409,6 @@
   "viewLocation": "Vis sted",
   "visitPage": "Besøk side",
   "visitPageForName": "Besøk siden for {{name}}",
-  "wednesday": "onsdag"
+  "wednesday": "onsdag",
+  "mapRequiresWebGL": "Kartet er ikke tilgjengelig fordi WebGL ikke er tilgjengelig."
 }

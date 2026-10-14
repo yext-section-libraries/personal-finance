@@ -409,5 +409,6 @@
   "viewLocation": "Näytä sijainti",
   "visitPage": "Vieraile sivussa",
   "visitPageForName": "Siirry sivulle {{name}}",
-  "wednesday": "keskiviikko"
+  "wednesday": "keskiviikko",
+  "mapRequiresWebGL": "Kartta ei ole käytettävissä, koska WebGL ei ole käytettävissä."
 }

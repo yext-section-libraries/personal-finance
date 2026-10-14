@@ -414,5 +414,6 @@
   "viewLocation": "Visualizza sede",
   "visitPage": "Visita pagina",
   "visitPageForName": "Visita la pagina per {{name}}",
-  "wednesday": "Mercoledì"
+  "wednesday": "Mercoledì",
+  "mapRequiresWebGL": "La mappa non è disponibile perché WebGL non è disponibile."
 }

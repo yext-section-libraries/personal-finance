@@ -409,5 +409,6 @@
   "viewLocation": "Locatie bekijken",
   "visitPage": "Bezoek pagina",
   "visitPageForName": "Bezoek pagina voor {{name}}",
-  "wednesday": "Woensdag"
+  "wednesday": "Woensdag",
+  "mapRequiresWebGL": "De kaart is niet beschikbaar omdat WebGL niet beschikbaar is."
 }

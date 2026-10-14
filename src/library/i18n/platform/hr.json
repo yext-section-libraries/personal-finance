@@ -414,5 +414,6 @@
   "viewLocation": "Prikaži lokaciju",
   "visitPage": "Stranica za posjetu",
   "visitPageForName": "Posjetite stranicu za {{name}}",
-  "wednesday": "srijeda"
+  "wednesday": "srijeda",
+  "mapRequiresWebGL": "Karta nije dostupna jer WebGL nije dostupan."
 }

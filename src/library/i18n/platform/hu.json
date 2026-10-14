@@ -409,5 +409,6 @@
   "viewLocation": "Hely megtekintése",
   "visitPage": "Látogasson el az oldalra",
   "visitPageForName": "Látogassa meg a {{name}} oldalát",
-  "wednesday": "szerda"
+  "wednesday": "szerda",
+  "mapRequiresWebGL": "A térkép nem érhető el, mert a WebGL nem érhető el."
 }

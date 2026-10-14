@@ -404,5 +404,6 @@
   "viewLocation": "拠点を表示",
   "visitPage": "ページにアクセスしてください",
   "visitPageForName": "{{name}} のページにアクセスしてください",
-  "wednesday": "水曜日"
+  "wednesday": "水曜日",
+  "mapRequiresWebGL": "WebGL が利用できないため、地図を表示できません。"
 }

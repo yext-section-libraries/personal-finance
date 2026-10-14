@@ -414,5 +414,6 @@
   "viewLocation": "Voir l’établissement",
   "visitPage": "Page de visite",
   "visitPageForName": "Visitez la page pour {{name}}",
-  "wednesday": "Mercredi"
+  "wednesday": "Mercredi",
+  "mapRequiresWebGL": "La carte est indisponible car WebGL est indisponible."
 }
