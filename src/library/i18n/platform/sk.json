@@ -419,5 +419,6 @@
   "viewLocation": "Zobraziť pobočku",
   "visitPage": "Navštíviť stránku",
   "visitPageForName": "Navštíviť stránku pre {{name}}",
-  "wednesday": "Streda"
+  "wednesday": "Streda",
+  "mapRequiresWebGL": "Mapa nie je dostupná, pretože WebGL nie je k dispozícii."
 }

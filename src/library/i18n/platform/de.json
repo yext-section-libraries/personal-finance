@@ -409,5 +409,6 @@
   "viewLocation": "Standort anzeigen",
   "visitPage": "Standortseite aufrufen",
   "visitPageForName": "Besuchsseite für {{name}}",
-  "wednesday": "Mittwoch"
+  "wednesday": "Mittwoch",
+  "mapRequiresWebGL": "Die Karte ist nicht verfügbar, weil WebGL nicht verfügbar ist."
 }

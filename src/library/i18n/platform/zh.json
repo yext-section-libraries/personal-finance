@@ -404,5 +404,6 @@
   "viewLocation": "查看地点",
   "visitPage": "访问页面",
   "visitPageForName": "访问 {{name}} 页面",
-  "wednesday": "周三"
+  "wednesday": "周三",
+  "mapRequiresWebGL": "由于 WebGL 不可用，无法显示地图。"
 }

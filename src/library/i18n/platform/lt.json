@@ -419,5 +419,6 @@
   "viewLocation": "Peržiūrėti vietą",
   "visitPage": "Apsilankykite puslapyje",
   "visitPageForName": "Apsilankykite puslapyje {{name}}",
-  "wednesday": "Trečiadienis"
+  "wednesday": "Trečiadienis",
+  "mapRequiresWebGL": "Žemėlapis nepasiekiamas, nes WebGL nepasiekiamas."
 }
