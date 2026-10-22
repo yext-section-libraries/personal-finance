@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Logo bağlantısı",
     "mapLocation": "Harita konumu",
+    "mapStartingZoom": "Haritanın başlangıç yakınlaştırma düzeyi",
     "responsiveTopBarCta": "Duyarlı üst çubuk eylem çağrısı",
     "utilityIcon": "Yardımcı simge",
     "accentColor": "Vurgu Rengi",

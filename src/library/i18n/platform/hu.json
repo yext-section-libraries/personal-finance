@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Logó hivatkozása",
     "mapLocation": "Hely a térképen",
+    "mapStartingZoom": "A térkép kezdeti nagyítási szintje",
     "responsiveTopBarCta": "Reszponzív felső sáv CTA-ja",
     "utilityIcon": "Segédfunkció ikonja",
     "accentColor": "Kiemelt szín",

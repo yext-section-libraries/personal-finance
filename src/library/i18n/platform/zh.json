@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "徽标链接",
     "mapLocation": "地图位置",
+    "mapStartingZoom": "地图初始缩放级别",
     "responsiveTopBarCta": "响应式顶部栏行动号召",
     "utilityIcon": "工具图标",
     "accentColor": "强调色",
