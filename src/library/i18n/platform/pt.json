@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Link do logótipo",
     "mapLocation": "Localização no mapa",
+    "mapStartingZoom": "Nível de zoom inicial do mapa",
     "responsiveTopBarCta": "CTA da barra superior responsiva",
     "utilityIcon": "Ícone de utilidade",
     "accentColor": "Cor de destaque",

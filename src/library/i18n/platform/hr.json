@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Poveznica logotipa",
     "mapLocation": "Lokacija na karti",
+    "mapStartingZoom": "Početna razina zumiranja karte",
     "responsiveTopBarCta": "Prilagodljivi CTA na gornjoj traci",
     "utilityIcon": "Ikona uslužne funkcije",
     "accentColor": "Boja akcenta",

@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Logotipo nuoroda",
     "mapLocation": "Vieta žemėlapyje",
+    "mapStartingZoom": "Pradinis žemėlapio mastelio lygis",
     "responsiveTopBarCta": "Prisitaikančios viršutinės juostos CTA",
     "utilityIcon": "Pagalbinė piktograma",
     "accentColor": "Akcentinė spalva",

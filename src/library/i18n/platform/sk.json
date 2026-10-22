@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Odkaz loga",
     "mapLocation": "Poloha na mape",
+    "mapStartingZoom": "Počiatočné priblíženie mapy",
     "responsiveTopBarCta": "Responzívne CTA v hornej lište",
     "utilityIcon": "Ikona nástroja",
     "accentColor": "Farba zvýraznenia",

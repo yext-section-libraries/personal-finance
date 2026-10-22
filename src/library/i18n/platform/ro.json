@@ -56,6 +56,7 @@
   "fields": {
     "logoLink": "Linkul siglei",
     "mapLocation": "Locație pe hartă",
+    "mapStartingZoom": "Nivelul inițial de zoom al hărții",
     "responsiveTopBarCta": "CTA din bara superioară adaptivă",
     "utilityIcon": "Pictogramă utilitară",
     "accentColor": "Culoare de accent",
