@@ -42,6 +42,7 @@
   "locationsWithinDistanceOf_other": "{{count}} locaties binnen {{distance}} {{unit}} van \"{{name}}\"",
   "logo": "Logo",
   "mapRequiresOptIn": "Deze kaart kan alleen worden weergegeven als cookies zijn ingeschakeld",
+  "mapRequiresWebGL": "De kaart is niet beschikbaar omdat WebGL niet beschikbaar is.",
   "mapboxApiKeyRequiredStaticMap": "Voeg een Mapbox API-sleutel toe om het voorbeeld van de statische kaart weer te geven.",
   "mile_one": "mijl",
   "mile_other": "mijlen",

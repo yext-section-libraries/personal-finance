@@ -42,6 +42,7 @@
   "locationsWithinDistanceOf_other": "{{count}} Standorte im Umkreis von {{distance}} {{unit}} von „{{name}}“",
   "logo": "Logo",
   "mapRequiresOptIn": "Diese Karte kann nur angezeigt werden, wenn Cookies aktiviert sind",
+  "mapRequiresWebGL": "Die Karte ist nicht verfügbar, weil WebGL nicht verfügbar ist.",
   "mapboxApiKeyRequiredStaticMap": "Fügen Sie einen Mapbox-API-Schlüssel hinzu, um die Vorschau der statischen Karte anzuzeigen.",
   "mile_one": "Meile",
   "mile_other": "Meilen",

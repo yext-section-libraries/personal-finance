@@ -42,6 +42,7 @@
   "locationsWithinDistanceOf_other": "\"{{name}}\" 'den {{distance}} {{unit}} uzaklıktaki {{count}} konum",
   "logo": "Logo",
   "mapRequiresOptIn": "Bu harita yalnızca çerezler etkinse görüntülenebilir",
+  "mapRequiresWebGL": "WebGL kullanılamadığı için harita kullanılamıyor.",
   "mapboxApiKeyRequiredStaticMap": "Statik harita önizlemesini görüntülemek için bir Mapbox API anahtarı ekleyin.",
   "mile_one": "mil",
   "mile_other": "mil",

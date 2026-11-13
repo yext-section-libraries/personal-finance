@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "「{{name}}」から {{distance}} {{unit}} 以内にある {{count}} 件の場所",
   "logo": "ロゴ",
   "mapRequiresOptIn": "この地図は Cookie が有効になっている場合にのみ表示できます",
+  "mapRequiresWebGL": "WebGL が利用できないため、地図を表示できません。",
   "mapboxApiKeyRequiredStaticMap": "静的マップのプレビューを表示するには Mapbox API キーを追加してください。",
   "mile_other": "マイル",
   "mile_zero": "マイル",
