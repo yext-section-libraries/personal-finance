@@ -54,6 +54,7 @@
   "email": "E-posta",
   "enableCookies": "Çerezleri Etkinleştir",
   "fields": {
+    "autoSearchOnMapMove": "Harita Hareketinde Otomatik Arama",
     "logoLink": "Logo bağlantısı",
     "mapLocation": "Harita konumu",
     "mapStartingZoom": "Haritanın başlangıç yakınlaştırma düzeyi",

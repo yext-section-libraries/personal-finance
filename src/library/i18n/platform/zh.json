@@ -54,6 +54,7 @@
   "email": "电子邮件",
   "enableCookies": "启用 Cookie",
   "fields": {
+    "autoSearchOnMapMove": "地图移动自动搜索",
     "logoLink": "徽标链接",
     "mapLocation": "地图位置",
     "mapStartingZoom": "地图初始缩放级别",

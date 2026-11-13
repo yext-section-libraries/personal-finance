@@ -54,6 +54,7 @@
   "email": "E-mail",
   "enableCookies": "Activați cookie-urile",
   "fields": {
+    "autoSearchOnMapMove": "Căutare automată pe Hartă Mișcare",
     "logoLink": "Linkul siglei",
     "mapLocation": "Locație pe hartă",
     "mapStartingZoom": "Nivelul inițial de zoom al hărții",

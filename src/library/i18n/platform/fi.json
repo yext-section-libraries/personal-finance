@@ -54,6 +54,7 @@
   "email": "Sähköposti",
   "enableCookies": "Ota evästeet käyttöön",
   "fields": {
+    "autoSearchOnMapMove": "Hae automaattisesti kartan liikkeestä",
     "logoLink": "Logolinkki",
     "mapLocation": "Sijainti kartalla",
     "mapStartingZoom": "Kartan aloituszoomaus",

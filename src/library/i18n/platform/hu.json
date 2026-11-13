@@ -54,6 +54,7 @@
   "email": "Email",
   "enableCookies": "Cookie-k engedélyezése",
   "fields": {
+    "autoSearchOnMapMove": "Automatikus keresés a térképen, mozgás",
     "logoLink": "Logó hivatkozása",
     "mapLocation": "Hely a térképen",
     "mapStartingZoom": "A térkép kezdeti nagyítási szintje",

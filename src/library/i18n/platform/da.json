@@ -54,6 +54,7 @@
   "email": "E-mail",
   "enableCookies": "Aktiver cookies",
   "fields": {
+    "autoSearchOnMapMove": "Søg automatisk på kortbevægelse",
     "logoLink": "Logolink",
     "mapLocation": "Kortplacering",
     "mapStartingZoom": "Kortets startzoom",

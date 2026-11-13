@@ -54,6 +54,7 @@
   "email": "E-mail",
   "enableCookies": "Omogući kolačiće",
   "fields": {
+    "autoSearchOnMapMove": "Automatsko pretraživanje po kretanju karte",
     "logoLink": "Poveznica logotipa",
     "mapLocation": "Lokacija na karti",
     "mapStartingZoom": "Početna razina zumiranja karte",

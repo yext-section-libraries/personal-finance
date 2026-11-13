@@ -54,6 +54,7 @@
   "email": "E-mail",
   "enableCookies": "Abilita i cookie",
   "fields": {
+    "autoSearchOnMapMove": "Cerca automaticamente sul movimento della mappa",
     "logoLink": "Link del logo",
     "mapLocation": "Posizione sulla mappa",
     "mapStartingZoom": "Livello di zoom iniziale della mappa",

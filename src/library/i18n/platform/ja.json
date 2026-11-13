@@ -54,6 +54,7 @@
   "email": "電子メール",
   "enableCookies": "Cookieを有効にする",
   "fields": {
+    "autoSearchOnMapMove": "地図移動時に自動検索",
     "logoLink": "ロゴのリンク",
     "mapLocation": "地図上の位置",
     "mapStartingZoom": "地図の初期ズームレベル",

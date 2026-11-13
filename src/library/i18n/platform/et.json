@@ -54,6 +54,7 @@
   "email": "Meil",
   "enableCookies": "Luba küpsised",
   "fields": {
+    "autoSearchOnMapMove": "Otsige automaatselt kaardil liikumist",
     "logoLink": "Logo link",
     "mapLocation": "Asukoht kaardil",
     "mapStartingZoom": "Kaardi algne suumitase",
