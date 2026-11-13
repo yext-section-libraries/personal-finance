@@ -42,6 +42,7 @@
   "locationsWithinDistanceOf_other": "{{count}} hely {{distance}} {{unit}}-on belül a következőtől: \"{{name}}\"",
   "logo": "Logó",
   "mapRequiresOptIn": "Ez a térkép csak akkor jeleníthető meg, ha a cookie-k engedélyezve vannak",
+  "mapRequiresWebGL": "A térkép nem érhető el, mert a WebGL nem érhető el.",
   "mapboxApiKeyRequiredStaticMap": "Adjon hozzá Mapbox API-kulcsot a statikus térkép előnézetének megjelenítéséhez.",
   "mile_one": "mérföld",
   "mile_other": "mérföld",

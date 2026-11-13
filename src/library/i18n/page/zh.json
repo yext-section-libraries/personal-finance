@@ -38,6 +38,7 @@
   "locationsWithinDistanceOf_other": "“{{name}}”的 {{distance}} {{unit}} 内有 {{count}} 个位置",
   "logo": "标识",
   "mapRequiresOptIn": "该地图仅在启用cookies的情况下才能显示",
+  "mapRequiresWebGL": "由于 WebGL 不可用，无法显示地图。",
   "mapboxApiKeyRequiredStaticMap": "添加 Mapbox API 密钥以呈现静态地图预览。",
   "mile_other": "英里",
   "mile_zero": "英里",

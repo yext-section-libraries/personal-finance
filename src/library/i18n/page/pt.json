@@ -46,6 +46,7 @@
   "locationsWithinDistanceOf_other": "{{count}} locais dentro de {{distance}} {{unit}} de \"{{name}}\"",
   "logo": "Logotipo",
   "mapRequiresOptIn": "Este mapa só pode ser exibido se os cookies estiverem ativados",
+  "mapRequiresWebGL": "O mapa não está disponível porque o WebGL não está disponível.",
   "mapboxApiKeyRequiredStaticMap": "Adicione uma chave de API do Mapbox para apresentar a pré-visualização do mapa estático.",
   "mile_many": "milhas",
   "mile_one": "milha",

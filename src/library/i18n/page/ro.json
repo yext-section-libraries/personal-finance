@@ -46,6 +46,7 @@
   "locationsWithinDistanceOf_other": "{{count}} locații pe o rază de {{distance}} {{unit}} de „{{name}}”",
   "logo": "Logo",
   "mapRequiresOptIn": "Această hartă poate fi afișată numai dacă cookie-urile sunt activate",
+  "mapRequiresWebGL": "Harta nu este disponibilă deoarece WebGL nu este disponibil.",
   "mapboxApiKeyRequiredStaticMap": "Adăugați o cheie API Mapbox pentru a afișa previzualizarea hărții statice.",
   "mile_few": "mile",
   "mile_one": "milă",
