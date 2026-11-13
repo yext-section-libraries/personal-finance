@@ -54,6 +54,7 @@
   "email": "E-pasts",
   "enableCookies": "Iespējot sīkfailus",
   "fields": {
+    "autoSearchOnMapMove": "Automātiski meklēt kartē kustību",
     "logoLink": "Logotipa saite",
     "mapLocation": "Atrašanās vieta kartē",
     "mapStartingZoom": "Kartes sākotnējais tālummaiņas līmenis",

@@ -54,6 +54,7 @@
   "email": "E-mail",
   "enableCookies": "Povolit soubory cookie",
   "fields": {
+    "autoSearchOnMapMove": "Automaticky hledat při pohybu na mapě",
     "logoLink": "Odkaz loga",
     "mapLocation": "Umístění mapy",
     "mapStartingZoom": "Počáteční přiblížení mapy",

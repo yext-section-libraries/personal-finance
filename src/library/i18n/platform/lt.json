@@ -54,6 +54,7 @@
   "email": "El. paštas",
   "enableCookies": "Įgalinti slapukus",
   "fields": {
+    "autoSearchOnMapMove": "Automatiškai ieškoti judėjimo žemėlapyje",
     "logoLink": "Logotipo nuoroda",
     "mapLocation": "Vieta žemėlapyje",
     "mapStartingZoom": "Pradinis žemėlapio mastelio lygis",

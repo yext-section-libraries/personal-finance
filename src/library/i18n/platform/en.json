@@ -54,6 +54,7 @@
   "email": "Email",
   "enableCookies": "Enable Cookies",
   "fields": {
+    "autoSearchOnMapMove": "Automatically Search on Map Movement",
     "logoLink": "Logo Link",
     "mapLocation": "Map Location",
     "mapStartingZoom": "Map Starting Zoom",

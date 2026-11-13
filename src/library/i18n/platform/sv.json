@@ -54,6 +54,7 @@
   "email": "E-post",
   "enableCookies": "Aktivera cookies",
   "fields": {
+    "autoSearchOnMapMove": "Sök automatiskt på kartrörelse",
     "logoLink": "Logotyplänk",
     "mapLocation": "Kartplats",
     "mapStartingZoom": "Kartans startzoom",

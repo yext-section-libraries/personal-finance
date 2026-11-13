@@ -54,6 +54,7 @@
   "email": "電子郵件",
   "enableCookies": "啟用 Cookie",
   "fields": {
+    "autoSearchOnMapMove": "地圖移動自動搜索",
     "logoLink": "標誌連結",
     "mapLocation": "地圖位置",
     "mapStartingZoom": "地圖初始縮放層級",

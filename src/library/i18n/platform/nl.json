@@ -54,6 +54,7 @@
   "email": "E-mail",
   "enableCookies": "Cookies inschakelen",
   "fields": {
+    "autoSearchOnMapMove": "Automatisch zoeken op kaartbeweging",
     "logoLink": "Logolink",
     "mapLocation": "Locatie op de kaart",
     "mapStartingZoom": "Initieel zoomniveau van de kaart",
