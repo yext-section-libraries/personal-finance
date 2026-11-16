@@ -42,6 +42,7 @@
   "locationsWithinDistanceOf_other": "{{count}} platser inom {{distance}} {{unit}} från \"{{name}}\"",
   "logo": "Logotyp",
   "mapRequiresOptIn": "Denna karta kan endast visas om cookies är aktiverade",
+  "mapRequiresWebGL": "Kartan är inte tillgänglig eftersom WebGL inte är tillgängligt.",
   "mapboxApiKeyRequiredStaticMap": "Lägg till en Mapbox API-nyckel för att visa förhandsgranskningen av den statiska kartan.",
   "mile_one": "mil",
   "mile_other": "mil",

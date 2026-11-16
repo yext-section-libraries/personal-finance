@@ -45,6 +45,7 @@
   "locationsWithinDistanceOf_zero": "{{count}} atrašanās vietas {{distance}} {{unit}} rādiusā no \"{{name}}\"",
   "logo": "Logotips",
   "mapRequiresOptIn": "Šo karti var parādīt tikai tad, ja ir iespējoti sīkfaili",
+  "mapRequiresWebGL": "Karte nav pieejama, jo WebGL nav pieejams.",
   "mapboxApiKeyRequiredStaticMap": "Pievienojiet Mapbox API atslēgu, lai parādītu statiskās kartes priekšskatījumu.",
   "mile_one": "jūdze",
   "mile_other": "jūdzes",

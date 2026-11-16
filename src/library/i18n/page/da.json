@@ -42,6 +42,7 @@
   "locationsWithinDistanceOf_other": "{{count}} steder inden for {{distance}} {{unit}} fra \"{{name}}\"",
   "logo": "Logo",
   "mapRequiresOptIn": "Dette kort kan kun vises, hvis cookies er aktiveret",
+  "mapRequiresWebGL": "Kortet er ikke tilgængeligt, fordi WebGL ikke er tilgængeligt.",
   "mapboxApiKeyRequiredStaticMap": "Tilføj en Mapbox API-nøgle for at vise forhåndsvisningen af det statiske kort.",
   "mile_one": "mil",
   "mile_other": "mil",

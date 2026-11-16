@@ -50,6 +50,7 @@
   "locationsWithinDistanceOf_other": "{{count}} miest v rámci {{distance}} {{unit}} od „{{name}}“",
   "logo": "Logo",
   "mapRequiresOptIn": "Túto mapu je možné zobraziť iba vtedy, ak sú povolené súbory cookie",
+  "mapRequiresWebGL": "Mapa nie je dostupná, pretože WebGL nie je k dispozícii.",
   "mapboxApiKeyRequiredStaticMap": "Pridajte kľúč API Mapbox na zobrazenie náhľadu statickej mapy.",
   "mile_few": "míle",
   "mile_many": "míľ",

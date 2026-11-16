@@ -50,6 +50,7 @@
   "locationsWithinDistanceOf_other": "{{count}} lokalizacji w promieniu {{distance}} {{unit}} od „{{name}}”",
   "logo": "Logo",
   "mapRequiresOptIn": "Ta mapa może być wyświetlana tylko wtedy, gdy włączona jest obsługa plików cookie",
+  "mapRequiresWebGL": "Mapa jest niedostępna, ponieważ WebGL jest niedostępny.",
   "mapboxApiKeyRequiredStaticMap": "Dodaj klucz API Mapbox, aby wyświetlić podgląd mapy statycznej.",
   "mile_few": "mile",
   "mile_many": "mil",
