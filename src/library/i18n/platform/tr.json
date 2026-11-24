@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Varsayılan mesafe birimi",
     "defaultSearchRadius": "Varsayılan arama yarıçapı",
     "distanceUnit": "Mesafe birimi",
+    "includeCount": "Sayıyı dahil et",
     "logoLink": "Logo bağlantısı",
     "mapLocation": "Harita konumu",
     "mapStartingZoom": "Haritanın başlangıç yakınlaştırma düzeyi",

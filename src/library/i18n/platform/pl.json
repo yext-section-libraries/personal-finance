@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Domyślna jednostka odległości",
     "defaultSearchRadius": "Domyślny promień wyszukiwania",
     "distanceUnit": "Jednostka odległości",
+    "includeCount": "Uwzględnij liczbę",
     "logoLink": "Link do logo",
     "mapLocation": "Lokalizacja na mapie",
     "mapStartingZoom": "Początkowy poziom powiększenia mapy",

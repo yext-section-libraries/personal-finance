@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Standardentfernungseinheit",
     "defaultSearchRadius": "Standardsuchradius",
     "distanceUnit": "Entfernungseinheit",
+    "includeCount": "Anzahl anzeigen",
     "logoLink": "Logo-Link",
     "mapLocation": "Kartenstandort",
     "mapStartingZoom": "Anfängliche Zoomstufe der Karte",

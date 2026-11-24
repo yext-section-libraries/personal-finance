@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "既定の距離単位",
     "defaultSearchRadius": "デフォルトの検索半径",
     "distanceUnit": "距離の単位",
+    "includeCount": "件数を表示",
     "logoLink": "ロゴのリンク",
     "mapLocation": "地図上の位置",
     "mapStartingZoom": "地図の初期ズームレベル",

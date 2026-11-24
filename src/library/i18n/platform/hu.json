@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Alapértelmezett távolságegység",
     "defaultSearchRadius": "Alapértelmezett keresési sugár",
     "distanceUnit": "Távolság mértékegysége",
+    "includeCount": "Tartalmazza a számot",
     "logoLink": "Logó hivatkozása",
     "mapLocation": "Hely a térképen",
     "mapStartingZoom": "A térkép kezdeti nagyítási szintje",

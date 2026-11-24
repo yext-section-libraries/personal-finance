@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Oletusetäisyysyksikkö",
     "defaultSearchRadius": "Haun oletussäde",
     "distanceUnit": "Etäisyyden yksikkö",
+    "includeCount": "Sisällytä määrä",
     "logoLink": "Logolinkki",
     "mapLocation": "Sijainti kartalla",
     "mapStartingZoom": "Kartan aloituszoomaus",
