@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "默认距离单位",
     "defaultSearchRadius": "默认搜索半径",
     "distanceUnit": "距离单位",
+    "includeCount": "包括计数",
     "logoLink": "徽标链接",
     "mapLocation": "地图位置",
     "mapStartingZoom": "地图初始缩放级别",

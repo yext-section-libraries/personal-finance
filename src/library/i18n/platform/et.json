@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Vaikimisi kaugusühik",
     "defaultSearchRadius": "Otsingu vaikeraadius",
     "distanceUnit": "Kaugusühik",
+    "includeCount": "Kaasa arv",
     "logoLink": "Logo link",
     "mapLocation": "Asukoht kaardil",
     "mapStartingZoom": "Kaardi algne suumitase",

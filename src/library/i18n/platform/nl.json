@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Standaardafstandseenheid",
     "defaultSearchRadius": "Standaardzoekradius",
     "distanceUnit": "Afstandseenheid",
+    "includeCount": "Inclusief telling",
     "logoLink": "Logolink",
     "mapLocation": "Locatie op de kaart",
     "mapStartingZoom": "Initieel zoomniveau van de kaart",

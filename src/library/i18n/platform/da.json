@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Standardenhed for afstand",
     "defaultSearchRadius": "Standardradius for søgning",
     "distanceUnit": "Afstandsenhed",
+    "includeCount": "Inkluder tæller",
     "logoLink": "Logolink",
     "mapLocation": "Kortplacering",
     "mapStartingZoom": "Kortets startzoom",

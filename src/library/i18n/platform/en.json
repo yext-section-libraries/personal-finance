@@ -64,6 +64,7 @@
     "defaultDistanceUnit": "Default Distance Unit",
     "defaultSearchRadius": "Default Search Radius",
     "distanceUnit": "Distance Unit",
+    "includeCount": "Include count",
     "logoLink": "Logo Link",
     "mapLocation": "Map Location",
     "mapStartingZoom": "Map Starting Zoom",
